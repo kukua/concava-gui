@@ -1,0 +1,24 @@
+{
+  "name": "concava-gui",
+  "description": "Graphical interface for managing ConCaVa metadata.",
+  "main": "",
+  "authors": [
+    "Kukua Team <info@kukua.cc>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "concava",
+    "gui",
+    "manage"
+  ],
+  "homepage": "https://github.com/kukua/concava-gui",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "build/vendor",
+    "test",
+    "tests"
+  ]
+}
