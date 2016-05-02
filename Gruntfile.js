@@ -34,6 +34,7 @@ module.exports = function (grunt) {
 			assets: {
 				files: [
 					{ expand: false, filter: 'isFile', src: ['./src/www/index.html'], dest: './build/index.html' },
+					{ expand: false, filter: 'isFile', src: ['./src/css/main.css'], dest: './build/css/main.css' },
 				],
 			},
 		},

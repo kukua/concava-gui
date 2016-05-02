@@ -11,4 +11,8 @@ npm install
 grunt build
 npm start
 # > Navigate to localhost:8080
+
+# Developing
+grunt watch
+npm start
 ```

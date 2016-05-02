@@ -1,11 +1,15 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-//import { connect } from 'react-redux'
+import { render } from 'react-dom'
+import { Router, Route, hashHistory } from 'react-router'
+import App from './controller/app'
+import Test from './view/test'
+import NoMatch from './view/noMatch'
 
-class Temp extends React.Component {
-	render() {
-		return (<h1>Hoi Siebren</h1>)
-	}
-}
-
-ReactDOM.render(<Temp />, document.getElementById('app'))
+render((
+  <Router history={hashHistory}>
+    <Route path="/" component={App}>
+      <Route path="test" component={Test}/>
+      <Route path="*" component={NoMatch}/>
+    </Route>
+  </Router>
+), document.getElementById('app'))
