@@ -31,10 +31,19 @@ module.exports = function (grunt) {
 			},
 		},
 		copy: {
+			main: {
+				files: [{
+					expand: true,
+					cwd: 'node_modules/react-notifications/lib/fonts',
+					src: ['**'],
+					dest: 'build/css/fonts'
+				}]
+			},
 			assets: {
 				files: [
 					{ expand: false, filter: 'isFile', src: ['./src/www/index.html'], dest: './build/index.html' },
 					{ expand: false, filter: 'isFile', src: ['./src/css/main.css'], dest: './build/css/main.css' },
+					{ expand: false, filter: 'isFile', src: ['./node_modules/react-notifications/lib/notifications.css'], dest: './build/css/notifications.css' },
 				],
 			},
 		},
@@ -44,5 +53,5 @@ module.exports = function (grunt) {
 
 	grunt.registerTask('default', ['watch'])
 	grunt.registerTask('watch', ['browserify:watchMain'])
-	grunt.registerTask('build', ['copy:assets', 'browserify:main'])
+	grunt.registerTask('build', ['copy:assets', 'browserify:main', 'copy:main'])
 }

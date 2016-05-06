@@ -1,15 +1,9 @@
-import React from 'react'
-import { render } from 'react-dom'
-import { Router, Route, hashHistory } from 'react-router'
-import App from './controller/app'
-import Test from './view/test'
-import NoMatch from './view/noMatch'
+import React	from 'react'
+import ReactDOM from 'react-dom'
+import Routing	from './controller/Routes'
 
-render((
-  <Router history={hashHistory}>
-    <Route path="/" component={App}>
-      <Route path="test" component={Test}/>
-      <Route path="*" component={NoMatch}/>
-    </Route>
-  </Router>
-), document.getElementById('app'))
+const app = document.getElementById('app')
+
+ReactDOM.render(
+	Routing,
+app)
