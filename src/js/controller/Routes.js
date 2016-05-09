@@ -34,6 +34,13 @@ export default (
 			<Route path="devices/read/:id" component={DeviceRead} onEnter={requireAuthentication} />
 			<Route path="devices/update/:id" component={DeviceUpdate} onEnter={requireAuthentication} />
 
+			{/*
+			<Route path="attributes/create/:id" component={} onEnter={requireAuthentication} />
+			<Route path="attributes/read/:id" component={} onEnter={requireAuthentication} />
+			<Route path="attributes/update/:id" component={} onEnter={requireAuthentication} />
+			<Route path="attributes/delete/:id" component={} onEnter={requireAuthentication} />
+			*/}
+
 			<Route path="*" component={NoMatch}/>
 		</Route>
 	</Router>
