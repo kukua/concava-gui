@@ -1,7 +1,7 @@
 import React from 'react'
 import Header from '../header/Header'
 
-import {NotificationContainer} from 'react-notifications';
+import { NotificationContainer } from 'react-notifications'
 
 export default class Master extends React.Component {
 	render () {
@@ -15,4 +15,8 @@ export default class Master extends React.Component {
 			</div>
 		)
 	}
+}
+
+Master.propTypes = {
+	children: React.PropTypes.element
 }

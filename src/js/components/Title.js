@@ -1,21 +1,16 @@
 import React from 'react'
-import { Link, hashHistory } from 'react-router'
+import { hashHistory } from 'react-router'
 
 export default class Title extends React.Component {
-
-	handleBackButton() {
-		return hashHistory.goBack
-	}
-
-	getBackButton(val) {
+	getBackButton (val) {
 		if (val != undefined) {
 			return (
-				<a href="javascript:;" class='btn-link-title' onClick={this.handleBackButton()}>{val}</a>
+				<a href="javascript:;" class='btn-link-title' onClick={hashHistory.goBack}>{val}</a>
 			)
 		}
 	}
 
-	getSubTitle(val) {
+	getSubTitle (val) {
 		if (val != undefined) {
 			return (
 				<small> - {val}</small>
@@ -23,7 +18,7 @@ export default class Title extends React.Component {
 		}
 	}
 
-	render() {
+	render () {
 		return (
 			<div>
 				<div class="row">
@@ -41,4 +36,11 @@ export default class Title extends React.Component {
 			</div>
 		)
 	}
+}
+
+Title.propTypes = {
+	link: React.PropTypes.string,
+	title: React.PropTypes.string.isRequired,
+	subtitle: React.PropTypes.string
+
 }

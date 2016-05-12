@@ -1,10 +1,11 @@
 import React from 'react'
 import Title from '../Title'
-import { Link } from 'react-router'
+//import { Link } from 'react-router'
 
 export default class Read extends React.Component {
 	render () {
-		const name = "My device #" + this.props.params.id;
+		/*
+		const name = "My device #" + this.props.params.id
 
 		const columns = {
 			title: 'Attributes',
@@ -13,20 +14,21 @@ export default class Read extends React.Component {
 		}
 
 		const rows = [{
-			id: '1',
+			id: 1,
 			name: 'Temperature'
 		}, {
-			id: '2',
+			id: 2,
 			name: 'Humidity'
 		}, {
-			id: '3',
+			id: 3,
 			name: 'Rainfall'
 		}]
+		*/
 
 		return (
 			<div class="row">
 				<div class="col-sm-12">
-					<Title title="Device attributes" link='Cancel'/>
+					<Title title="Device attributes" link="Cancel" />
 
 					<div class="row">
 						<div class="col-sm-6">
@@ -62,7 +64,7 @@ export default class Read extends React.Component {
 							<div class="panel panel-default">
 								<div class="panel-heading">Attributes</div>
 								<div class="panel-body">
-									
+
 								</div>
 							</div>
 						</div>

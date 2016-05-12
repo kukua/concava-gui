@@ -1,16 +1,15 @@
 import React from 'react'
-import { Router, Route, IndexRedirect, hashHistory } from 'react-router'
-import { NotificationManager } from 'react-notifications';
+import { NotificationManager } from 'react-notifications'
 
-import Title from '../Title';
+import Title from '../Title'
 
 export default class Login extends React.Component {
 
 	handleLogin(e) {
 		e.preventDefault()
 		localStorage.token = 'true'
-		NotificationManager.success('Successfully logged in', 'Welcome');
-		this.context.router.replace('/');
+		NotificationManager.success('Successfully logged in', 'Welcome')
+		this.context.router.replace('/')
 	}
 
 	render() {

@@ -1,11 +1,10 @@
 import React from 'react'
-import Title from '../Title';
-import { Link } from 'react-router'
+import Title from '../Title'
+//import { Link } from 'react-router'
 
 export default class Update extends React.Component {
 	handleSubmit(e) {
-		e.preventDefault();
-		
+		e.preventDefault()
 	}
 
 	render () {

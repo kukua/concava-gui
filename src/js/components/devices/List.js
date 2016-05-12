@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router'
 import _ from 'underscore'
 
-import Title from '../Title';
+import Title from '../Title'
 
 export default class List extends React.Component {
 	componentWillMount () {
@@ -34,4 +34,10 @@ export default class List extends React.Component {
 			</div>
 		)
 	}
+}
+
+List.propTypes = {
+	onFetch: React.PropTypes.func.isRequired,
+	isFetching: React.PropTypes.bool.isRequired,
+	items: React.PropTypes.array
 }

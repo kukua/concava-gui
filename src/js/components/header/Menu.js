@@ -1,14 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router'
-import { Router, Route, IndexRedirect, hashHistory } from 'react-router'
-import { NotificationManager } from 'react-notifications';
+import { NotificationManager } from 'react-notifications'
 
 export default class Menu extends React.Component {
-
 	handleLogout() {
-		localStorage.clear();
-		NotificationManager.info('Untill we meet next time', 'C ya!');
-		this.context.router.replace('/auth/login');
+		localStorage.clear()
+		NotificationManager.info('Untill we meet next time', 'C ya!')
+		this.context.router.replace('/auth/login')
 	}
 
 	getMenu() {

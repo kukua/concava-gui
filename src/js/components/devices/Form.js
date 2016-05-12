@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router'
-import { NotificationManager } from 'react-notifications';
+import { NotificationManager } from 'react-notifications'
 
-import Title from '../Title';
+//import Title from '../Title'
 
 export default class Form extends React.Component {
 	constructor() {
@@ -10,17 +10,18 @@ export default class Form extends React.Component {
 	}
 
 	handleSubmit(e) {
-		e.preventDefault();
-		NotificationManager.success('Success', '');
-		this.context.router.replace('/devices');
+		e.preventDefault()
+		NotificationManager.success('Success', '')
+		this.context.router.replace('/devices')
 	}
 
 	render() {
-		var deviceName = ""
-		var deviceId   = ""
-		if (this.props.data != undefined) {
-			deviceName = this.props.data.name
+		var deviceName = ''
+		var deviceId   = ''
+
+		if (this.props.data) {
 			deviceId   = this.props.data.deviceId
+			deviceName = this.props.data.name
 		}
 
 		return (
@@ -51,6 +52,13 @@ export default class Form extends React.Component {
 	}
 }
 
+Form.propTypes = {
+	data: React.PropTypes.shape({
+		deviceId: React.PropTypes.number.isRequired,
+		name: React.PropTypes.string.isRequired
+	}).isRequired,
+	submit: React.PropTypes.string.isRequired
+}
 Form.contextTypes = {
 	router: React.PropTypes.object.isRequired
 }

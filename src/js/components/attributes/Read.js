@@ -1,7 +1,6 @@
 import React from 'react'
 
-import Title from '../Title';
-import Table from '../table/Table'
+import Title from '../Title'
 
 export default class Read extends React.Component {
 	render() {
