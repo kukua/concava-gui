@@ -1,6 +1,8 @@
 import React from 'react'
 import Title from '../Title'
 //import { Link } from 'react-router'
+//
+import AttributeList from '../../containers/AttributeList'
 
 export default class Update extends React.Component {
 	handleSubmit(e) {
@@ -11,7 +13,7 @@ export default class Update extends React.Component {
 		return (
 			<div class="row">
 				<div class="col-sm-12">
-					<Title title="Device attributes" link='Cancel'/>
+					<Title title="Device attributes" button='Cancel'/>
 
 					<div class="row">
 						<div class="col-sm-4">
@@ -59,24 +61,7 @@ export default class Update extends React.Component {
 							<div class="panel panel-default">
 								<div class="panel-heading">Attributes</div>
 								<div class="panel-body">
-									<table class="table">
-										<tbody>
-											<tr>
-												<td>0</td>
-												<td>Temperature</td>
-												<td>uint32le</td>
-												<td>Value / 10</td>
-												<td>Min: -50; Max: 50</td>
-											</tr>
-											<tr>
-												<td>1</td>
-												<td>Humidity</td>
-												<td>uint16le</td>
-												<td>Value / 10</td>
-												<td>Min: 0; Max: 1000</td>
-											</tr>
-										</tbody>
-									</table>
+									<AttributeList />
 								</div>
 							</div>
 						</div>

@@ -23,7 +23,7 @@ export default class Title extends React.Component {
 			<div>
 				<div class="row">
 					<div class="col-sm-2">
-						{this.getBackButton(this.props.link)}
+						{this.getBackButton(this.props.button)}
 					</div>
 					<div class="col-sm-8">
 						<h3>
@@ -39,7 +39,7 @@ export default class Title extends React.Component {
 }
 
 Title.propTypes = {
-	link: React.PropTypes.string,
+	button: React.PropTypes.string,
 	title: React.PropTypes.string.isRequired,
 	subtitle: React.PropTypes.string
 

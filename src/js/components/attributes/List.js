@@ -2,38 +2,39 @@ import React from 'react'
 import { Link } from 'react-router'
 import _ from 'underscore'
 
-import Title from '../Title'
-
 export default class List extends React.Component {
 	componentWillMount () {
 		this.props.onFetch()
 	}
+
+
 	render () {
 		return (
 			<div class="row">
-				<div class="col-sm-offset-2 col-sm-8">
-					<Title title="My devices" />
+				<div class="col-sm-12">
 					<table class="table table-striped">
 						<thead>
 							<tr>
-								<th>Name</th>
-								<th width="140px">Actions</th>
+								<th>id</th>
+								<th>name</th>
+								<th>convert</th>
+								<th>calibrate</th>
+								<th>validate</th>
 							</tr>
 						</thead>
+
 						<tbody>
 							{ ! this.props.isFetching ? _.map(this.props.items, (item) => (
-								<tr key={item.id}>
-									<td>{item.name}</td>
-									<td width="140px">
-										<Link to={{ pathname: "/devices/update/" + item.id }}>Edit</Link>
-										&nbsp;|&nbsp;
-										<Link to={{ pathname: "/devices/delete/" + item.id }}>Delete</Link>
-									</td>
+								<tr key={ item.id }>
+									<td>{ item.id }</td>
+									<td>{ item.name }</td>
+									<td>{ item.convert }</td>
+									<td>{ item.calibrate }</td>
+									<td>{ item.validate }</td>
 								</tr>
-							)) : <tr><td colSpan="2">Loading…</td></tr>}
+							)) : <tr><td colSpan="5">Loading…</td></tr>}
 						</tbody>
 					</table>
-					<Link to="/devices/create" class="btn btn-primary pull-right">Add device</Link>
 				</div>
 			</div>
 		)
