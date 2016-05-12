@@ -1,6 +1,6 @@
 import React from 'react'
-import Title from '../Title';
 import { Link } from 'react-router'
+import Title from '../Title';
 import Form from './Form'
 
 export default class Create extends React.Component {
