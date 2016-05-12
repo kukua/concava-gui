@@ -1,41 +1,77 @@
 import React from 'react'
-import { Link } from 'react-router'
-import _ from 'underscore'
+import Reorder from 'react-reorder'
+
+var ListItem = React.createClass({
+	render: function () {
+		return React.createElement('div', {
+			className: 'inner',
+			style: {
+				color: this.props.item.color
+			}
+		}, this.props.sharedProps ? this.props.sharedProps.prefix : undefined,
+			<ul class="list-inline list-hover">
+				<li>{ this.props.item.id }</li>
+				<li>{ this.props.item.name }</li>
+				<li>{ this.props.item.convert }</li>
+				<li>{ this.props.item.calibrate }</li>
+				<li>{ this.props.item.validate }</li>
+			</ul>
+		)
+	}
+})
 
 export default class List extends React.Component {
+	constructor() {
+		super()
+		this.state = {
+			selected: ''
+		}
+	}
 	componentWillMount () {
 		this.props.onFetch()
 	}
+	callback (event, item, index, newIndex, list) {
+		console.log(list)
+	}
+	itemClicked (event, item) {
+		this.setState({
+			clickedItem: item === this.state.clickedItem ? undefined : item
+		})
+	}
+	itemClicked2 (event, item) {
+		this.setState({clickedItem2: item})
+	}
+	disableToggled () {
+		this.setState({disableReorder: !this.state.disableReorder})
+	}
 
-
+	prefixChanged (event) {
+		var target = event.currentTarget
+		this.setState({prefix: target.value})
+	}
 	render () {
+		if (this.props != undefined) {
+			if ( ! this.props.isFetching) {
+				return (
+					<Reorder
+						itemKey='name'
+						lock='horizontal'
+						holdTime='0'
+						list={this.props.items}
+						template={ListItem}
+						callback={this.callback.bind(this)}
+						listClass='my-list'
+						itemClass='list-item'
+						itemClicked={this.itemClicked.bind(this)}
+						selected={this.state.selected}
+						selectedKey='uuid'
+						disableReorder={false}/>
+				)
+			}
+		}
 		return (
-			<div class="row">
-				<div class="col-sm-12">
-					<table class="table table-striped">
-						<thead>
-							<tr>
-								<th>id</th>
-								<th>name</th>
-								<th>convert</th>
-								<th>calibrate</th>
-								<th>validate</th>
-							</tr>
-						</thead>
-
-						<tbody>
-							{ ! this.props.isFetching ? _.map(this.props.items, (item) => (
-								<tr key={ item.id }>
-									<td>{ item.id }</td>
-									<td>{ item.name }</td>
-									<td>{ item.convert }</td>
-									<td>{ item.calibrate }</td>
-									<td>{ item.validate }</td>
-								</tr>
-							)) : <tr><td colSpan="5">Loading…</td></tr>}
-						</tbody>
-					</table>
-				</div>
+			<div>
+				Loading...
 			</div>
 		)
 	}

@@ -25,9 +25,9 @@ export default class List extends React.Component {
 								<tr key={item.id}>
 									<td>{item.name}</td>
 									<td width="140px">
-										<Link to={{ pathname: "/devices/update/" + item.id }}>Edit</Link>
+										<Link to={{ pathname: '/devices/update/' + item.id }}>Edit</Link>
 										&nbsp;|&nbsp;
-										<Link to={{ pathname: "/devices/delete/" + item.id }}>Delete</Link>
+										<Link to={{ pathname: '/devices/delete/' + item.id }}>Delete</Link>
 									</td>
 								</tr>
 							)) : <tr><td colSpan="2">Loading…</td></tr>}
