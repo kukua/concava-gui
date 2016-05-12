@@ -1,9 +1,16 @@
-import React	from 'react'
-import ReactDOM from 'react-dom'
-import Routing	from './controller/Routes'
+import React from 'react'
+import { render } from 'react-dom'
+import { Provider } from 'react-redux'
+import { createStore, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
+import reducers from './reducers'
+import Router from './components/Router'
 
-const app = document.getElementById('app')
+let store = createStore(reducers, applyMiddleware(thunk))
 
-ReactDOM.render(
-	Routing,
-app)
+render(
+	<Provider store={store}>
+		{Router}
+	</Provider>,
+	document.getElementById('app')
+)

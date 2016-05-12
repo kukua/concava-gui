@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Title from '../Title';
-import Table from '../Table/Table'
+import Table from '../table/Table'
 
 export default class Read extends React.Component {
 	render() {
@@ -38,7 +38,7 @@ export default class Read extends React.Component {
 							<div class="panel panel-default">
 								<div class="panel-heading">Order</div>
 								<div class="panel-body">
-									
+
 								</div>
 							</div>
 						</div>

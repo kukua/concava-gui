@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Title from '../Title';
-import Table from '../Table/Table'
+import Table from '../table/Table'
 
 export default class Create extends React.Component {
 

@@ -2,17 +2,13 @@ import React from 'react'
 import { Router, Route, IndexRedirect, hashHistory } from 'react-router'
 
 /* Default views */
-import Layout  from '../view/Layout/Master'
-import NoMatch from '../view/NoMatch'
-import AuthLogin from '../view/Auth/Login'
+import Layout  from './layout/Master'
+import NoMatch from './NoMatch'
+import AuthLogin from './auth/Login'
 
-import Device from '../view/Devices/Create'
-import DeviceUpdate from '../view/Devices/Update'
-import DeviceList from '../view/Devices/List'
-
-//import Attribute from '../view/Attributes/Create'
-//import AttributeRead from '../view/Attributes/Read'
-//import AttributeUpdate from '../view/Attributes/Update'
+import Device from './devices/Create'
+import DeviceUpdate from './devices/Update'
+import DeviceList from '../containers/DeviceList'
 
 function requireAuthentication(nextState, replace) {
 	if (localStorage.token != 'true') {
@@ -22,7 +18,7 @@ function requireAuthentication(nextState, replace) {
 
 function isAuthenticated(nextState, replace) {
 	if (localStorage.token == 'true') {
-		replace("/")
+		replace('/')
 	}
 }
 
@@ -37,7 +33,7 @@ export default (
 			<Route path="devices/create" component={Device} onEnter={requireAuthentication} />
 			<Route path="devices/update/:id" component={DeviceUpdate} onEnter={requireAuthentication} />
 
-			<Route path="*" component={NoMatch}/>
+			<Route path="*" component={NoMatch} />
 		</Route>
 	</Router>
-);
+)
