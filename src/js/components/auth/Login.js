@@ -34,7 +34,6 @@ export default class Login extends React.Component {
 							<label class="col-sm-offset-1 col-sm-3 control-label"></label>
 							<div class="col-sm-6">
 								<button type="submit" class="btn btn-success pull-left">Login</button>
-								<button type="button" class="btn btn-link pull-right">Forgot password</button>
 							</div>
 						</div>
 					</form>

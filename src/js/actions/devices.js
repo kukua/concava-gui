@@ -11,7 +11,7 @@ export default {
 					{ id: 2, name: 'Device 2' },
 				]
 				dispatch({ type: 'FETCHED_DEVICES', items })
-			}, 2000)
+			}, 1000)
 		}
 	},
 	fetch (id) {
@@ -21,7 +21,7 @@ export default {
 			setTimeout(() => {
 				let item = { id, name: 'Device ' + id }
 				dispatch({ type: 'FETCHED_DEVICE', item })
-			}, 2000)
+			}, 500)
 		}
 	}
 }
