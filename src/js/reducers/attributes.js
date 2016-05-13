@@ -9,6 +9,15 @@ export default (state = {}, action) => {
 			isFetching: false,
 			items: action.items
 		})
+	case 'CREATE_DEVICE_ATTR':
+		return Object.assign({}, state, {
+			isCreating: true
+		})
+	case 'CREATED_DEVICE_ATTR':
+		return Object.assign({}, state, {
+			isCreating: false,
+			items: action.items
+		})
 	default:
 		return state
 	}
