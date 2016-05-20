@@ -1,5 +1,7 @@
 import React from 'react'
 import { NotificationManager } from 'react-notifications'
+import { Link } from 'react-router'
+import request from 'request'
 
 import Title from '../Title'
 
@@ -7,9 +9,28 @@ export default class Login extends React.Component {
 
 	handleLogin(e) {
 		e.preventDefault()
-		localStorage.token = 'true'
-		NotificationManager.success('Successfully logged in', 'Welcome')
-		this.context.router.replace('/')
+
+		var form = e.target;
+		var formData = form.email.value + ':' + form.password.value
+
+		var buff = new Buffer(formData).toString('base64')
+		var self = this
+		request.get({
+			url: 'http://demo.kukua.tech/users/login',
+			headers: {
+				'Authorization': 'Basic ' + buff
+			},
+			json: true
+		}, function callback(err, httpResponse, body) {
+			if (httpResponse.statusCode != '200') {
+				localStorage.clear()
+				NotificationManager.error(body.message, 'Whoops!')
+				return
+			} else {
+				localStorage.token = body.token
+				self.context.router.replace('/')
+			}
+		})
 	}
 
 	render() {
@@ -34,6 +55,7 @@ export default class Login extends React.Component {
 							<label class="col-sm-offset-1 col-sm-3 control-label"></label>
 							<div class="col-sm-6">
 								<button type="submit" class="btn btn-success pull-left">Login</button>
+								<Link to="/auth/register" class="btn btn-link pull-right">Register</Link>
 							</div>
 						</div>
 					</form>

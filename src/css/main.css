@@ -21,6 +21,7 @@ ul.list-hover:hover {
 	background-color: rgba(255,255,255,0.1);
 }
 
+/*
 input.form-control, select.form-control {
 	color: #fff;
 	background: #222;
@@ -47,3 +48,4 @@ select.form-control option:not(:checked) {
 	background: #222;
     color:#FFF;
 }
+*/

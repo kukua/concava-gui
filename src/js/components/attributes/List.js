@@ -1,5 +1,6 @@
 import React from 'react'
 import Reorder from 'react-reorder'
+import { Link } from 'react-router'
 
 var ListItem = React.createClass({
 	render: function () {
@@ -12,6 +13,10 @@ var ListItem = React.createClass({
 				<li>{ this.props.item.convert }</li>
 				<li>{ this.props.item.calibrate }</li>
 				<li>{ this.props.item.validate }</li>
+				<li>{ this.props.item.validate }</li>
+				<li class="pull-right">
+					<Link to={{ pathname: '/attribute/update/' + this.props.item.id }}>Edit</Link>
+				</li>
 			</ul>
 		)
 	},
@@ -125,7 +130,7 @@ export default class List extends React.Component {
 										<Reorder
 											itemKey='name'
 											lock='horizontal'
-											holdTime='0'
+											holdTime='150'
 											list={this.props.items}
 											template={ListItem}
 											callback={this.callback.bind(this)}

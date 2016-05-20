@@ -1,17 +1,27 @@
 //import request from 'request'
+import request from 'request'
+import { NotificationManager } from 'react-notifications'
 
 export default {
 	fetchAll () {
 		return (dispatch) => {
 			dispatch({ type: 'FETCH_DEVICES' })
 
-			setTimeout(() => {
-				let items = [
-					{ id: 1, name: 'Device 1' },
-					{ id: 2, name: 'Device 2' },
-				]
-				dispatch({ type: 'FETCHED_DEVICES', items })
-			}, 1000)
+			request.get({
+				url: 'http://demo.kukua.tech/devices',
+				accept: 'application/json',
+				headers: {
+					'Authorization': 'Token ' + localStorage.token
+				},
+				json: true
+			}, function callback(err, httpResponse, body) {
+				if (httpResponse.statusCode != '200') {
+					NotificationManager.error(body.message, 'Whoops!')
+					return
+				} else {
+					dispatch({ type: 'FETCHED_DEVICES', items })
+				}
+			})
 		}
 	},
 	fetch (id) {
