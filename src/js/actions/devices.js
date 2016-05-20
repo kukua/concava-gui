@@ -19,7 +19,7 @@ export default {
 					NotificationManager.error(body.message, 'Whoops!')
 					return
 				} else {
-					dispatch({ type: 'FETCHED_DEVICES', items })
+					dispatch({ type: 'FETCHED_DEVICES', body })
 				}
 			})
 		}

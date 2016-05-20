@@ -8,7 +8,7 @@ export default class Register extends React.Component {
 	handleRegister(e) {
 		e.preventDefault()
 
-		var form = e.target;
+		var form = e.target
 		var formData = {
 			name: form.name.value,
 			email: form.email.value,

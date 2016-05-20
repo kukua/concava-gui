@@ -2,7 +2,6 @@ import React from 'react'
 import { NotificationManager } from 'react-notifications'
 import { Link } from 'react-router'
 import request from 'request'
-
 import Title from '../Title'
 
 export default class Login extends React.Component {
@@ -10,7 +9,7 @@ export default class Login extends React.Component {
 	handleLogin(e) {
 		e.preventDefault()
 
-		var form = e.target;
+		var form = e.target
 		var formData = form.email.value + ':' + form.password.value
 
 		var buff = new Buffer(formData).toString('base64')

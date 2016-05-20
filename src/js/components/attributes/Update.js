@@ -61,3 +61,7 @@ export default class Update extends React.Component {
 		)
 	}
 }
+
+Update.propTypes = {
+	params: React.PropTypes.array.isRequired
+}

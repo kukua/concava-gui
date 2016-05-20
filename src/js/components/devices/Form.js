@@ -1,18 +1,44 @@
 import React from 'react'
 import { Link } from 'react-router'
 import { NotificationManager } from 'react-notifications'
-
-//import Title from '../Title'
+import request from 'request'
 
 export default class Form extends React.Component {
-	constructor() {
-		super()
-	}
 
 	handleSubmit(e) {
 		e.preventDefault()
-		NotificationManager.success('Success', '')
-		this.context.router.replace('/devices')
+
+		var form = e.target
+		var formData = {
+			template_id: 1,
+			name: form.name.value,
+			udid: form.deviceId.value
+		}
+
+		var self = this
+		request.post({
+			url: 'http://demo.kukua.tech/devices',
+			accept: 'application/json',
+			body: formData,
+			headers: {
+				'Authorization': 'Token ' + localStorage.token
+			},
+			json: true
+		}, function callback(err, httpResponse, body) {
+			if (httpResponse.statusCode != '200') {
+				if (body.messages) {
+					var error = 'Double check the input fields'
+				} else {
+					var error = body.message
+				}
+
+				NotificationManager.error(error, 'Whoops!')
+				return
+			} else {
+				NotificationManager.success('Device created', 'Success')
+				self.context.router.replace('/devices')
+			}
+		})
 	}
 
 	render() {
@@ -26,17 +52,17 @@ export default class Form extends React.Component {
 
 		return (
 			<div>
-				<form class='form form-horizontal' onSubmit={this.handleSubmit.bind(this)} >
+				<form class='form form-horizontal' onSubmit={this.handleSubmit.bind(this)} method="post" >
 					<div class='form-group'>
-						<label class='col-sm-offset-1 col-sm-3 control-label' for='email'>Name</label>
+						<label class='col-sm-offset-1 col-sm-3 control-label' for='name'>Name</label>
 						<div class='col-sm-6'>
 							<input type='text' id='name' name='name' class='form-control' defaultValue={deviceName} />
 						</div>
 					</div>
 					<div class='form-group'>
-						<label class='col-sm-offset-1 col-sm-3 control-label' for='email'>Device ID</label>
+						<label class='col-sm-offset-1 col-sm-3 control-label' for='deviceId'>Device ID</label>
 						<div class='col-sm-6'>
-							<input type='text' id='deviceId' name='email' class='form-control' defaultValue={deviceId}/>
+							<input type='text' id='deviceId' name='deviceId' class='form-control' defaultValue={deviceId}/>
 						</div>
 					</div>
 					<div class="form-group">
@@ -56,7 +82,7 @@ Form.propTypes = {
 	data: React.PropTypes.shape({
 		deviceId: React.PropTypes.number.isRequired,
 		name: React.PropTypes.string.isRequired
-	}).isRequired,
+	}),
 	submit: React.PropTypes.string.isRequired
 }
 Form.contextTypes = {

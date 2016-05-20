@@ -42,5 +42,4 @@ Title.propTypes = {
 	button: React.PropTypes.string,
 	title: React.PropTypes.string.isRequired,
 	subtitle: React.PropTypes.string
-
 }
