@@ -1,58 +1,96 @@
 import request from 'request'
-import { NotificationManager } from 'react-notifications'
+import notify from '../lib/notify'
 
 export default {
-	fetchAll(id) {
+	fetchByDeviceId (id) {
 		return (dispatch) => {
-			dispatch({ type: 'FETCH_DEVICE_ATTR'})
+			dispatch({ type: 'FETCH_ATTRIBUTES' })
 
-			request.get({
-				url: 'http://demo.kukua.tech/devices\?filter\=udid:' + id + '\&include\=template.attributes.converters,template.attributes.calibrators,template.attributes.validators',
-				accept: 'application/json',
+			request({
+				url: 'http://demo.kukua.tech/devices?filter=udid:' + id + '&include=template.attributes.converters,template.attributes.calibrators,template.attributes.validators',
 				headers: {
 					'Authorization': 'Token ' + localStorage.token
 				},
 				json: true
-			}, function callback(err, httpResponse, data) {
-				if (httpResponse.statusCode != '200') {
-					NotificationManager.error(data.message, 'Whoops!')
-					return
-				} else {
-					dispatch({ type: 'FETCHED_DEVICE_ATTR', device: data[0]})
-				}
+			}, (err, httpResponse, data) => {
+				if (httpResponse.statusCode != 200) return notify.error(data)
+
+				dispatch({ type: 'FETCHED_ATTRIBUTES', items: data[0].template.attributes })
 			})
 		}
 	},
 
-	create(data) {
+	fetch (id) {
 		return (dispatch) => {
-			dispatch({ type: 'CREATE_DEVICE_ATTR'})
+			dispatch({ type: 'FETCH_ATTRIBUTE', id })
+
+			request({
+				url: 'http://demo.kukua.tech/attributes/' + id,
+				headers: {
+					'Authorization': 'Token ' + localStorage.token
+				},
+				json: true
+			}, (err, httpResponse, data) => {
+				if (httpResponse.statusCode != 200) return notify.error(data)
+
+				dispatch({ type: 'FETCHED_ATTRIBUTE', item: data })
+			})
+		}
+	},
+
+	create (data) {
+		return (dispatch) => {
+			dispatch({ type: 'CREATE_ATTRIBUTE' })
 
 			request.post({
 				url: 'http://demo.kukua.tech/attributes',
-				accept: 'application/json',
 				body: data,
 				headers: {
 					'Authorization': 'Token ' + localStorage.token
 				},
 				json: true
-			}, function callback(err, httpResponse, data) {
-				if (httpResponse.statusCode != '200') {
-					NotificationManager.error(data.message, 'Whoops!')
-					return
-				} else {
-					dispatch({ type: 'CREATED_DEVICE_ATTR' })
-				}
+			}, (err, httpResponse, data) => {
+				if (httpResponse.statusCode != 200) return notify.error(data)
+
+				dispatch({ type: 'CREATED_ATTRIBUTE', item: data })
 			})
 		}
 	},
 
-	update(data) {
+	update (data) {
 		return (dispatch) => {
-			dispatch({ type: 'UPDATE_ATTR'})
+			dispatch({ type: 'UPDATE_ATTRIBUTE' })
 
-			//ajax result
-			dispatch({ type: 'UPDATED_ATTR' })
+			request.put({
+				url: 'http://demo.kukua.tech/attributes/' + data.id,
+				body: data,
+				headers: {
+					'Authorization': 'Token ' + localStorage.token
+				},
+				json: true
+			}, (err, httpResponse, data) => {
+				if (httpResponse.statusCode != 200) return notify.error(data)
+
+				dispatch({ type: 'UPDATED_ATTRIBUTE', item: data })
+			})
 		}
-	}
+	},
+
+	delete (id) {
+		return (dispatch) => {
+			dispatch({ type: 'DELETE_ATTRIBUTE' })
+
+			request.delete({
+				url: 'http://demo.kukua.tech/attributes/' + id,
+				headers: {
+					'Authorization': 'Token ' + localStorage.token
+				},
+				json: true
+			}, (err, httpResponse, data) => {
+				if (httpResponse.statusCode != 200) return notify.error(data)
+
+				dispatch({ type: 'DELETED_ATTRIBUTE', item: data })
+			})
+		}
+	},
 }

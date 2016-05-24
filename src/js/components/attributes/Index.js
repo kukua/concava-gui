@@ -1,26 +1,27 @@
 import React from 'react'
+import _ from 'underscore'
 import Reorder from 'react-reorder'
 import { Link } from 'react-router'
-import _ from 'underscore'
 
-var ListItem = React.createClass({
-	render: function () {
-		var attr = this.props.item
-		var sharedProps = this.props.sharedProps
+export class Item extends React.Component {
+	render () {
+		var { item, sharedProps } = this.props.item
+
 		console.log(sharedProps)
+
 		return (
 			<div class="inner" prefix={sharedProps ? sharedProps.prefix : undefined}>
 				<ul class="list-inline list-hover">
 					{
-						<li key={ attr.id } style={{ display: 'block' }}>
-							<table class='table' style={{ marginBottom: 0 }}>
+						<li key={ item.id } style={{ display: 'block' }}>
+							<table class="table" style={{ marginBottom: 0 }}>
 								<tbody>
 									<tr>
-										<td style={{ width: 15 + '%' }}>#{ attr.order } { attr.name }</td>
-										<td style={{ width: 15 + '%' }}>{ ! _.isEmpty(attr.converters) && attr.converters[0].type }</td>
-										<td style={{ width: 30 + '%' }}>{ ! _.isEmpty(attr.calibrators) && attr.calibrators[0].fn }</td>
-										<td style={{ width: 30 + '%' }}>{ ! _.isEmpty(attr.validators) && _.map(attr.validators, (validator) => { return `${validator.type}=${validator.value}` }).join(', ') }</td>
-										<td style={{ width: 10 + '%' }}><Link to={{ pathname: '/attribute/update/' + attr.id + '/' + sharedProps.udid }}>Edit</Link></td>
+										<td style={{ width: 15 + '%' }}>#{ item.order } { item.name }</td>
+										<td style={{ width: 15 + '%' }}>{ ! _.isEmpty(item.converters) && item.converters[0].type }</td>
+										<td style={{ width: 30 + '%' }}>{ ! _.isEmpty(item.calibrators) && item.calibrators[0].fn }</td>
+										<td style={{ width: 30 + '%' }}>{ ! _.isEmpty(item.validators) && _.map(item.validators, (validator) => { return `${validator.type}=${validator.value}` }).join(', ') }</td>
+										<td style={{ width: 10 + '%' }}><Link to={{ pathname: '/attributes/update/' + item.id + '/' + sharedProps.udid }}>Edit</Link></td>
 									</tr>
 								</tbody>
 							</table>
@@ -29,17 +30,19 @@ var ListItem = React.createClass({
 				</ul>
 			</div>
 		)
-	},
-	propTypes: {
-		item: React.PropTypes.object.isRequired,
-		sharedProps: React.PropTypes.object,
-		sharedPropsPrefix: React.PropTypes.string
 	}
-})
+}
 
-export default class List extends React.Component {
+Item.propTypes = {
+	item: React.PropTypes.object.isRequired,
+	sharedProps: React.PropTypes.object,
+	sharedPropsPrefix: React.PropTypes.string
+}
+
+export default class Index extends React.Component {
 	constructor () {
 		super()
+
 		this.state = {
 			selected: ''
 		}
@@ -49,31 +52,31 @@ export default class List extends React.Component {
 		this.props.onFetch(this.props.deviceId)
 	}
 
-	handleSubmit (e) {
-		e.preventDefault()
+	onSubmit (ev) {
+		ev.preventDefault()
 
 		var data = {
-			order: e.target.order.value,
-			template_id: e.target.template_id.value,
-			name: e.target.name.value,
-			converter: e.target.converter.value,
-			calibrator: e.target.calibrator.value,
-			validators: e.target.validator.value
+			order: ev.target.order.value,
+			template_id: ev.target.template_id.value,
+			name: ev.target.name.value,
+			converter: ev.target.converter.value,
+			calibrator: ev.target.calibrator.value,
+			validators: ev.target.validator.value
 		}
 		this.props.onCreate(data, this.props.device.udid)
 	}
 
-	callback (event, item, index, newIndex, list) {
+	callback (ev, item, index, newIndex, list) {
 		console.log(list)
 	}
 
-	itemClicked (event, item) {
+	itemClicked (ev, item) {
 		this.setState({
 			clickedItem: item === this.state.clickedItem ? undefined : item
 		})
 	}
 
-	itemClicked2 (event, item) {
+	itemClicked2 (ev, item) {
 		this.setState({clickedItem2: item})
 	}
 
@@ -81,8 +84,8 @@ export default class List extends React.Component {
 		this.setState({disableReorder: !this.state.disableReorder})
 	}
 
-	prefixChanged (event) {
-		var target = event.currentTarget
+	prefixChanged (ev) {
+		var target = ev.currentTarget
 		this.setState({prefix: target.value})
 	}
 
@@ -90,7 +93,7 @@ export default class List extends React.Component {
 		return (
 			<div class="row">
 				<div class="col-sm-4">
-					<form class="form form-horizontal" method="post" onSubmit={this.handleSubmit.bind(this)}>
+					<form class="form form-horizontal" method="POST" onSubmit={this.onSubmit.bind(this)}>
 						<div class="form-group">
 							<label class="control-label col-sm-2">Name</label>
 							<div class="col-sm-10">
@@ -146,17 +149,17 @@ export default class List extends React.Component {
 								if ( this.props != undefined && this.props.isFetching === false) {
 									return (
 										<Reorder
-											itemKey='name'
-											lock='horizontal'
-											holdTime='200'
+											itemKey="name"
+											lock="horizontal"
+											holdTime="200"
 											list={this.props.device.template.attributes}
-											template={ListItem}
+											template={Item}
 											callback={this.callback.bind(this)}
-											listClass='my-list'
-											itemClass='list-item'
+											listClass="my-list"
+											itemClass="list-item"
 											itemClicked={this.itemClicked.bind(this)}
 											selected={this.state.selected}
-											selectedKey='uuid'
+											selectedKey="uuid"
 											disableReorder={false}
 											sharedProps={ {udid: this.props.device.udid} }
 											/>
@@ -175,9 +178,10 @@ export default class List extends React.Component {
 	}
 }
 
-List.propTypes = {
+Index.propTypes = {
 	onCreate: React.PropTypes.func.isRequired,
 	onFetch: React.PropTypes.func.isRequired,
 	isFetching: React.PropTypes.bool,
-	device: React.PropTypes.object
+	device: React.PropTypes.object,
+	deviceId: React.PropTypes.number
 }

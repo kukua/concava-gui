@@ -1,44 +1,33 @@
 import React from 'react'
-import { NotificationManager } from 'react-notifications'
 import Title from '../Title'
-import request from 'request'
 
 export default class Register extends React.Component {
+	onSubmit (ev) {
+		ev.preventDefault()
 
-	handleRegister(e) {
-		e.preventDefault()
-
-		var form = e.target
-		var formData = {
+		let form = ev.target
+		this.props.onCreate({
 			name: form.name.value,
 			email: form.email.value,
 			password: form.password.value,
 			password_confirmation: form.password_confirmation.value
-		}
-
-		var self = this
-		request.post({
-			url: 'http://demo.kukua.tech/users',
-			body: formData,
-			accept: 'application/json',
-			json: true
-		}, function callback(err, httpResponse, body) {
-			if (err) {
-				localStorage.clear()
-				NotificationManager.error(body.message, 'Whoops!')
-				return
-			}
-			localStorage.token = body.token
-			self.context.router.replace('/')
 		})
+	}
+
+	componentWillReceiveProps (next) {
+		console.log('register receive', next)
+		if ( ! next.isCreating && next.item) {
+			localStorage.token = next.item.token
+			this.context.router.replace('/')
+		}
 	}
 
 	render() {
 		return (
 			<div class="row">
 				<div class="col-sm-offset-2 col-sm-8">
-					<Title title='Register' button="Go back"/>
-					<form class="form form-horizontal" action="" onSubmit={this.handleRegister.bind(this)} method="post">
+					<Title title="Register" button="Go back"/>
+					<form class="form form-horizontal" method="POST" onSubmit={this.onSubmit.bind(this)}>
 						<div class="form-group">
 							<label class="col-sm-offset-1 col-sm-3 control-label" for="name">Name</label>
 							<div class="col-sm-6">
@@ -76,6 +65,10 @@ export default class Register extends React.Component {
 	}
 }
 
+Register.propTypes = {
+	onCreate: React.PropTypes.func.isRequired,
+	isCreating: React.PropTypes.bool.isRequired
+}
 Register.contextTypes = {
 	router: React.PropTypes.object.isRequired
 }

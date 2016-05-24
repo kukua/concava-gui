@@ -1,10 +1,9 @@
 import React from 'react'
 import Title from '../Title'
-import request from 'request'
 
 export default class Update extends React.Component {
-
-	componentWillMount() {
+	componentWillMount () {
+		/*
 		var id = this.props.params.udid
 		var self = this
 		request.get({
@@ -22,12 +21,14 @@ export default class Update extends React.Component {
 				self.setState(data[0])
 			}
 		})
+		*/
 	}
 
-	handleSubmit(e) {
-		e.preventDefault()
+	onSubmit (ev) {
+		ev.preventDefault()
 
-		var form = e.target
+		/*
+		var form = ev.target
 		var formData = {
 			converter: form.converter.value,
 			calibrator: form.calibrator.value,
@@ -51,14 +52,15 @@ export default class Update extends React.Component {
 			console.log(body)
 			//self.context.router.replace('<url>')
 		})
+		*/
 	}
 
 	render () {
 		return (
 			<div class="row">
 				<div class="col-sm-8 col-sm-offset-2">
-					<Title title='Edit attributes' button="Cancel" />
-					<form class="form form-horizontal" method="post" onSubmit={this.handleSubmit.bind(this)}>
+					<Title title="Edit attributes" button="Cancel" />
+					<form class="form form-horizontal" method="POST" onSubmit={this.onSubmit.bind(this)}>
 						<div class="form-group">
 							<label class="control-label col-sm-2">Name</label>
 							<div class="col-sm-10">

@@ -1,93 +1,36 @@
 import React from 'react'
 import { Link } from 'react-router'
-import { NotificationManager } from 'react-notifications'
-import request from 'request'
 
 export default class Form extends React.Component {
+	onSubmit (ev) {
+		ev.preventDefault()
 
-	handleSubmit(e) {
-		e.preventDefault()
-
-		var form = e.target
-		var formData = {
-			template_id: null,
+		let form = ev.target
+		let data = {
 			name: form.name.value,
 			udid: form.deviceId.value
 		}
-
-		var templateData = {
-			name: form.name.value
-		}
-
-		var self = this
-
-		//Create template
-		request.post({
-			url: 'http://demo.kukua.tech/templates',
-			accept: 'application/json',
-			body: templateData,
-			headers: {
-				'Authorization': 'Token ' + localStorage.token
-			},
-			json: true
-		}, function callback(err, httpResponse, data) {
-			if (httpResponse.statusCode != '200') {
-				NotificationManager.error(data.message, 'Whoops!')
-				return
-			} else {
-
-				//Create device
-				formData.template_id = data.id
-				request.post({
-					url: 'http://demo.kukua.tech/devices',
-					accept: 'application/json',
-					body: formData,
-					headers: {
-						'Authorization': 'Token ' + localStorage.token
-					},
-					json: true
-				}, function callback(err, httpResponse, body) {
-					if (httpResponse.statusCode != '200') {
-						var error = ''
-						if (body.messages) {
-							error = 'Double check the input fields'
-						} else {
-							error = body.message
-						}
-
-						NotificationManager.error(error, 'Whoops!')
-						return
-					} else {
-						NotificationManager.success('Device created', 'Success')
-						self.context.router.replace('/devices')
-					}
-				})
-			}
-		})
+		console.log(data)
+		//notify.created('device')
+		//this.context.router.replace('/devices')
 	}
 
-	render() {
-		var deviceName = ''
-		var deviceId   = ''
-
-		if (this.props.data) {
-			deviceId   = this.props.data.deviceId
-			deviceName = this.props.data.name
-		}
+	render () {
+		let data = (this.props.data || {})
 
 		return (
 			<div>
-				<form class='form form-horizontal' onSubmit={this.handleSubmit.bind(this)} method="post" >
-					<div class='form-group'>
-						<label class='col-sm-offset-1 col-sm-3 control-label' for='name'>Name</label>
-						<div class='col-sm-6'>
-							<input type='text' id='name' name='name' class='form-control' defaultValue={deviceName} />
+				<form class="form form-horizontal" method="POST" onSubmit={this.onSubmit.bind(this)}>
+					<div class="form-group">
+						<label class="col-sm-offset-1 col-sm-3 control-label" for="name">Name</label>
+						<div class="col-sm-6">
+							<input type="text" id="name" name="name" class="form-control" value={data.deviceName || ''} />
 						</div>
 					</div>
-					<div class='form-group'>
-						<label class='col-sm-offset-1 col-sm-3 control-label' for='deviceId'>Device ID</label>
-						<div class='col-sm-6'>
-							<input type='text' id='deviceId' name='deviceId' class='form-control' defaultValue={deviceId}/>
+					<div class="form-group">
+						<label class="col-sm-offset-1 col-sm-3 control-label" for="deviceId">Device ID</label>
+						<div class="col-sm-6">
+							<input type="text" id="deviceId" name="deviceId" class="form-control" value={data.deviceId || ''}/>
 						</div>
 					</div>
 					<div class="form-group">

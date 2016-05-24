@@ -1,6 +1,6 @@
 import React from 'react'
 
-class NoMatch extends React.Component {
+export default class NoMatch extends React.Component {
 	render () {
 		return (
 			<div>
@@ -10,5 +10,3 @@ class NoMatch extends React.Component {
 		)
 	}
 }
-
-export default NoMatch

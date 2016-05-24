@@ -1,46 +1,54 @@
 import React from 'react'
 import { Router, Route, IndexRedirect, hashHistory } from 'react-router'
 
-/* Default views */
-import Layout  from './layout/Master'
+import Layout from './layout/Master'
 import NoMatch from './NoMatch'
-import AuthLogin from './auth/Login'
-import AuthRegister from '../components/auth/Register'
 
-import Device from './devices/Create'
-import DeviceUpdate from './devices/Update'
-import DeviceList from '../containers/DeviceList'
+import UserLogin from '../containers/users/Login'
+import UserRegister from '../containers/users/Register'
 
-import AttributeUpdate from '../components/attributes/Update'
+import DeviceIndex from '../containers/devices/Index'
+/*
+import DeviceCreate from '../containers/devices/Create'
+import DeviceUpdate from '../containers/devices/Update'
+import DeviceDelete from '../containers/devices/Delete'
 
-function requireAuthentication(nextState, replace) {
-	if (localStorage.token == undefined) {
-		replace('/auth/login')
-	}
+import AttributeIndex from '../containers/attributes/Index'
+import AttributeCreate from '../containers/attributes/Create'
+import AttributeUpdate from '../containers/attributes/Update'
+import AttributeDelete from '../containers/attributes/Delete'
+*/
+
+function requireAuthentication (nextState, replace) {
+	if ( ! localStorage.token) replace('/users/login')
 }
 
-function isAuthenticated(nextState, replace) {
-	if (localStorage.token != undefined) {
-		replace('/')
-	}
+function isAuthenticated (nextState, replace) {
+	if (localStorage.token) replace('/')
 }
 
 export default (
 	<Router history={hashHistory}>
 		<Route path="/" component={Layout}>
 			<IndexRedirect to="/devices" />
-			<Route path="auth/login" component={AuthLogin} onEnter={isAuthenticated} />
-			<Route path="auth/register" component={AuthRegister} onEnter={isAuthenticated} />
+			<Route path="users/login" component={UserLogin} onEnter={isAuthenticated} />
+			<Route path="users/register" component={UserRegister} onEnter={isAuthenticated} />
 
-			/* Device CRUD */
-			<Route path="devices" component={DeviceList} onEnter={requireAuthentication} />
-			<Route path="devices/create" component={Device} onEnter={requireAuthentication} />
-			<Route path="devices/update/:id" component={DeviceUpdate} onEnter={requireAuthentication} />
-
-			/* Attribute update */
-			<Route path="attribute/update/:id/:udid" component={AttributeUpdate} onEnter={requireAuthentication} />
+			// Device CRUD
+			<Route path="devices" component={DeviceIndex} onEnter={requireAuthentication} />
 
 			<Route path="*" component={NoMatch} />
 		</Route>
 	</Router>
 )
+			/*
+			<Route path="devices/create" component={DeviceCreate} onEnter={requireAuthentication} />
+			<Route path="devices/update/:id" component={DeviceUpdate} onEnter={requireAuthentication} />
+			<Route path="devices/delete/:id" component={DeviceDelete} onEnter={requireAuthentication} />
+
+			// Attribute CRUD
+			<Route path="attributes" component={AttributeUpdate} onEnter={requireAuthentication} />
+			<Route path="attributes/create" component={AttributeUpdate} onEnter={requireAuthentication} />
+			<Route path="attributes/update/:id" component={AttributeUpdate} onEnter={requireAuthentication} />
+			<Route path="attributes/delete/:id" component={AttributeDelete} onEnter={requireAuthentication} />
+			*/
