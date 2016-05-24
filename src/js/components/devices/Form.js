@@ -10,33 +10,58 @@ export default class Form extends React.Component {
 
 		var form = e.target
 		var formData = {
-			template_id: 1,
+			template_id: null,
 			name: form.name.value,
 			udid: form.deviceId.value
 		}
 
+		var templateData = {
+			name: form.name.value
+		}
+
 		var self = this
+
+		//Create template
 		request.post({
-			url: 'http://demo.kukua.tech/devices',
+			url: 'http://demo.kukua.tech/templates',
 			accept: 'application/json',
-			body: formData,
+			body: templateData,
 			headers: {
 				'Authorization': 'Token ' + localStorage.token
 			},
 			json: true
-		}, function callback(err, httpResponse, body) {
+		}, function callback(err, httpResponse, data) {
 			if (httpResponse.statusCode != '200') {
-				if (body.messages) {
-					var error = 'Double check the input fields'
-				} else {
-					var error = body.message
-				}
-
-				NotificationManager.error(error, 'Whoops!')
+				NotificationManager.error(data.message, 'Whoops!')
 				return
 			} else {
-				NotificationManager.success('Device created', 'Success')
-				self.context.router.replace('/devices')
+
+				//Create device
+				formData.template_id = data.id
+				request.post({
+					url: 'http://demo.kukua.tech/devices',
+					accept: 'application/json',
+					body: formData,
+					headers: {
+						'Authorization': 'Token ' + localStorage.token
+					},
+					json: true
+				}, function callback(err, httpResponse, body) {
+					if (httpResponse.statusCode != '200') {
+						var error = ''
+						if (body.messages) {
+							error = 'Double check the input fields'
+						} else {
+							error = body.message
+						}
+
+						NotificationManager.error(error, 'Whoops!')
+						return
+					} else {
+						NotificationManager.success('Device created', 'Success')
+						self.context.router.replace('/devices')
+					}
+				})
 			}
 		})
 	}

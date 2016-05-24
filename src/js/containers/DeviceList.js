@@ -5,7 +5,7 @@ import deviceActions from '../actions/devices'
 const mapStateToProps = (state) => {
 	return {
 		isFetching: state.devices.isFetching,
-		items: state.devices.items
+		items: state.devices.items,
 	}
 }
 

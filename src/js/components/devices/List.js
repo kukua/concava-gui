@@ -25,9 +25,9 @@ export default class List extends React.Component {
 								<tr key={item.id}>
 									<td>{item.name}</td>
 									<td width="140px">
-										<Link to={{ pathname: '/devices/update/' + item.id }}>Edit</Link>
+										<Link to={{ pathname: '/devices/update/' + item.udid }}>Edit</Link>
 										&nbsp;|&nbsp;
-										<Link to={{ pathname: '/devices/delete/' + item.id }}>Delete</Link>
+										<Link to={{ pathname: '/devices/delete/' + item.udid }}>Delete</Link>
 									</td>
 								</tr>
 							)) : <tr><td colSpan="2">Loading…</td></tr>}
@@ -43,5 +43,5 @@ export default class List extends React.Component {
 List.propTypes = {
 	onFetch: React.PropTypes.func.isRequired,
 	isFetching: React.PropTypes.bool,
-	items: React.PropTypes.array
+	items: React.PropTypes.object
 }

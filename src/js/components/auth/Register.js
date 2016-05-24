@@ -42,13 +42,13 @@ export default class Register extends React.Component {
 						<div class="form-group">
 							<label class="col-sm-offset-1 col-sm-3 control-label" for="name">Name</label>
 							<div class="col-sm-6">
-								<input type="name" id="name" name="name" class="form-control" defaultValue="sbrn"/>
+								<input type="name" id="name" name="name" class="form-control" />
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-offset-1 col-sm-3 control-label" for="email">E-mail address</label>
 							<div class="col-sm-6">
-								<input type="email" id="email" name="email" class="form-control" defaultValue="info@siebrenkranenburg.nl" />
+								<input type="email" id="email" name="email" class="form-control" />
 							</div>
 						</div>
 						<div class="form-group">

@@ -1,18 +1,26 @@
-
-
-let items = [
-	{order: 0, id: 1, name: 'Temperature', convert: 'uint32', calibrate: 'Value / 10', validate: 'Min: -50; Max: 50' },
-	{order: 1, id: 2, name: 'Humidity', convert: 'uint16', calibrate: 'Value / 10', validate: '' },
-	{order: 2, id: 3, name: 'Pressure', convert: 'int32', calibrate: '', validate: '' }
-]
+import request from 'request'
+import { NotificationManager } from 'react-notifications'
 
 export default {
-	fetchAll() {
+	fetchAll(id) {
 		return (dispatch) => {
 			dispatch({ type: 'FETCH_DEVICE_ATTR'})
-			setTimeout(() => {
-				dispatch({ type: 'FETCHED_DEVICE_ATTR', items })
-			}, 500)
+
+			request.get({
+				url: 'http://demo.kukua.tech/devices\?filter\=udid:' + id + '\&include\=template.attributes.converters,template.attributes.calibrators,template.attributes.validators',
+				accept: 'application/json',
+				headers: {
+					'Authorization': 'Token ' + localStorage.token
+				},
+				json: true
+			}, function callback(err, httpResponse, data) {
+				if (httpResponse.statusCode != '200') {
+					NotificationManager.error(data.message, 'Whoops!')
+					return
+				} else {
+					dispatch({ type: 'FETCHED_DEVICE_ATTR', device: data[0]})
+				}
+			})
 		}
 	},
 
@@ -20,10 +28,31 @@ export default {
 		return (dispatch) => {
 			dispatch({ type: 'CREATE_DEVICE_ATTR'})
 
-			setTimeout(() => {
-				items.push(data)
-				dispatch({ type: 'CREATED_DEVICE_ATTR', items })
-			}, 500)
+			request.post({
+				url: 'http://demo.kukua.tech/attributes',
+				accept: 'application/json',
+				body: data,
+				headers: {
+					'Authorization': 'Token ' + localStorage.token
+				},
+				json: true
+			}, function callback(err, httpResponse, data) {
+				if (httpResponse.statusCode != '200') {
+					NotificationManager.error(data.message, 'Whoops!')
+					return
+				} else {
+					dispatch({ type: 'CREATED_DEVICE_ATTR' })
+				}
+			})
+		}
+	},
+
+	update(data) {
+		return (dispatch) => {
+			dispatch({ type: 'UPDATE_ATTR'})
+
+			//ajax result
+			dispatch({ type: 'UPDATED_ATTR' })
 		}
 	}
 }

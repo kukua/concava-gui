@@ -1,28 +1,38 @@
 import React from 'react'
 import Reorder from 'react-reorder'
 import { Link } from 'react-router'
+import _ from 'underscore'
 
 var ListItem = React.createClass({
 	render: function () {
-		return React.createElement('div', {
-			className: 'inner',
-		}, this.props.sharedProps ? this.props.sharedProps.prefix : undefined,
-			<ul class="list-inline list-hover">
-				<li>{ this.props.item.id }</li>
-				<li>{ this.props.item.name }</li>
-				<li>{ this.props.item.convert }</li>
-				<li>{ this.props.item.calibrate }</li>
-				<li>{ this.props.item.validate }</li>
-				<li>{ this.props.item.validate }</li>
-				<li class="pull-right">
-					<Link to={{ pathname: '/attribute/update/' + this.props.item.id }}>Edit</Link>
-				</li>
-			</ul>
+		var attr = this.props.item
+		var sharedProps = this.props.sharedProps
+		console.log(sharedProps)
+		return (
+			<div class="inner" prefix={sharedProps ? sharedProps.prefix : undefined}>
+				<ul class="list-inline list-hover">
+					{
+						<li key={ attr.id } style={{ display: 'block' }}>
+							<table class='table' style={{ marginBottom: 0 }}>
+								<tbody>
+									<tr>
+										<td style={{ width: 15 + '%' }}>#{ attr.order } { attr.name }</td>
+										<td style={{ width: 15 + '%' }}>{ ! _.isEmpty(attr.converters) && attr.converters[0].type }</td>
+										<td style={{ width: 30 + '%' }}>{ ! _.isEmpty(attr.calibrators) && attr.calibrators[0].fn }</td>
+										<td style={{ width: 30 + '%' }}>{ ! _.isEmpty(attr.validators) && _.map(attr.validators, (validator) => { return `${validator.type}=${validator.value}` }).join(', ') }</td>
+										<td style={{ width: 10 + '%' }}><Link to={{ pathname: '/attribute/update/' + attr.id + '/' + sharedProps.udid }}>Edit</Link></td>
+									</tr>
+								</tbody>
+							</table>
+						</li>
+					}
+				</ul>
+			</div>
 		)
 	},
 	propTypes: {
 		item: React.PropTypes.object.isRequired,
-		sharedProps: React.PropTypes.array,
+		sharedProps: React.PropTypes.object,
 		sharedPropsPrefix: React.PropTypes.string
 	}
 })
@@ -36,21 +46,21 @@ export default class List extends React.Component {
 	}
 
 	componentWillMount () {
-		this.props.onFetch()
+		this.props.onFetch(this.props.deviceId)
 	}
 
 	handleSubmit (e) {
 		e.preventDefault()
 
 		var data = {
-			order: null,
-			id: 4,
+			order: e.target.order.value,
+			template_id: e.target.template_id.value,
 			name: e.target.name.value,
-			convert: e.target.convert.value,
-			calibrate: e.target.calibrate.value,
-			validate: e.target.validate.value
+			converter: e.target.converter.value,
+			calibrator: e.target.calibrator.value,
+			validators: e.target.validator.value
 		}
-		this.props.onCreate(data)
+		this.props.onCreate(data, this.props.device.udid)
 	}
 
 	callback (event, item, index, newIndex, list) {
@@ -91,7 +101,7 @@ export default class List extends React.Component {
 						<div class="form-group">
 							<label class="control-label col-sm-2">Convert</label>
 							<div class="col-sm-10">
-								<select class="form-control input-sm" name="convert">
+								<select class="form-control input-sm" name="converter">
 									<option>int8</option>
 									<option>int16le</option>
 									<option>int32le</option>
@@ -103,18 +113,26 @@ export default class List extends React.Component {
 						<div class="form-group">
 							<label class="control-label col-sm-2">Calibrate</label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control input-sm" name="calibrate" placeholder="<optional>" />
+								<input type="text" class="form-control input-sm" name="calibrator" placeholder="<optional>" />
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="control-label col-sm-2">Validate</label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control input-sm" name="validate" placeholder="<optional>" />
+								<input type="text" class="form-control input-sm" name="validator" placeholder="<optional>" />
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="control-label col-sm-2"></label>
 							<div class="col-sm-10">
+								{
+									this.props.device &&
+									<input type="hidden" name="template_id" value={ this.props.device.template_id } />
+								}
+								{
+									this.props.device &&
+									<input type="hidden" name="order" value={ this.props.device.template.attributes.length } />
+								}
 								<button type="submit" class="btn btn-success pull-right">Add attribute</button>
 							</div>
 						</div>
@@ -130,8 +148,8 @@ export default class List extends React.Component {
 										<Reorder
 											itemKey='name'
 											lock='horizontal'
-											holdTime='150'
-											list={this.props.items}
+											holdTime='200'
+											list={this.props.device.template.attributes}
 											template={ListItem}
 											callback={this.callback.bind(this)}
 											listClass='my-list'
@@ -139,7 +157,9 @@ export default class List extends React.Component {
 											itemClicked={this.itemClicked.bind(this)}
 											selected={this.state.selected}
 											selectedKey='uuid'
-											disableReorder={false}/>
+											disableReorder={false}
+											sharedProps={ {udid: this.props.device.udid} }
+											/>
 									)
 								} else {
 									return (
@@ -159,5 +179,5 @@ List.propTypes = {
 	onCreate: React.PropTypes.func.isRequired,
 	onFetch: React.PropTypes.func.isRequired,
 	isFetching: React.PropTypes.bool,
-	items: React.PropTypes.array
+	device: React.PropTypes.object
 }

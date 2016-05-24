@@ -14,12 +14,12 @@ export default {
 					'Authorization': 'Token ' + localStorage.token
 				},
 				json: true
-			}, function callback(err, httpResponse, body) {
+			}, function callback(err, httpResponse, items) {
 				if (httpResponse.statusCode != '200') {
 					NotificationManager.error(body.message, 'Whoops!')
 					return
 				} else {
-					dispatch({ type: 'FETCHED_DEVICES', body })
+					dispatch({ type: 'FETCHED_DEVICES', items })
 				}
 			})
 		}
@@ -28,10 +28,21 @@ export default {
 		return (dispatch) => {
 			dispatch({ type: 'FETCH_DEVICE', id })
 
-			setTimeout(() => {
-				let item = { id, name: 'Device ' + id }
-				dispatch({ type: 'FETCHED_DEVICE', item })
-			}, 500)
+			request.get({
+				url: 'http://demo.kukua.tech/devices/' + id,
+				accept: 'application/json',
+				headers: {
+					'Authorization': 'Token ' + localStorage.token
+				},
+				json: true
+			}, function callback(err, httpResponse, item) {
+				if (httpResponse.statusCode != '200') {
+					NotificationManager.error(body.message, 'Whoops!')
+					return
+				} else {
+					dispatch({ type: 'FETCHED_DEVICE', item })
+				}
+			})
 		}
 	}
 }

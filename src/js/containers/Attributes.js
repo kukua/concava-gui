@@ -1,22 +1,25 @@
 import { connect } from 'react-redux'
-import AttributeList from '../components/attributes/List'
+import attributeList from '../components/attributes/List'
 import attributeActions from '../actions/attributes'
 
 const mapStateToProps = (state) => {
 	return {
 		isCreating: state.attributes.isCreating,
 		isFetching: state.attributes.isFetching,
-		items: state.attributes.items
+		device: state.attributes.device
 	}
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		onFetch () {
-			dispatch(attributeActions.fetchAll())
+		onFetch (id) {
+			dispatch(attributeActions.fetchAll(id))
 		},
 		onCreate(data) {
 			dispatch(attributeActions.create(data))
+		},
+		onUpdate(data) {
+			dispatch(attributeActions.update(data))
 		}
 	}
 }
@@ -24,4 +27,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(AttributeList)
+)(attributeList)

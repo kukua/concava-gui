@@ -38,7 +38,7 @@ export default (
 			<Route path="devices/update/:id" component={DeviceUpdate} onEnter={requireAuthentication} />
 
 			/* Attribute update */
-			<Route path="attribute/update/:id" component={AttributeUpdate} onEnter={requireAuthentication} />
+			<Route path="attribute/update/:id/:udid" component={AttributeUpdate} onEnter={requireAuthentication} />
 
 			<Route path="*" component={NoMatch} />
 		</Route>

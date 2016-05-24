@@ -1,15 +1,56 @@
 import React from 'react'
 import Title from '../Title'
+import request from 'request'
 
 export default class Update extends React.Component {
 
-	componentDidMount() {
-		console.log(this.props.params.id)
+	componentWillMount() {
+		var id = this.props.params.udid
+		var self = this
+		request.get({
+			url: 'http://demo.kukua.tech/devices\?filter\=udid:' + id + '\&include\=template.attributes.converters,template.attributes.calibrators,template.attributes.validators',
+			accept: 'application/json',
+			headers: {
+				'Authorization': 'Token ' + localStorage.token
+			},
+			json: true
+		}, function callback(err, httpResponse, data) {
+			if (httpResponse.statusCode != '200') {
+				NotificationManager.error(data.message, 'Whoops!')
+				return
+			} else {
+				self.setState(data[0])
+			}
+		})
 	}
 
 	handleSubmit(e) {
 		e.preventDefault()
-		console.log('edited')
+
+		var form = e.target
+		var formData = {
+			converter: form.converter.value,
+			calibrator: form.calibrator.value,
+			validator: form.validator.value
+		}
+
+		var self = this
+		request.post({
+			url: 'http://demo.kukua.tech/attributes/' + this.props.params.id,
+			body: formData,
+			accept: 'application/json',
+			headers: {
+				Authorization: 'Token ' + localStorage.token
+			},
+			json: true
+		}, function callback(err, httpResponse, body) {
+			if (err) {
+				NotificationManager.error(body.message, 'Whoops!')
+				return
+			}
+			console.log(body)
+			//self.context.router.replace('<url>')
+		})
 	}
 
 	render () {
@@ -21,14 +62,14 @@ export default class Update extends React.Component {
 						<div class="form-group">
 							<label class="control-label col-sm-2">Name</label>
 							<div class="col-sm-10">
-								<input type="text" name="name" class="form-control input-sm" />
+								<input type="text" name="name" class="form-control input-sm"/>
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="control-label col-sm-2">Convert</label>
+							<label class="control-label col-sm-2">Converter</label>
 							<div class="col-sm-10">
-								<select class="form-control input-sm" name="convert">
+								<select class="form-control input-sm" name="converter">
 									<option>int8</option>
 									<option>int16le</option>
 									<option>int32le</option>
@@ -38,15 +79,15 @@ export default class Update extends React.Component {
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-2">Calibrate</label>
+							<label class="control-label col-sm-2">Calibrator</label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control input-sm" name="calibrate" placeholder="<optional>" />
+								<input type="text" class="form-control input-sm" name="calibrator" placeholder="<optional>" />
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-2">Validate</label>
+							<label class="control-label col-sm-2">Validatorr</label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control input-sm" name="validate" placeholder="<optional>" />
+								<input type="text" class="form-control input-sm" name="validator" placeholder="<optional>" />
 							</div>
 						</div>
 						<div class="form-group">
@@ -63,5 +104,5 @@ export default class Update extends React.Component {
 }
 
 Update.propTypes = {
-	params: React.PropTypes.array.isRequired
+	params: React.PropTypes.object.isRequired
 }
