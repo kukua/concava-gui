@@ -20,7 +20,7 @@
     "gui",
     "manage"
   ],
-  "author": "Kukua Team <info@kukua.cc>",
+  "author": "Kukua Team <dev@kukua.cc>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/kukua/concava-gui/issues"
