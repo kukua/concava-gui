@@ -16,3 +16,9 @@ npm start
 grunt watch
 npm start
 ```
+
+## License
+
+This software is licensed under the [MIT license](https://github.com/kukua/concava-gui/blob/master/LICENSE).
+
+© 2016 Kukua BV
