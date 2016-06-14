@@ -6,16 +6,11 @@ import actions from '../../actions/device'
 
 const mapStateToProps = (state) => {
 	let { loading: isCreating, item } = state.device.create
-	let { loading: isFetching, item: fetchedItem } = state.device.fetch
-	if ( ! item) item = fetchedItem
-	return { isFetching, isCreating, item }
+	return { isCreating, item }
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		onFetch (id) {
-			dispatch(actions.fetch(id))
-		},
 		onCreate (data) {
 			dispatch(actions.create(data))
 		}
@@ -23,16 +18,35 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class Create extends React.Component {
+	onSubmit (data) {
+		this.props.onCreate(data)
+	}
+
+	componentWillReceiveProps (next) {
+		if ( ! next.isCreating && next.item) {
+			this.context.router.replace('/devices/' + next.item.id + '/edit')
+		}
+	}
+
 	render () {
 		return (
 			<div class="row">
 				<div class="col-sm-offset-2 col-sm-8">
-					<Title title="Add device" button="Cancel" />
-					<Form submit="Add" />
+					<Title title="Add device" loading={this.props.isCreating} />
+					<Form item={this.props.item} onSubmit={this.onSubmit.bind(this)} submitLabel="Create" loading={this.props.isCreating} />
 				</div>
 			</div>
 		)
 	}
+}
+
+Create.propTypes = {
+	onCreate: React.PropTypes.func.isRequired,
+	isCreating: React.PropTypes.bool,
+	item: React.PropTypes.object,
+}
+Create.contextTypes = {
+	router: React.PropTypes.object.isRequired
 }
 
 export default connect(

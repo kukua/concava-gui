@@ -8,11 +8,10 @@ import UserLogin from '../components/user/login'
 import UserRegister from '../components/user/register'
 
 import DeviceIndex from '../components/device/index'
-/*
 import DeviceCreate from '../components/device/create'
 import DeviceUpdate from '../components/device/update'
-import DeviceDestroy from '../components/device/destroy'
 
+/*
 import AttributeIndex from '../components/attribute/index'
 import AttributeCreate from '../components/attribute/create'
 import AttributeUpdate from '../components/attribute/update'
@@ -36,16 +35,14 @@ export default (
 
 			// Device CRUD
 			<Route path="devices" component={DeviceIndex} onEnter={requireAuthentication} />
+			<Route path="devices/create" component={DeviceCreate} onEnter={requireAuthentication} />
+			<Route path="devices/:id/edit" component={DeviceUpdate} onEnter={requireAuthentication} />
 
 			<Route path="*" component={NoMatch} />
 		</Route>
 	</Router>
 )
 			/*
-			<Route path="devices/create" component={DeviceCreate} onEnter={requireAuthentication} />
-			<Route path="devices/update/:id" component={DeviceUpdate} onEnter={requireAuthentication} />
-			<Route path="devices/delete/:id" component={DeviceDestroy} onEnter={requireAuthentication} />
-
 			// Attribute CRUD
 			<Route path="attributes" component={AttributeUpdate} onEnter={requireAuthentication} />
 			<Route path="attributes/create" component={AttributeUpdate} onEnter={requireAuthentication} />

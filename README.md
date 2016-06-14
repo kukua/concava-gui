@@ -7,6 +7,10 @@
 ```bash
 git clone https://github.com/kukua/concava-gui.git
 cd concava-gui
+
+cp src/js/config.js.example src/js/config.js
+# > Edit src/js/config.js
+
 npm install
 grunt build
 npm start

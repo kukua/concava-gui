@@ -2,28 +2,24 @@ import React from 'react'
 import { hashHistory } from 'react-router'
 
 export default class Title extends React.Component {
-	getBackButton (val) {
-		if (val) return (
-			<a href="javascript:;" class="btn-link-title" onClick={hashHistory.goBack}>&laquo; {val}</a>
-		)
-	}
-
-	getSubTitle (val) {
-		if (val) return (<small> - {val}</small>)
-	}
-
 	render () {
+		let backButtonLabel = (this.props.backButtonLabel || 'Go back')
+
 		return (
 			<div>
 				<div class="row">
-					<div class="col-sm-8">
+					<div class="col-sm-10">
 						<h3>
 							{this.props.title}
-							{this.getSubTitle(this.props.subtitle)}
+							{this.props.subTitle && (<small> - {this.props.subTitle}</small>)}
 						</h3>
 					</div>
 					<div class="col-sm-2 text-right">
-						{this.getBackButton(this.props.button)}
+						{backButtonLabel && ! this.props.loading &&
+							<a href="javascript:;" class="btn-link-title" onClick={hashHistory.goBack}>
+								&laquo; {backButtonLabel}
+							</a>
+						}
 					</div>
 				</div>
 				<hr />
@@ -33,7 +29,8 @@ export default class Title extends React.Component {
 }
 
 Title.propTypes = {
-	button: React.PropTypes.string,
 	title: React.PropTypes.string.isRequired,
-	subtitle: React.PropTypes.string
+	subTitle: React.PropTypes.string,
+	backButtonLabel: React.PropTypes.string,
+	loading: React.PropTypes.bool,
 }

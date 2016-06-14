@@ -6,6 +6,10 @@ import thunk from 'redux-thunk'
 import reducers from './reducers/'
 import Router from './components/router'
 
+import _ from 'underscore'
+import s from 'underscore.string'
+_.mixin(s.exports())
+
 const store = createStore(reducers, applyMiddleware(thunk))
 
 render(

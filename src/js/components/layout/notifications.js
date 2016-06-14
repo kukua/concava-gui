@@ -44,7 +44,7 @@ class Notifications extends React.Component {
 		let message = item.err
 		if ( ! message && _.isObject(item.data)) {
 			message = item.data.message
-			if (_.isArray(item.data.messages)) {
+			if (_.isObject(item.data.messages)) {
 				message = _.map(item.data.messages, (message) => message[0]).join('\n')
 			}
 		}

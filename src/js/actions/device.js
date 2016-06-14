@@ -1,5 +1,6 @@
 import request from 'request'
 import config from '../config.js'
+import notify from '../lib/notify'
 
 export default {
 	fetchAll () {
@@ -50,9 +51,13 @@ export default {
 		return (dispatch) => {
 			dispatch({ type: 'DEVICE_CREATE', data })
 
+			let values = data
+
 			request.post({
-				url: config.apiUrl + '/devices',
-				body: data,
+				url: config.apiUrl + '/templates',
+				body: {
+					name: data.name,
+				},
 				headers: {
 					'Authorization': 'Token ' + localStorage.token
 				},
@@ -64,7 +69,25 @@ export default {
 					return
 				}
 
-				dispatch({ type: 'DEVICE_CREATE_SUCCESS', item: data })
+				values.template_id = data.id
+
+				request.post({
+					url: config.apiUrl + '/devices',
+					body: values,
+					headers: {
+						'Authorization': 'Token ' + localStorage.token
+					},
+					json: true
+				}, (err, httpResponse, data) => {
+					if (err || httpResponse.statusCode != 200) {
+						dispatch({ type: 'ERROR_ADD', err, data })
+						dispatch({ type: 'DEVICE_CREATE_FAIL', err, data })
+						return
+					}
+
+					notify.created('device')
+					dispatch({ type: 'DEVICE_CREATE_SUCCESS', item: data })
+				})
 			})
 		}
 	},
@@ -87,12 +110,13 @@ export default {
 					return
 				}
 
+				notify.updated('device')
 				dispatch({ type: 'DEVICE_UPDATE_SUCCESS', item: data })
 			})
 		}
 	},
 
-	destroy (id) {
+	destroy (id, cb) {
 		return (dispatch) => {
 			dispatch({ type: 'DEVICE_DESTROY', id })
 
@@ -106,10 +130,13 @@ export default {
 				if (err || httpResponse.statusCode != 200) {
 					dispatch({ type: 'ERROR_ADD', err, data })
 					dispatch({ type: 'DEVICE_DESTROY_FAIL', err, data })
+					if (cb) cb(err || data)
 					return
 				}
 
+				notify.destroyed('device')
 				dispatch({ type: 'DEVICE_DESTROY_SUCCESS', item: data })
+				if (cb) cb()
 			})
 		}
 	},
