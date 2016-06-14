@@ -18,6 +18,7 @@ export default class Register extends React.Component {
 		if ( ! next.isCreating && next.item) {
 			localStorage.token = next.item.token
 			this.context.router.replace('/')
+			this.onLogin(next.item)
 		}
 	}
 

@@ -28,6 +28,11 @@ export default {
 		}
 	},
 
+	logout () {
+		localStorage.clear()
+		return { type: 'USER_LOGOUT' }
+	},
+
 	create (data) {
 		return (dispatch) => {
 			dispatch({ type: 'USER_CREATE' })

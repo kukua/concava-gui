@@ -1,9 +1,21 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import actions from '../../actions/user'
 
-export default class Menu extends React.Component {
+const mapStateToProps = (state) => {
+	let user = state.user.login.item
+	return { user }
+}
+
+const mapDispatchToProps = (/*dispatch*/) => {
+	return {
+	}
+}
+
+class Menu extends React.Component {
 	onLogout () {
-		localStorage.clear()
+		actions.logout()
 		this.context.router.replace('/users/login')
 	}
 
@@ -52,3 +64,8 @@ export default class Menu extends React.Component {
 Menu.contextTypes = {
 	router: React.PropTypes.object.isRequired
 }
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Menu)

@@ -25,15 +25,21 @@ export default class Notifications extends React.Component {
 			if (_.indexOf(handled, item) !== -1) return
 			handled.push(item)
 
-			let message = item.err
-			if ( ! message && _.isObject(item.data)) {
-				message = _.map(item.data.messages, (message) => message[0]).join('\n')
-			}
-			if ( ! message) message = 'An unknown error occured.'
-			NotificationManager.error(message, 'Whoops!')
+			NotificationManager.error(this.formatMessage(item), 'Whoops!')
 		})
 
 		this.setState({ handled })
+	}
+	formatMessage (item) {
+		let message = item.err
+		if ( ! message && _.isObject(item.data)) {
+			message = item.data.message
+			if (_.isArray(item.data.messages)) {
+				message = _.map(item.data.messages, (message) => message[0]).join('\n')
+			}
+		}
+		if ( ! message) message = 'An unknown error occured.'
+		return message
 	}
 
 	render () {

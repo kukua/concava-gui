@@ -11,6 +11,9 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		onCreate (data) {
 			dispatch(actions.create(data))
+		},
+		onLogin (data) {
+			dispatch({ type: 'USER_LOGIN_SUCCESS', item: data })
 		}
 	}
 }

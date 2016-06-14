@@ -21,6 +21,8 @@ export default (state = initial, action) => {
 			loading: false,
 			item: action.item,
 		})
+	case 'USER_LOGOUT':
+		return Object.assign({}, initial)
 	}
 
 	return state
