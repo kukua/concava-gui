@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux'
-import users from './users'
-import devices from './devices'
-import attributes from './attributes'
+import user from './user/'
+import device from './device/'
+import attribute from './attribute/'
 
 export default combineReducers({
-	users,
-	devices,
-	attributes
+	user,
+	device,
+	attribute,
 })
