@@ -1,7 +1,25 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import Title from '../title'
+import actions from '../../actions/user'
 
-export default class Register extends React.Component {
+const mapStateToProps = (state) => {
+	let { loading: isCreating, item } = state.user.create
+	return { isCreating, item }
+}
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		onCreate (data) {
+			dispatch(actions.create(data))
+		},
+		onLogin (data) {
+			dispatch({ type: 'USER_LOGIN_SUCCESS', item: data })
+		}
+	}
+}
+
+class Register extends React.Component {
 	onSubmit (ev) {
 		ev.preventDefault()
 
@@ -72,3 +90,8 @@ Register.propTypes = {
 Register.contextTypes = {
 	router: React.PropTypes.object.isRequired
 }
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Register)

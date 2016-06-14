@@ -1,6 +1,6 @@
 import React from 'react'
 import Header from '../header/header'
-import Notifications from '../../containers/layout/notifications'
+import Notifications from './notifications'
 
 export default class Master extends React.Component {
 	render () {

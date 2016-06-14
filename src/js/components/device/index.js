@@ -2,8 +2,23 @@ import React from 'react'
 import _ from 'underscore'
 import { Link } from 'react-router'
 import Title from '../title'
+import { connect } from 'react-redux'
+import actions from '../../actions/device'
 
-export default class Index extends React.Component {
+const mapStateToProps = (state) => {
+	let { loading: isFetching, items } = state.device.fetchAll
+	return { isFetching, items }
+}
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		onFetch () {
+			dispatch(actions.fetchAll())
+		}
+	}
+}
+
+class Index extends React.Component {
 	componentWillMount () {
 		this.props.onFetch()
 	}
@@ -50,3 +65,8 @@ Index.propTypes = {
 	isFetching: React.PropTypes.bool,
 	items: React.PropTypes.array
 }
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Index)

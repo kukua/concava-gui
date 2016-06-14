@@ -1,7 +1,27 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import Title from '../Title'
+import actions from '../../actions/attribute'
 
-export default class Update extends React.Component {
+const mapStateToProps = (state) => {
+	let { loading: isUpdating, item } = state.attribute.update
+	let { loading: isFetching, item: fetchedItem } = state.attribute.fetch
+	if ( ! item) item = fetchedItem
+	return { isFetching, isUpdating, item }
+}
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		onFetch (id) {
+			dispatch(actions.fetch(id))
+		},
+		onUpdate (data) {
+			dispatch(actions.update(data))
+		}
+	}
+}
+
+class Update extends React.Component {
 	componentWillMount () {
 		/*
 		var id = this.props.params.udid
@@ -108,3 +128,8 @@ export default class Update extends React.Component {
 Update.propTypes = {
 	params: React.PropTypes.object.isRequired
 }
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Update)

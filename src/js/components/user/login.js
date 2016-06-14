@@ -1,8 +1,23 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import Title from '../title'
 import { Link } from 'react-router'
+import actions from '../../actions/user'
 
-export default class Login extends React.Component {
+const mapStateToProps = (state) => {
+	let { loading: isFetching, item } = state.user.login
+	return { isFetching, item }
+}
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		onLogin (email, password) {
+			dispatch(actions.login(email, password))
+		}
+	}
+}
+
+class Login extends React.Component {
 	onSubmit (ev) {
 		ev.preventDefault()
 
@@ -56,3 +71,8 @@ Login.propTypes = {
 Login.contextTypes = {
 	router: React.PropTypes.object.isRequired
 }
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Login)

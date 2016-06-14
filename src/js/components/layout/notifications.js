@@ -1,8 +1,18 @@
 import React from 'react'
 import _ from 'underscore'
+import { connect } from 'react-redux'
 import { NotificationContainer, NotificationManager } from 'react-notifications'
 
-export default class Notifications extends React.Component {
+const mapStateToProps = (state) => {
+	return { errors: state.error }
+}
+
+const mapDispatchToProps = (/*dispatch*/) => {
+	return {
+	}
+}
+
+class Notifications extends React.Component {
 	constructor (props) {
 		super(props)
 		this.state = {
@@ -50,3 +60,8 @@ export default class Notifications extends React.Component {
 Notifications.propTypes = {
 	errors: React.PropTypes.array
 }
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Notifications)

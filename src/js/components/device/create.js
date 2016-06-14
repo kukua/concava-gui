@@ -1,8 +1,28 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import Title from '../title'
 import Form from './form'
+import actions from '../../actions/device'
 
-export default class Create extends React.Component {
+const mapStateToProps = (state) => {
+	let { loading: isCreating, item } = state.device.create
+	let { loading: isFetching, item: fetchedItem } = state.device.fetch
+	if ( ! item) item = fetchedItem
+	return { isFetching, isCreating, item }
+}
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		onFetch (id) {
+			dispatch(actions.fetch(id))
+		},
+		onCreate (data) {
+			dispatch(actions.create(data))
+		}
+	}
+}
+
+class Create extends React.Component {
 	render () {
 		return (
 			<div class="row">
@@ -14,3 +34,8 @@ export default class Create extends React.Component {
 		)
 	}
 }
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Create)

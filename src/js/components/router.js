@@ -4,19 +4,19 @@ import { Router, Route, IndexRedirect, hashHistory } from 'react-router'
 import Layout from './layout/master'
 import NoMatch from './noMatch'
 
-import UserLogin from '../containers/user/login'
-import UserRegister from '../containers/user/register'
+import UserLogin from '../components/user/login'
+import UserRegister from '../components/user/register'
 
-import DeviceIndex from '../containers/device/index'
+import DeviceIndex from '../components/device/index'
 /*
-import DeviceCreate from '../containers/device/create'
-import DeviceUpdate from '../containers/device/update'
-import DeviceDestroy from '../containers/device/destroy'
+import DeviceCreate from '../components/device/create'
+import DeviceUpdate from '../components/device/update'
+import DeviceDestroy from '../components/device/destroy'
 
-import AttributeIndex from '../containers/attribute/index'
-import AttributeCreate from '../containers/attribute/create'
-import AttributeUpdate from '../containers/attribute/update'
-import AttributeDestroy from '../containers/attribute/destroy'
+import AttributeIndex from '../components/attribute/index'
+import AttributeCreate from '../components/attribute/create'
+import AttributeUpdate from '../components/attribute/update'
+import AttributeDestroy from '../components/attribute/destroy'
 */
 
 function requireAuthentication (nextState, replace) {

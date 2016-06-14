@@ -1,10 +1,10 @@
+import React from 'react'
 import { connect } from 'react-redux'
-import Create from '../../components/device/create'
-import actions from '../../actions/device'
+import actions from '../../actions/attribute'
 
 const mapStateToProps = (state) => {
-	let { loading: isCreating, item } = state.device.create
-	let { loading: isFetching, item: fetchedItem } = state.device.fetch
+	let { loading: isCreating, item } = state.attribute.create
+	let { loading: isFetching, item: fetchedItem } = state.attribute.fetch
 	if ( ! item) item = fetchedItem
 	return { isFetching, isCreating, item }
 }
@@ -17,6 +17,12 @@ const mapDispatchToProps = (dispatch) => {
 		onCreate (data) {
 			dispatch(actions.create(data))
 		}
+	}
+}
+
+class Create extends React.component {
+	render () {
+		return (<div>Not implemented.</div>)
 	}
 }
 

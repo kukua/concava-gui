@@ -1,7 +1,22 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import _ from 'underscore'
 import Reorder from 'react-reorder'
 import { Link } from 'react-router'
+import actions from '../../actions/attribute'
+
+const mapStateToProps = (state) => {
+	let { loading: isFetching, items } = state.attributes.fetchAll
+	return { isFetching, items }
+}
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		onFetch (deviceId) {
+			dispatch(actions.fetchByDeviceId(deviceId))
+		}
+	}
+}
 
 export class Item extends React.Component {
 	render () {
@@ -39,7 +54,7 @@ Item.propTypes = {
 	sharedPropsPrefix: React.PropTypes.string
 }
 
-export default class Index extends React.Component {
+class Index extends React.Component {
 	constructor () {
 		super()
 
@@ -185,3 +200,8 @@ Index.propTypes = {
 	device: React.PropTypes.object,
 	deviceId: React.PropTypes.number
 }
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Index)

@@ -1,12 +1,12 @@
+import React from 'react'
 import { connect } from 'react-redux'
-import Update from '../../components/device/update'
 import actions from '../../actions/device'
 
 const mapStateToProps = (state) => {
-	let { loading: isUpdating, item } = state.device.update
+	let { loading: isDeleting, item } = state.device.destroy
 	let { loading: isFetching, item: fetchedItem } = state.device.fetch
 	if ( ! item) item = fetchedItem
-	return { isFetching, isUpdating, item }
+	return { isFetching, isDeleting, item }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -14,13 +14,19 @@ const mapDispatchToProps = (dispatch) => {
 		onFetch (id) {
 			dispatch(actions.fetch(id))
 		},
-		onUpdate (data) {
-			dispatch(actions.update(data))
+		onDestroy (id) {
+			dispatch(actions.destroy(id))
 		}
+	}
+}
+
+class Destroy extends React.Component {
+	render () {
+		return (<div>Not implemented.</div>)
 	}
 }
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(Update)
+)(Destroy)
