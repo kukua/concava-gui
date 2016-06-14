@@ -1,6 +1,6 @@
 import React from 'react'
 import Header from '../header/header'
-import { NotificationContainer } from 'react-notifications'
+import Notifications from '../../containers/layout/notifications'
 
 export default class Master extends React.Component {
 	render () {
@@ -9,7 +9,7 @@ export default class Master extends React.Component {
 				<div class="container">
 					<Header />
 					{this.props.children}
-					<NotificationContainer/>
+					<Notifications />
 				</div>
 			</div>
 		)

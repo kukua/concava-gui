@@ -37,7 +37,6 @@ export default {
 				body: data,
 				json: true
 			}, (err, httpResponse, data) => {
-				console.log(err,httpResponse,data)
 				if (err || httpResponse.statusCode != 200) {
 					localStorage.clear()
 					dispatch({ type: 'ERROR_ADD', err, data })

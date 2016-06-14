@@ -11,7 +11,6 @@ export default class Login extends React.Component {
 	}
 
 	componentWillReceiveProps (next) {
-		console.log('receive', next)
 		if ( ! next.isFetching && next.item) {
 			localStorage.token = next.item.token
 			this.context.router.replace('/')

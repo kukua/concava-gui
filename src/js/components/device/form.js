@@ -11,7 +11,6 @@ export default class Form extends React.Component {
 			udid: form.deviceId.value
 		}
 		console.log(data)
-		//notify.created('device')
 		//this.context.router.replace('/devices')
 	}
 
