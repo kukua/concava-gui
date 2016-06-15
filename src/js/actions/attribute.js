@@ -1,15 +1,20 @@
 import request from 'request'
 import config from '../config.js'
+import notify from '../lib/notify'
 
 export default {
 	fetchByDeviceId (id) {
 		return (dispatch) => {
 			dispatch({ type: 'ATTRIBUTE_FETCH_ALL', id })
 
-			const includes = 'template.attributes.converters,template.attributes.calibrators,template.attributes.validators'
+			const include = 'template.attributes.converters,template.attributes.calibrators,template.attributes.validators'
 
 			request({
-				url: config.apiUrl + '/devices?filter=udid:' + id + '&include=' + includes,
+				url: config.apiUrl + '/devices',
+				qs: {
+					filter: 'id:' + id,
+					include,
+				},
 				headers: {
 					'Authorization': 'Token ' + localStorage.token
 				},
@@ -30,8 +35,13 @@ export default {
 		return (dispatch) => {
 			dispatch({ type: 'ATTRIBUTE_FETCH', id })
 
+			const include = 'converters,calibrators,validators'
+
 			request({
 				url: config.apiUrl + '/attributes/' + id,
+				qs: {
+					include,
+				},
 				headers: {
 					'Authorization': 'Token ' + localStorage.token
 				},
@@ -54,10 +64,10 @@ export default {
 
 			request.post({
 				url: config.apiUrl + '/attributes',
-				body: data,
 				headers: {
 					'Authorization': 'Token ' + localStorage.token
 				},
+				body: data,
 				json: true
 			}, (err, httpResponse, data) => {
 				if (err || httpResponse.statusCode != 200) {
@@ -66,6 +76,7 @@ export default {
 					return
 				}
 
+				notify.created('attribute')
 				dispatch({ type: 'ATTRIBUTE_CREATE_SUCCESS', item: data })
 			})
 		}
@@ -75,12 +86,17 @@ export default {
 		return (dispatch) => {
 			dispatch({ type: 'ATTRIBUTE_UPDATE', data })
 
+			const include = 'converters,calibrators,validators'
+
 			request.put({
 				url: config.apiUrl + '/attributes/' + data.id,
-				body: data,
+				qs: {
+					include,
+				},
 				headers: {
 					'Authorization': 'Token ' + localStorage.token
 				},
+				body: data,
 				json: true
 			}, (err, httpResponse, data) => {
 				if (err || httpResponse.statusCode != 200) {
@@ -89,12 +105,13 @@ export default {
 					return
 				}
 
+				notify.updated('attribute')
 				dispatch({ type: 'ATTRIBUTE_UPDATE_SUCCESS', item: data })
 			})
 		}
 	},
 
-	destroy (id) {
+	destroy (id, cb) {
 		return (dispatch) => {
 			dispatch({ type: 'ATTRIBUTE_DESTROY', id })
 
@@ -108,10 +125,13 @@ export default {
 				if (err || httpResponse.statusCode != 200) {
 					dispatch({ type: 'ERROR_ADD', err, data })
 					dispatch({ type: 'ATTRIBUTE_DESTROY_FAIL', err, data })
+					if (cb) cb(err || data)
 					return
 				}
 
+				notify.destroyed('attribute')
 				dispatch({ type: 'ATTRIBUTE_DESTROY_SUCCESS', item: data })
+				if (cb) cb()
 			})
 		}
 	},

@@ -28,8 +28,8 @@ Modal.defaultStyles = {
 
 export default class Confirm extends React.Component {
 	render () {
-		const closeLabel = (this.props.closeLabel || 'Close')
-		const confirmLabel = (this.props.confirmLabel || 'Confirm')
+		let closeLabel = (this.props.closeLabel || 'Close')
+		let confirmLabel = (this.props.confirmLabel || 'Confirm')
 
 		return (
 			<Modal

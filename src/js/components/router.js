@@ -11,12 +11,8 @@ import DeviceIndex from '../components/device/index'
 import DeviceCreate from '../components/device/create'
 import DeviceUpdate from '../components/device/update'
 
-/*
-import AttributeIndex from '../components/attribute/index'
 import AttributeCreate from '../components/attribute/create'
 import AttributeUpdate from '../components/attribute/update'
-import AttributeDestroy from '../components/attribute/destroy'
-*/
 
 function requireAuthentication (nextState, replace) {
 	if ( ! localStorage.token) replace('/users/login')
@@ -38,14 +34,11 @@ export default (
 			<Route path="devices/create" component={DeviceCreate} onEnter={requireAuthentication} />
 			<Route path="devices/:id/edit" component={DeviceUpdate} onEnter={requireAuthentication} />
 
+			// Attribute CRUD
+			<Route path="attributes/create" component={AttributeCreate} onEnter={requireAuthentication} />
+			<Route path="attributes/:id/edit" component={AttributeUpdate} onEnter={requireAuthentication} />
+
 			<Route path="*" component={NoMatch} />
 		</Route>
 	</Router>
 )
-			/*
-			// Attribute CRUD
-			<Route path="attributes" component={AttributeUpdate} onEnter={requireAuthentication} />
-			<Route path="attributes/create" component={AttributeUpdate} onEnter={requireAuthentication} />
-			<Route path="attributes/update/:id" component={AttributeUpdate} onEnter={requireAuthentication} />
-			<Route path="attributes/delete/:id" component={AttributeDestroy} onEnter={requireAuthentication} />
-			*/

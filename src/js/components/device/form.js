@@ -18,16 +18,7 @@ export default class Form extends React.Component {
 	onSubmit (ev) {
 		ev.preventDefault()
 
-		let form = ev.target
-		let data = {
-			udid: form.udid.value,
-			name: form.name.value,
-		}
-		if (this.props.item) {
-			let id = this.props.item.id
-			if (id) data.id = id
-		}
-		this.props.onSubmit(data)
+		this.props.onSubmit(this.state.item)
 	}
 
 	render () {

@@ -2,12 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Title from '../title'
 import Form from './form'
-import actions from '../../actions/device'
-import AttributeIndex from '../attribute/index'
+import actions from '../../actions/attribute'
 
 const mapStateToProps = (state) => {
-	let { loading: isUpdating, item } = state.device.update
-	let { loading: isFetching, item: fetchedItem } = state.device.fetch
+	let { loading: isUpdating, item } = state.attribute.update
+	let { loading: isFetching, item: fetchedItem } = state.attribute.fetch
 	if ( ! item) item = fetchedItem
 	return { isFetching, isUpdating, item }
 }
@@ -36,16 +35,11 @@ class Update extends React.Component {
 		let isLoading = (this.props.isFetching || this.props.isUpdating)
 
 		return (
-			<div>
-				<div class="row">
-					<div class="col-sm-offset-2 col-sm-8">
-						<Title title="Edit device" loading={isLoading} />
-						<Form item={this.props.item} onSubmit={this.onSubmit.bind(this)} loading={isLoading} />
-					</div>
+			<div class="row">
+				<div class="col-sm-offset-2 col-sm-8">
+					<Title title="Edit attribute" loading={isLoading} />
+					<Form item={this.props.item} onSubmit={this.onSubmit.bind(this)} loading={isLoading} />
 				</div>
-				{this.props.item &&
-					<AttributeIndex device={this.props.item} />
-				}
 			</div>
 		)
 	}

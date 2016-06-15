@@ -55,11 +55,11 @@ export default {
 
 			request.post({
 				url: config.apiUrl + '/templates',
-				body: {
-					name: data.name,
-				},
 				headers: {
 					'Authorization': 'Token ' + localStorage.token
+				},
+				body: {
+					name: data.name,
 				},
 				json: true
 			}, (err, httpResponse, data) => {
@@ -73,10 +73,10 @@ export default {
 
 				request.post({
 					url: config.apiUrl + '/devices',
-					body: values,
 					headers: {
 						'Authorization': 'Token ' + localStorage.token
 					},
+					body: values,
 					json: true
 				}, (err, httpResponse, data) => {
 					if (err || httpResponse.statusCode != 200) {
@@ -98,10 +98,10 @@ export default {
 
 			request.put({
 				url: config.apiUrl + '/devices/' + data.id,
-				body: data,
 				headers: {
 					'Authorization': 'Token ' + localStorage.token
 				},
+				body: data,
 				json: true
 			}, (err, httpResponse, data) => {
 				if (err || httpResponse.statusCode != 200) {

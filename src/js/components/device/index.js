@@ -26,7 +26,7 @@ class Index extends React.Component {
 	constructor (props) {
 		super(props)
 		this.state = {
-			destroyDevice: {},
+			destroy: {},
 		}
 	}
 
@@ -35,8 +35,8 @@ class Index extends React.Component {
 	}
 
 	onDestroy () {
-		let id = this.state.destroyDevice.id
-		this.setState({ destroyDevice: {} })
+		let id = this.state.destroy.id
+		this.setState({ destroy: {} })
 		this.props.onDestroy(id, () => {
 			this.props.onFetch()
 		})
@@ -66,7 +66,7 @@ class Index extends React.Component {
 										<td width="140px" class="text-right">
 											<Link to={{ pathname: '/devices/' + item.id + '/edit' }}>Edit</Link>
 											{' | '}
-											<a href="javascript:;" onClick={() => this.setState({ destroyDevice: item })}>Delete</a>
+											<a href="javascript:;" onClick={() => this.setState({ destroy: item })}>Delete</a>
 										</td>
 									</tr>
 								))
@@ -76,11 +76,11 @@ class Index extends React.Component {
 					</table>
 					<Link to="/devices/create" class="btn btn-primary pull-right">Add device</Link>
 					<ConfirmModal
-						isOpen={ !! this.state.destroyDevice.id}
+						isOpen={ !! this.state.destroy.id}
 						title="Delete device?"
-						onClose={() => this.setState({ destroyDevice: {} })}
+						onClose={() => this.setState({ destroy: {} })}
 						onSubmit={() => this.onDestroy()}>
-						<p>Are you sure you want to delete device <code>{this.state.destroyDevice.udid}</code>?</p>
+						<p>Are you sure you want to delete device <code>{this.state.destroy.udid}</code>?</p>
 					</ConfirmModal>
 				</div>
 			</div>
