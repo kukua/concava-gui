@@ -136,4 +136,33 @@ export default {
 			})
 		}
 	},
+
+	reorder (templateId, order, cb) {
+		return (dispatch) => {
+			dispatch({ type: 'ATTRIBUTE_REORDER', templateId, order })
+
+			request.put({
+				url: config.apiUrl + '/attributes/reorder',
+				headers: {
+					'Authorization': 'Token ' + user.token,
+				},
+				body: {
+					template_id: templateId,
+					order,
+				},
+				json: true
+			}, (err, httpResponse, data) => {
+				if (err || httpResponse.statusCode != 200) {
+					dispatch({ type: 'ERROR_ADD', err, data })
+					dispatch({ type: 'ATTRIBUTE_REORDER_FAIL', err, data })
+					if (cb) cb(err || data)
+					return
+				}
+
+				notify.action('attributes', 'reordered')
+				dispatch({ type: 'ATTRIBUTE_REORDER_SUCCESS' })
+				if (cb) cb()
+			})
+		}
+	},
 }

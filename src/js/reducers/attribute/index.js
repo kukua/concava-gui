@@ -4,6 +4,7 @@ import fetch from './fetch'
 import create from './create'
 import update from './update'
 import destroy from './destroy'
+import reorder from './reorder'
 
 export default combineReducers({
 	fetchAll: fetchByTemplateId,
@@ -11,4 +12,5 @@ export default combineReducers({
 	create,
 	update,
 	destroy,
+	reorder,
 })

@@ -63,7 +63,7 @@ class Index extends React.Component {
 									<tr key={item.id}>
 										<td>{item.name}</td>
 										<td width="140px" class="text-right">
-											<Link to={{ pathname: '/templates/' + item.id + '/edit' }}>Edit</Link>
+											<Link to={'/templates/' + item.id + '/edit'}>Edit</Link>
 											{' | '}
 											<a href="javascript:;" onClick={() => this.setState({ destroy: item })}>Delete</a>
 										</td>

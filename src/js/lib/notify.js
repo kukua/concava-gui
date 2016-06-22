@@ -2,16 +2,17 @@ import { NotificationManager } from 'react-notifications'
 import _ from 'underscore'
 
 export default {
-	created (type) {
-		let message = _.capitalize(type, true) + ' created.'
+	action (type, action) {
+		let message = _.capitalize(type, true) + ' ' + action + '.'
 		NotificationManager.success(message)
+	},
+	created (type) {
+		this.action(type, 'created')
 	},
 	updated (type) {
-		let message = _.capitalize(type, true) + ' updated.'
-		NotificationManager.success(message)
+		this.action(type, 'updated')
 	},
 	destroyed (type) {
-		let message = _.capitalize(type, true) + ' deleted.'
-		NotificationManager.success(message)
+		this.action(type, 'destroyed')
 	},
 }
