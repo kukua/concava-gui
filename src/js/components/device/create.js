@@ -33,7 +33,7 @@ class Create extends React.Component {
 			<div class="row">
 				<div class="col-sm-offset-2 col-sm-8">
 					<Title title="Add device" loading={this.props.isCreating} />
-					<Form onSubmit={this.onSubmit.bind(this)} submitLabel="Create" loading={this.props.isCreating} />
+					<Form submitLabel="Create device" onSubmit={this.onSubmit.bind(this)} loading={this.props.isCreating} />
 				</div>
 			</div>
 		)

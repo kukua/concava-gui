@@ -32,32 +32,31 @@ export default class Form extends React.Component {
 			<div>
 				<form class="form form-horizontal" method="POST" onSubmit={this.onSubmit.bind(this)}>
 					<div class="form-group">
-						<label class="col-sm-offset-1 col-sm-3 control-label" for="name">Name</label>
-						<div class="col-sm-6">
+						<label class="col-sm-3 control-label" for="name">Name</label>
+						<div class="col-sm-9">
 							<input type="text" name="name" class="form-control" value={item.name || ''} onChange={this.onChange.bind(this)} disabled={this.props.loading} />
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-offset-1 col-sm-3 control-label" for="name">Converter</label>
-						<div class="col-sm-6">
-							<input type="text" name="converter" class="form-control" value={item.converter || ''} onChange={this.onChange.bind(this)} disabled={this.props.loading} />
+						<label class="col-sm-3 control-label" for="name">Converter</label>
+						<div class="col-sm-9">
+							<input type="text" name="converter" class="form-control" value={item.converter || ''} placeholder="int16le" onChange={this.onChange.bind(this)} disabled={this.props.loading} />
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-offset-1 col-sm-3 control-label" for="name">Calibrator</label>
-						<div class="col-sm-6">
-							<input type="text" name="calibrator" class="form-control" value={item.calibrator || ''} onChange={this.onChange.bind(this)} disabled={this.props.loading} />
+						<label class="col-sm-3 control-label" for="name">Calibrator</label>
+						<div class="col-sm-9">
+							<textarea rows={3} name="calibrator" class="form-control" value={item.calibrator || ''} placeholder="return val / 10" onChange={this.onChange.bind(this)} disabled={this.props.loading} />
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-offset-1 col-sm-3 control-label" for="name">Validator(s)</label>
-						<div class="col-sm-6">
-							<input type="text" name="validators" class="form-control" value={item.validators || ''} onChange={this.onChange.bind(this)} disabled={this.props.loading} />
+						<label class="col-sm-3 control-label" for="name">Validator(s)</label>
+						<div class="col-sm-9">
+							<input type="text" name="validators" class="form-control" value={item.validators || ''} placeholder="min=-100 max=100" onChange={this.onChange.bind(this)} disabled={this.props.loading} />
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-offset-1 col-sm-3 control-label"></label>
-						<div class="col-sm-6">
+						<div class="col-sm-12">
 							<button type="submit" class="btn btn-primary pull-right" disabled={this.props.loading}>{this.props.submitLabel || 'Save'}</button>
 						</div>
 					</div>

@@ -31,14 +31,13 @@ export default class Form extends React.Component {
 			<div>
 				<form class="form form-horizontal" method="POST" onSubmit={this.onSubmit.bind(this)}>
 					<div class="form-group">
-						<label class="col-sm-offset-1 col-sm-3 control-label" for="name">Name</label>
-						<div class="col-sm-6">
+						<label class="col-sm-3 control-label" for="name">Name</label>
+						<div class="col-sm-9">
 							<input type="text" name="name" class="form-control" value={item.name || ''} onChange={this.onChange.bind(this)} disabled={this.props.loading} />
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-offset-1 col-sm-3 control-label"></label>
-						<div class="col-sm-6">
+						<div class="col-sm-12">
 							<button type="submit" class="btn btn-primary pull-right" disabled={this.props.loading}>{this.props.submitLabel || 'Save'}</button>
 						</div>
 					</div>

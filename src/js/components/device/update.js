@@ -39,7 +39,7 @@ class Update extends React.Component {
 				<div class="row">
 					<div class="col-sm-offset-2 col-sm-8">
 						<Title title="Edit device" loading={isLoading} />
-						<Form item={this.props.item} onSubmit={this.onSubmit.bind(this)} loading={isLoading} />
+						<Form item={this.props.item} submitLabel="Update device" onSubmit={this.onSubmit.bind(this)} loading={isLoading} />
 					</div>
 				</div>
 			</div>
