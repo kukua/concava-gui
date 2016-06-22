@@ -9,14 +9,17 @@ import { instance as user } from './lib/user'
 
 import _ from 'underscore'
 import s from 'underscore.string'
-_.mixin(s.exports())
+import assign from 'es6-object-assign'
 
-const store = createStore(reducers, applyMiddleware(thunk))
+_.mixin(s.exports())
+assign.polyfill()
 
 user.set(JSON.parse(localStorage.user || '{}'))
 user.onChange((data) => {
 	localStorage.user = JSON.stringify(data)
 })
+
+const store = createStore(reducers, applyMiddleware(thunk))
 
 render(
 	<Provider store={store}>{Router}</Provider>,
