@@ -15,6 +15,7 @@ export default (state = initial, action) => {
 			loading: false,
 			err: action.err,
 			data: action.data,
+			item: state.item,
 		})
 	case 'ATTRIBUTE_UPDATE_SUCCESS':
 		return Object.assign({}, initial, {
