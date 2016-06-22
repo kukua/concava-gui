@@ -1,5 +1,6 @@
 import request from 'request'
 import config from '../config.js'
+import { instance as user } from '../lib/user'
 import notify from '../lib/notify'
 
 export default {
@@ -7,10 +8,15 @@ export default {
 		return (dispatch) => {
 			dispatch({ type: 'DEVICE_FETCH_ALL' })
 
+			const include = 'template'
+
 			request({
 				url: config.apiUrl + '/devices',
+				qs: {
+					include,
+				},
 				headers: {
-					'Authorization': 'Token ' + localStorage.token
+					'Authorization': 'Token ' + user.token,
 				},
 				json: true
 			}, (err, httpResponse, data) => {
@@ -32,7 +38,7 @@ export default {
 			request({
 				url: config.apiUrl + '/devices/' + id,
 				headers: {
-					'Authorization': 'Token ' + localStorage.token
+					'Authorization': 'Token ' + user.token,
 				},
 				json: true
 			}, (err, httpResponse, data) => {
@@ -51,16 +57,12 @@ export default {
 		return (dispatch) => {
 			dispatch({ type: 'DEVICE_CREATE', data })
 
-			let values = data
-
 			request.post({
-				url: config.apiUrl + '/templates',
+				url: config.apiUrl + '/devices',
 				headers: {
-					'Authorization': 'Token ' + localStorage.token
+					'Authorization': 'Token ' + user.token,
 				},
-				body: {
-					name: data.name,
-				},
+				body: data,
 				json: true
 			}, (err, httpResponse, data) => {
 				if (err || httpResponse.statusCode != 200) {
@@ -69,25 +71,8 @@ export default {
 					return
 				}
 
-				values.template_id = data.id
-
-				request.post({
-					url: config.apiUrl + '/devices',
-					headers: {
-						'Authorization': 'Token ' + localStorage.token
-					},
-					body: values,
-					json: true
-				}, (err, httpResponse, data) => {
-					if (err || httpResponse.statusCode != 200) {
-						dispatch({ type: 'ERROR_ADD', err, data })
-						dispatch({ type: 'DEVICE_CREATE_FAIL', err, data })
-						return
-					}
-
-					notify.created('device')
-					dispatch({ type: 'DEVICE_CREATE_SUCCESS', item: data })
-				})
+				notify.created('device')
+				dispatch({ type: 'DEVICE_CREATE_SUCCESS', item: data })
 			})
 		}
 	},
@@ -99,7 +84,7 @@ export default {
 			request.put({
 				url: config.apiUrl + '/devices/' + data.id,
 				headers: {
-					'Authorization': 'Token ' + localStorage.token
+					'Authorization': 'Token ' + user.token,
 				},
 				body: data,
 				json: true
@@ -123,7 +108,7 @@ export default {
 			request.delete({
 				url: config.apiUrl + '/devices/' + id,
 				headers: {
-					'Authorization': 'Token ' + localStorage.token
+					'Authorization': 'Token ' + user.token,
 				},
 				json: true
 			}, (err, httpResponse, data) => {

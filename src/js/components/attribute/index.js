@@ -14,8 +14,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		onFetch (deviceId) {
-			dispatch(actions.fetchByDeviceId(deviceId))
+		onFetch (templateId) {
+			dispatch(actions.fetchByTemplateId(templateId))
 		},
 		onDestroy (id, cb) {
 			dispatch(actions.destroy(id, cb))
@@ -32,14 +32,14 @@ class Index extends React.Component {
 	}
 
 	componentWillMount () {
-		this.props.onFetch(this.props.device.id)
+		this.props.onFetch(this.props.templateId)
 	}
 
 	onDestroy () {
 		let id = this.state.destroy.id
 		this.setState({ destroy: {} })
 		this.props.onDestroy(id, () => {
-			this.props.onFetch(this.props.device.id)
+			this.props.onFetch(this.props.templateId)
 		})
 	}
 
@@ -85,7 +85,7 @@ class Index extends React.Component {
 							}
 						</tbody>
 					</table>
-					<Link to={{ pathname: '/attributes/create', query: { template_id: this.props.device.template_id, order: itemCount } }} class="btn btn-primary pull-right">Add attribute</Link>
+					<Link to={{ pathname: '/attributes/create', query: { template_id: this.props.templateId, order: itemCount } }} class="btn btn-primary pull-right">Add attribute</Link>
 					<ConfirmModal
 						isOpen={ !! this.state.destroy.id}
 						title="Delete attribute?"
@@ -100,10 +100,7 @@ class Index extends React.Component {
 }
 
 Index.propTypes = {
-	device: React.PropTypes.shape({
-		id: React.PropTypes.number.isRequired,
-		template_id: React.PropTypes.number.isRequired,
-	}).isRequired,
+	templateId: React.PropTypes.number.isRequired,
 	title: React.PropTypes.bool,
 	onFetch: React.PropTypes.func.isRequired,
 	isFetching: React.PropTypes.bool,

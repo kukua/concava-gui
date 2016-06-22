@@ -3,18 +3,19 @@ import _ from 'underscore'
 import { Link } from 'react-router'
 import Title from '../title'
 import { connect } from 'react-redux'
-import actions from '../../actions/device'
+import { instance as user } from '../../lib/user'
+import actions from '../../actions/template'
 import ConfirmModal from '../modals/confirm'
 
 const mapStateToProps = (state) => {
-	let { loading: isFetching, items } = state.device.fetchAll
+	let { loading: isFetching, items } = state.template.fetchAll
 	return { isFetching, items }
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		onFetch () {
-			dispatch(actions.fetchAll())
+		onFetch (userId) {
+			dispatch(actions.fetchByUserId(userId))
 		},
 		onDestroy (id, cb) {
 			dispatch(actions.destroy(id, cb))
@@ -31,14 +32,14 @@ class Index extends React.Component {
 	}
 
 	componentWillMount () {
-		this.props.onFetch()
+		this.props.onFetch(user.id)
 	}
 
 	onDestroy () {
 		let id = this.state.destroy.id
 		this.setState({ destroy: {} })
 		this.props.onDestroy(id, () => {
-			this.props.onFetch()
+			this.props.onFetch(user.id)
 		})
 	}
 
@@ -46,43 +47,39 @@ class Index extends React.Component {
 		return (
 			<div class="row">
 				<div class="col-sm-offset-2 col-sm-8">
-					<Title title="Devices" />
+					<Title title="Templates" />
 					<table class="table table-striped">
 						<thead>
 							<tr>
 								<th>Name</th>
-								<th width="160px">Device ID</th>
-								<th>Template</th>
 								<th width="140px" class="text-right">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
 							{ this.props.isFetching ?
-								<tr><td colSpan="4">Loading…</td></tr>
+								<tr><td colSpan="2">Loading…</td></tr>
 								: _.size(this.props.items) > 0 ?
 								_.map(this.props.items, (item) => (
 									<tr key={item.id}>
 										<td>{item.name}</td>
-										<td width="160px">{item.udid}</td>
-										<td>{item.template && item.template.name}</td>
 										<td width="140px" class="text-right">
-											<Link to={{ pathname: '/devices/' + item.id + '/edit' }}>Edit</Link>
+											<Link to={{ pathname: '/templates/' + item.id + '/edit' }}>Edit</Link>
 											{' | '}
 											<a href="javascript:;" onClick={() => this.setState({ destroy: item })}>Delete</a>
 										</td>
 									</tr>
 								))
-								: <tr><td colSpan="4">No items…</td></tr>
+								: <tr><td colSpan="2">No items…</td></tr>
 							}
 						</tbody>
 					</table>
-					<Link to="/devices/create" class="btn btn-primary pull-right">Add device</Link>
+					<Link to="/templates/create" class="btn btn-primary pull-right">Add template</Link>
 					<ConfirmModal
 						isOpen={ !! this.state.destroy.id}
-						title="Delete device?"
+						title="Delete template?"
 						onClose={() => this.setState({ destroy: {} })}
 						onSubmit={() => this.onDestroy()}>
-						<p>Are you sure you want to delete device <code>{this.state.destroy.udid}</code>?</p>
+						<p>Are you sure you want to delete template <code>{this.state.destroy.name}</code>?</p>
 					</ConfirmModal>
 				</div>
 			</div>

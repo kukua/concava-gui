@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import { instance as user } from '../../lib/user'
 import actions from '../../actions/user'
 
 const mapStateToProps = (state) => {
@@ -20,14 +21,16 @@ class Menu extends React.Component {
 	}
 
 	getMenu () {
-		if (localStorage.token) {
+		if (user.token) {
 			return (
 				<div class="navbar-collapse collapse" id="navbar-main">
 					<ul class="nav navbar-nav">
 						<li><Link to="devices">Devices</Link></li>
+						<li><Link to="templates">Templates</Link></li>
 					</ul>
 					<ul class="nav navbar-nav pull-right">
-						<li><Link to="#" onClick={this.onLogout.bind(this)}>Logout</Link></li>
+						<li><a href="javascript:;">{user.get('name')}</a></li>
+						<li><a href="javascript:;" onClick={this.onLogout.bind(this)}>Logout</a></li>
 					</ul>
 				</div>
 			)

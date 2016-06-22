@@ -1,5 +1,6 @@
 import request from 'request'
-import config from '../config.js'
+import config from '../config'
+import { instance as user } from '../lib/user'
 
 export default {
 	login (email, password) {
@@ -17,7 +18,7 @@ export default {
 				json: true
 			}, (err, httpResponse, data) => {
 				if (err || httpResponse.statusCode != 200) {
-					localStorage.clear()
+					user.clear()
 					dispatch({ type: 'ERROR_ADD', err, data })
 					dispatch({ type: 'USER_LOGIN_FAIL', err, data })
 					return
@@ -29,7 +30,7 @@ export default {
 	},
 
 	logout () {
-		localStorage.clear()
+		user.clear()
 		return { type: 'USER_LOGOUT' }
 	},
 
@@ -43,7 +44,7 @@ export default {
 				json: true
 			}, (err, httpResponse, data) => {
 				if (err || httpResponse.statusCode != 200) {
-					localStorage.clear()
+					user.clear()
 					dispatch({ type: 'ERROR_ADD', err, data })
 					dispatch({ type: 'USER_CREATE_FAIL', err, data })
 					return

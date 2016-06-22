@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Title from '../title'
+import { instance as user } from '../../lib/user'
 import actions from '../../actions/user'
 
 const mapStateToProps = (state) => {
@@ -34,9 +35,9 @@ class Register extends React.Component {
 
 	componentWillReceiveProps (next) {
 		if ( ! next.isCreating && next.item) {
-			localStorage.token = next.item.token
+			user.set(next.item)
 			this.context.router.replace('/')
-			this.onLogin(next.item)
+			this.props.onLogin(next.item)
 		}
 	}
 
@@ -85,7 +86,8 @@ class Register extends React.Component {
 
 Register.propTypes = {
 	onCreate: React.PropTypes.func.isRequired,
-	isCreating: React.PropTypes.bool.isRequired
+	isCreating: React.PropTypes.bool.isRequired,
+	onLogin: React.PropTypes.func.isRequired,
 }
 Register.contextTypes = {
 	router: React.PropTypes.object.isRequired

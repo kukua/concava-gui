@@ -4,17 +4,14 @@ import { instance as user } from '../lib/user'
 import notify from '../lib/notify'
 
 export default {
-	fetchByTemplateId (id) {
+	fetchByUserId (id) {
 		return (dispatch) => {
-			dispatch({ type: 'ATTRIBUTE_FETCH_ALL', id })
-
-			const include = 'attributes.converters,attributes.calibrators,attributes.validators'
+			dispatch({ type: 'TEMPLATE_FETCH_ALL', id })
 
 			request({
 				url: config.apiUrl + '/templates',
 				qs: {
-					filter: 'id:' + id,
-					include,
+					filter: 'user_id:' + id,
 				},
 				headers: {
 					'Authorization': 'Token ' + user.token,
@@ -23,26 +20,21 @@ export default {
 			}, (err, httpResponse, data) => {
 				if (err || httpResponse.statusCode != 200) {
 					dispatch({ type: 'ERROR_ADD', err, data })
-					dispatch({ type: 'ATTRIBUTE_FETCH_ALL_FAIL', err, data })
+					dispatch({ type: 'TEMPLATE_FETCH_ALL_FAIL', err, data })
 					return
 				}
 
-				dispatch({ type: 'ATTRIBUTE_FETCH_ALL_SUCCESS', items: data[0].attributes })
+				dispatch({ type: 'TEMPLATE_FETCH_ALL_SUCCESS', items: data })
 			})
 		}
 	},
 
 	fetch (id) {
 		return (dispatch) => {
-			dispatch({ type: 'ATTRIBUTE_FETCH', id })
-
-			const include = 'converters,calibrators,validators'
+			dispatch({ type: 'TEMPLATE_FETCH', id })
 
 			request({
-				url: config.apiUrl + '/attributes/' + id,
-				qs: {
-					include,
-				},
+				url: config.apiUrl + '/templates/' + id,
 				headers: {
 					'Authorization': 'Token ' + user.token,
 				},
@@ -50,21 +42,21 @@ export default {
 			}, (err, httpResponse, data) => {
 				if (err || httpResponse.statusCode != 200) {
 					dispatch({ type: 'ERROR_ADD', err, data })
-					dispatch({ type: 'ATTRIBUTE_FETCH_FAIL', err, data })
+					dispatch({ type: 'TEMPLATE_FETCH_FAIL', err, data })
 					return
 				}
 
-				dispatch({ type: 'ATTRIBUTE_FETCH_SUCCESS', item: data })
+				dispatch({ type: 'TEMPLATE_FETCH_SUCCESS', item: data })
 			})
 		}
 	},
 
 	create (data) {
 		return (dispatch) => {
-			dispatch({ type: 'ATTRIBUTE_CREATE', data })
+			dispatch({ type: 'TEMPLATE_CREATE', data })
 
 			request.post({
-				url: config.apiUrl + '/attributes',
+				url: config.apiUrl + '/templates',
 				headers: {
 					'Authorization': 'Token ' + user.token,
 				},
@@ -73,27 +65,22 @@ export default {
 			}, (err, httpResponse, data) => {
 				if (err || httpResponse.statusCode != 200) {
 					dispatch({ type: 'ERROR_ADD', err, data })
-					dispatch({ type: 'ATTRIBUTE_CREATE_FAIL', err, data })
+					dispatch({ type: 'TEMPLATE_CREATE_FAIL', err, data })
 					return
 				}
 
-				notify.created('attribute')
-				dispatch({ type: 'ATTRIBUTE_CREATE_SUCCESS', item: data })
+				notify.created('template')
+				dispatch({ type: 'TEMPLATE_CREATE_SUCCESS', item: data })
 			})
 		}
 	},
 
 	update (data) {
 		return (dispatch) => {
-			dispatch({ type: 'ATTRIBUTE_UPDATE', data })
-
-			const include = 'converters,calibrators,validators'
+			dispatch({ type: 'TEMPLATE_UPDATE', data })
 
 			request.put({
-				url: config.apiUrl + '/attributes/' + data.id,
-				qs: {
-					include,
-				},
+				url: config.apiUrl + '/templates/' + data.id,
 				headers: {
 					'Authorization': 'Token ' + user.token,
 				},
@@ -102,22 +89,22 @@ export default {
 			}, (err, httpResponse, data) => {
 				if (err || httpResponse.statusCode != 200) {
 					dispatch({ type: 'ERROR_ADD', err, data })
-					dispatch({ type: 'ATTRIBUTE_UPDATE_FAIL', err, data })
+					dispatch({ type: 'TEMPLATE_UPDATE_FAIL', err, data })
 					return
 				}
 
-				notify.updated('attribute')
-				dispatch({ type: 'ATTRIBUTE_UPDATE_SUCCESS', item: data })
+				notify.updated('template')
+				dispatch({ type: 'TEMPLATE_UPDATE_SUCCESS', item: data })
 			})
 		}
 	},
 
 	destroy (id, cb) {
 		return (dispatch) => {
-			dispatch({ type: 'ATTRIBUTE_DESTROY', id })
+			dispatch({ type: 'TEMPLATE_DESTROY', id })
 
 			request.delete({
-				url: config.apiUrl + '/attributes/' + id,
+				url: config.apiUrl + '/templates/' + id,
 				headers: {
 					'Authorization': 'Token ' + user.token,
 				},
@@ -125,13 +112,13 @@ export default {
 			}, (err, httpResponse, data) => {
 				if (err || httpResponse.statusCode != 200) {
 					dispatch({ type: 'ERROR_ADD', err, data })
-					dispatch({ type: 'ATTRIBUTE_DESTROY_FAIL', err, data })
+					dispatch({ type: 'TEMPLATE_DESTROY_FAIL', err, data })
 					if (cb) cb(err || data)
 					return
 				}
 
-				notify.destroyed('attribute')
-				dispatch({ type: 'ATTRIBUTE_DESTROY_SUCCESS', item: data })
+				notify.destroyed('template')
+				dispatch({ type: 'TEMPLATE_DESTROY_SUCCESS', item: data })
 				if (cb) cb()
 			})
 		}

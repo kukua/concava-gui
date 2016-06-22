@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Title from '../title'
 import { Link } from 'react-router'
+import { instance as user } from '../../lib/user'
 import actions from '../../actions/user'
 
 const mapStateToProps = (state) => {
@@ -27,7 +28,7 @@ class Login extends React.Component {
 
 	componentWillReceiveProps (next) {
 		if ( ! next.isFetching && next.item) {
-			localStorage.token = next.item.token
+			user.set(next.item)
 			this.context.router.replace('/')
 		}
 	}

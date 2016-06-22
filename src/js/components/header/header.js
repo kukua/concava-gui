@@ -4,7 +4,9 @@ import Menu from './menu'
 export default class Header extends React.Component {
 	render () {
 		return  (
-			<Menu />
+			<div>
+				<Menu />
+			</div>
 		)
 	}
 }
