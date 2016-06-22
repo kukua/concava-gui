@@ -74,7 +74,7 @@ class Index extends React.Component {
 											<td>{calibrator}</td>
 											<td>{validators}</td>
 											<td width="140px" class="text-right">
-												<Link to={{ pathname: '/attributes/' + item.id + '/edit' }}>Edit</Link>
+												<Link to={'/attributes/' + item.id + '/edit'}>Edit</Link>
 												{' | '}
 												<a href="javascript:;" onClick={() => this.setState({ destroy: item })}>Delete</a>
 											</td>

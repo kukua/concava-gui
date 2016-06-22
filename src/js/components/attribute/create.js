@@ -30,10 +30,10 @@ class Create extends React.Component {
 
 	render () {
 		let query = this.props.location.query
-		let item = Object.assign({
+		let item = {
 			template_id: parseInt(query.template_id),
 			order: parseInt(query.order),
-		}, this.props.item || {})
+		}
 
 		return (
 			<div class="row">

@@ -3,26 +3,29 @@ import React from 'react'
 export default class Form extends React.Component {
 	constructor (props) {
 		super(props)
-		this.state = { item: (this.props.item || {}) }
+		this.state = {}
 	}
 
-	componentWillReceiveProps (next) {
-		this.setState({ item: next.item })
+	componentWillReceiveProps () {
+		this.setState({})
 	}
 
+	getItem () {
+		let item = (this.props.item || {})
+		return Object.assign({}, item, this.state)
+	}
 	onChange (ev) {
-		let item = this.state.item
-		item[ev.target.name] = ev.target.value
-		this.setState({ item })
+		let key = ev.target.name
+		let val = ev.target.value
+		this.setState({ [key]: val })
 	}
 	onSubmit (ev) {
 		ev.preventDefault()
-
-		this.props.onSubmit(this.state.item)
+		this.props.onSubmit(this.getItem())
 	}
 
 	render () {
-		let item = (this.state.item || {})
+		let item = this.getItem()
 
 		return (
 			<div>
@@ -48,7 +51,7 @@ export default class Form extends React.Component {
 Form.propTypes = {
 	item: React.PropTypes.shape({
 		id: React.PropTypes.number,
-		name: React.PropTypes.string.isRequired,
+		name: React.PropTypes.string,
 	}),
 	onSubmit: React.PropTypes.func.isRequired,
 	submitLabel: React.PropTypes.string,

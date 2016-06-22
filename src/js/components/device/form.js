@@ -20,34 +20,33 @@ const mapDispatchToProps = (dispatch) => {
 class Form extends React.Component {
 	constructor (props) {
 		super(props)
-		this.state = { item: this.getItem() }
-	}
-	getItem () {
-		return (this.state && this.state.item || this.props.item || {})
+		this.state = {}
 	}
 
 	componentWillMount () {
 		this.props.onFetch(user.id)
 	}
-
-	componentWillReceiveProps (next) {
-		this.setState({ item: next.item })
+	componentWillReceiveProps () {
+		this.setState({})
 	}
 
+	getItem () {
+		let item = (this.props.item || {})
+		return Object.assign({}, item, this.state)
+	}
 	onChange (ev) {
-		let item = this.getItem()
-		item[ev.target.name] = ev.target.value
-		this.setState({ item })
+		let key = ev.target.name
+		let val = ev.target.value
+		this.setState({ [key]: val })
 	}
 	onTemplateChange (ev) {
-		let item = this.getItem()
-		item[ev.target.name] = parseInt(ev.target.value)
-		this.setState({ item })
+		let key = ev.target.name
+		let val = parseInt(ev.target.value)
+		this.setState({ [key]: val })
 	}
 	onSubmit (ev) {
 		ev.preventDefault()
-
-		this.props.onSubmit(this.state.item)
+		this.props.onSubmit(this.getItem())
 	}
 
 	render () {
@@ -71,7 +70,7 @@ class Form extends React.Component {
 					<div class="form-group">
 						<label class="col-sm-offset-1 col-sm-3 control-label" for="udid">Template</label>
 						<div class="col-sm-6">
-							<select name="template_id" class="form-control" value={item.template_id} onChange={this.onTemplateChange.bind(this)} disabled={this.props.loading || this.props.isFetching}>
+							<select name="template_id" class="form-control" value={item.template_id || ''} onChange={this.onTemplateChange.bind(this)} disabled={this.props.loading || this.props.isFetching}>
 								<option>-- Pick template --</option>
 								{_.map(this.props.templates, (template) => (
 									<option key={template.id} value={template.id}>{template.name}</option>
@@ -96,10 +95,10 @@ Form.propTypes = {
 	isFetching: React.PropTypes.bool,
 	templates: React.PropTypes.array,
 	item: React.PropTypes.shape({
-		id: React.PropTypes.number.isRequired,
+		id: React.PropTypes.number,
 		template_id: React.PropTypes.number.isRequired,
-		udid: React.PropTypes.string.isRequired,
-		name: React.PropTypes.string.isRequired,
+		udid: React.PropTypes.string,
+		name: React.PropTypes.string,
 	}),
 	onSubmit: React.PropTypes.func.isRequired,
 	submitLabel: React.PropTypes.string,

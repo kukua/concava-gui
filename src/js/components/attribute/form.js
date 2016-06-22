@@ -4,34 +4,29 @@ import concava from '../../lib/concava'
 export default class Form extends React.Component {
 	constructor (props) {
 		super(props)
-		this.state = {
-			item: this.prepareItem(this.props.item),
-		}
+		this.state = {}
 	}
 
-	prepareItem (item) {
-		return (item ? Object.assign({}, item, concava(item)) : {})
+	componentWillReceiveProps () {
+		this.setState({})
 	}
 
-	componentWillReceiveProps (next) {
-		this.setState({
-			item: this.prepareItem(next.item),
-		})
+	getItem () {
+		let item = (this.props.item || {})
+		return Object.assign({}, item, concava(item), this.state)
 	}
-
 	onChange (ev) {
-		let item = this.state.item
-		item[ev.target.name] = ev.target.value
-		this.setState({ item })
+		let key = ev.target.name
+		let val = ev.target.value
+		this.setState({ [key]: val })
 	}
 	onSubmit (ev) {
 		ev.preventDefault()
-
-		this.props.onSubmit(this.state.item)
+		this.props.onSubmit(this.getItem())
 	}
 
 	render () {
-		let item = (this.state.item || {})
+		let item = this.getItem()
 
 		return (
 			<div>
