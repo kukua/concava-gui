@@ -37,8 +37,12 @@ class Menu extends React.Component {
 						<li class={isActive('templates') ? 'active' : ''}><Link to="templates">Templates</Link></li>
 					</ul>
 					<ul class="nav navbar-nav pull-right">
-						<li><a href="javascript:;">{user.get('name')}</a></li>
-						<li><a href="javascript:;" onClick={this.onLogout.bind(this)}>Logout</a></li>
+						<li class="dropdown">
+							<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{user.get('name')} <span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="javascript:;" onClick={this.onLogout.bind(this)}>Logout</a></li>
+							</ul>
+						</li>
 					</ul>
 				</div>
 			)
