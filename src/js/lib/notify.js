@@ -2,6 +2,9 @@ import { NotificationManager } from 'react-notifications'
 import _ from 'underscore'
 
 export default {
+	error (message) {
+		NotificationManager.error(message)
+	},
 	action (type, action) {
 		let message = _.capitalize(type, true) + ' ' + action + '.'
 		NotificationManager.success(message)

@@ -16,7 +16,10 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		onLogin (data) {
 			dispatch({ type: 'USER_LOGIN_SUCCESS', item: data })
-		}
+		},
+		onError (err) {
+			dispatch({ type: 'ERROR_ADD', err })
+		},
 	}
 }
 
@@ -25,11 +28,18 @@ class Register extends React.Component {
 		ev.preventDefault()
 
 		let form = ev.target
+		let password = form.password.value
+		let passwordConfirm = form.password_confirmation.value
+
+		if (password !== passwordConfirm) {
+			this.props.onError('The passwords do not match.')
+			return
+		}
+
 		this.props.onCreate({
 			name: form.name.value,
 			email: form.email.value,
-			password: form.password.value,
-			password_confirmation: form.password_confirmation.value
+			password,
 		})
 	}
 
@@ -88,6 +98,7 @@ Register.propTypes = {
 	onCreate: React.PropTypes.func.isRequired,
 	isCreating: React.PropTypes.bool.isRequired,
 	onLogin: React.PropTypes.func.isRequired,
+	onError: React.PropTypes.func.isRequired,
 }
 Register.contextTypes = {
 	router: React.PropTypes.object.isRequired
