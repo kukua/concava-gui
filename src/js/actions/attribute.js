@@ -108,6 +108,7 @@ export default {
 
 				notify.updated('attribute')
 				dispatch({ type: 'ATTRIBUTE_UPDATE_SUCCESS', item: data })
+				dispatch({ type: 'ATTRIBUTE_FETCH_SUCCESS', item: data })
 			})
 		}
 	},

@@ -6,9 +6,8 @@ import actions from '../../actions/template'
 import AttributeIndex from '../attribute/index'
 
 const mapStateToProps = (state) => {
-	let { loading: isUpdating, item } = state.template.update
-	let { loading: isFetching, item: fetchedItem } = state.template.fetch
-	if ( ! item) item = fetchedItem
+	let { loading: isUpdating } = state.template.update
+	let { loading: isFetching, item } = state.template.fetch
 	return { isFetching, isUpdating, item }
 }
 

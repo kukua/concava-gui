@@ -97,6 +97,7 @@ export default {
 
 				notify.updated('device')
 				dispatch({ type: 'DEVICE_UPDATE_SUCCESS', item: data })
+				dispatch({ type: 'DEVICE_FETCH_SUCCESS', item: data })
 			})
 		}
 	},

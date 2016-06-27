@@ -95,6 +95,7 @@ export default {
 
 				notify.updated('template')
 				dispatch({ type: 'TEMPLATE_UPDATE_SUCCESS', item: data })
+				dispatch({ type: 'TEMPLATE_FETCH_SUCCESS', item: data })
 			})
 		}
 	},

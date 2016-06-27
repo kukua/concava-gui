@@ -5,9 +5,8 @@ import Form from './form'
 import actions from '../../actions/device'
 
 const mapStateToProps = (state) => {
-	let { loading: isUpdating, item } = state.device.update
-	let { loading: isFetching, item: fetchedItem } = state.device.fetch
-	if ( ! item) item = fetchedItem
+	let { loading: isUpdating } = state.device.update
+	let { loading: isFetching, item } = state.device.fetch
 	return { isFetching, isUpdating, item }
 }
 
