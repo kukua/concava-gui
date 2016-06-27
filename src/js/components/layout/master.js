@@ -7,7 +7,7 @@ export default class Master extends React.Component {
 		return (
 			<div>
 				<div class="container">
-					<Header />
+					<Header location={this.props.location} />
 					{this.props.children}
 					<Notifications />
 				</div>
@@ -17,5 +17,8 @@ export default class Master extends React.Component {
 }
 
 Master.propTypes = {
-	children: React.PropTypes.element
+	children: React.PropTypes.element,
+	location: React.PropTypes.shape({
+		pathname: React.PropTypes.string.isRequired,
+	}).isRequired,
 }

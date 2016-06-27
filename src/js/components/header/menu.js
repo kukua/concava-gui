@@ -1,4 +1,5 @@
 import React from 'react'
+import _ from 'underscore'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { instance as user } from '../../lib/user'
@@ -27,14 +28,14 @@ class Menu extends React.Component {
 	}
 
 	getMenu () {
-		let isActive = (to) => this.context.router.isActive(to, true)
+		let isActive = (to) => _.startsWith(this.props.location.pathname, to, 1)
 
 		if (user.isLoggedIn) {
 			return (
 				<div class="navbar-collapse collapse" id="navbar-main">
 					<ul class="nav navbar-nav">
 						<li class={isActive('devices') ? 'active' : ''}><Link to="devices">Devices</Link></li>
-						<li class={isActive('templates') ? 'active' : ''}><Link to="templates">Templates</Link></li>
+						<li class={isActive('templates') || isActive('attributes') ? 'active' : ''}><Link to="templates">Templates</Link></li>
 					</ul>
 					<ul class="nav navbar-nav pull-right">
 						<li class="dropdown">
@@ -76,6 +77,11 @@ class Menu extends React.Component {
 	}
 }
 
+Menu.propTypes = {
+	location: React.PropTypes.shape({
+		pathname: React.PropTypes.string.isRequired,
+	}).isRequired,
+}
 Menu.contextTypes = {
 	router: React.PropTypes.object.isRequired
 }
