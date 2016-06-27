@@ -27,12 +27,14 @@ class Menu extends React.Component {
 	}
 
 	getMenu () {
+		let isActive = (to) => this.context.router.isActive(to, true)
+
 		if (user.isLoggedIn) {
 			return (
 				<div class="navbar-collapse collapse" id="navbar-main">
 					<ul class="nav navbar-nav">
-						<li><Link to="devices">Devices</Link></li>
-						<li><Link to="templates">Templates</Link></li>
+						<li class={isActive('devices') ? 'active' : ''}><Link to="devices">Devices</Link></li>
+						<li class={isActive('templates') ? 'active' : ''}><Link to="templates">Templates</Link></li>
 					</ul>
 					<ul class="nav navbar-nav pull-right">
 						<li><a href="javascript:;">{user.get('name')}</a></li>
@@ -44,7 +46,7 @@ class Menu extends React.Component {
 			return (
 				<div class="navbar-collapse collapse" id="navbar-main">
 					<ul class="nav navbar-nav pull-right">
-						<li><Link to="/users/login">Login</Link></li>
+						<li class={isActive('/users/login') ? 'active' : ''}><Link to="/users/login">Login</Link></li>
 					</ul>
 				</div>
 			)
