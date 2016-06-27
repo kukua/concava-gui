@@ -15,13 +15,19 @@ const mapDispatchToProps = (/*dispatch*/) => {
 }
 
 class Menu extends React.Component {
+	componentWillMount () {
+		user.onChange(() => {
+			this.forceUpdate()
+		})
+	}
+
 	onLogout () {
 		actions.logout()
 		this.context.router.replace('/users/login')
 	}
 
 	getMenu () {
-		if (user.token) {
+		if (user.isLoggedIn) {
 			return (
 				<div class="navbar-collapse collapse" id="navbar-main">
 					<ul class="nav navbar-nav">

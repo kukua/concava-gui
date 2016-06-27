@@ -21,6 +21,7 @@ export default class User {
 	set id (val) { return this.set('id', val) }
 	get token () { return this.get('token') }
 	set token (val) { return this.set('token', val) }
+	get isLoggedIn () { return !! this.token }
 	clear () {
 		this.set({})
 	}

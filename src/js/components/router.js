@@ -20,11 +20,11 @@ import AttributeCreate from '../components/attribute/create'
 import AttributeUpdate from '../components/attribute/update'
 
 function requireAuthentication (nextState, replace) {
-	if ( ! user.token) replace('/users/login')
+	if ( ! user.isLoggedIn) replace('/users/login')
 }
 
 function isAuthenticated (nextState, replace) {
-	if (user.token) replace('/')
+	if (user.isLoggedIn) replace('/')
 }
 
 export default (
