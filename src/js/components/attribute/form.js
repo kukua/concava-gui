@@ -40,13 +40,13 @@ export default class Form extends React.Component {
 					<div class="form-group">
 						<label class="col-sm-3 control-label" for="name">Converter</label>
 						<div class="col-sm-9">
-							<input type="text" name="converter" class="form-control" value={item.converter || ''} placeholder="int16le" onChange={this.onChange.bind(this)} disabled={this.props.loading} />
+							<input type="text" name="converter" class="form-control" value={item.converter || ''} placeholder="example: int16le" onChange={this.onChange.bind(this)} disabled={this.props.loading} />
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-3 control-label" for="name">Calibrator</label>
 						<div class="col-sm-9">
-							<textarea rows={3} name="calibrator" class="form-control" value={item.calibrator || ''} placeholder="return val / 10" onChange={this.onChange.bind(this)} disabled={this.props.loading} />
+							<textarea rows={3} name="calibrator" class="form-control" value={item.calibrator || ''} placeholder="example: return val / 10" onChange={this.onChange.bind(this)} disabled={this.props.loading} />
 						</div>
 					</div>
 					<div class="form-group">

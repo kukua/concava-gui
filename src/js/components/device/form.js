@@ -64,7 +64,7 @@ class Form extends React.Component {
 					<div class="form-group">
 						<label class="col-sm-3 control-label" for="udid">Device ID</label>
 						<div class="col-sm-9">
-							<input type="text" name="udid" class="form-control" value={item.udid || ''} placeholder="abcdef0123456789" onChange={this.onChange.bind(this)} disabled={this.props.loading} />
+							<input type="text" name="udid" class="form-control" value={item.udid || ''} placeholder="example: abcdef0123456789 (16 lowercase hexadecimal characters)" onChange={this.onChange.bind(this)} disabled={this.props.loading} />
 						</div>
 					</div>
 					<div class="form-group">
