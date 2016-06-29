@@ -19,6 +19,10 @@ npm start
 # Developing
 grunt watch
 npm start
+
+# Production
+# > Edit port in docker-compose.yml
+docker-compose up -d
 ```
 
 ## License
