@@ -1,4 +1,6 @@
 import React from 'react'
+import _ from 'underscore'
+import config from '../../config.js'
 import concava from '../../lib/concava'
 
 export default class Form extends React.Component {
@@ -40,7 +42,12 @@ export default class Form extends React.Component {
 					<div class="form-group">
 						<label class="col-sm-3 control-label" for="name">Converter</label>
 						<div class="col-sm-9">
-							<input type="text" name="converter" class="form-control" value={item.converter || ''} placeholder="example: int16le" onChange={this.onChange.bind(this)} disabled={this.props.loading} />
+							<select name="converter" class="form-control" value={item.converter || ''} onChange={this.onChange.bind(this)} disabled={this.props.loading}>
+								<option>-- Pick a converter --</option>
+								{_.map(config.converters, (converter) => (
+									<option key={converter} value={converter}>{converter}</option>
+								))}
+							</select>
 						</div>
 					</div>
 					<div class="form-group">
