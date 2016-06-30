@@ -39,6 +39,11 @@ class Form extends React.Component {
 		let val = ev.target.value
 		this.setState({ [key]: val })
 	}
+	onUDIDChange (ev) {
+		let key = ev.target.name
+		let val = ev.target.value.toLowerCase().replace(/[^a-f0-9]/g, '').substr(0, 16)
+		this.setState({ [key]: val })
+	}
 	onTemplateChange (ev) {
 		let key = ev.target.name
 		let val = parseInt(ev.target.value)
@@ -64,7 +69,7 @@ class Form extends React.Component {
 					<div class="form-group">
 						<label class="col-sm-3 control-label" for="udid">Device ID</label>
 						<div class="col-sm-9">
-							<input type="text" name="udid" class="form-control" value={item.udid || ''} placeholder="example: abcdef0123456789 (16 lowercase hexadecimal characters)" onChange={this.onChange.bind(this)} disabled={this.props.loading} />
+							<input type="text" name="udid" class="form-control" value={item.udid || ''} placeholder="example: abcdef0123456789 (16 lowercase hexadecimal characters)" onChange={this.onUDIDChange.bind(this)} disabled={this.props.loading} />
 						</div>
 					</div>
 					<div class="form-group">
