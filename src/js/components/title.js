@@ -7,21 +7,19 @@ export default class Title extends React.Component {
 
 		return (
 			<div>
-				<div class="row">
-					<div class="col-xs-9">
-						<h3>
-							{this.props.title}
-							{this.props.subTitle && (<small> - {this.props.subTitle}</small>)}
-						</h3>
-					</div>
-					<div class="col-xs-3 btn-back-container">
+				<h3>
+					{this.props.title}
+					{this.props.subTitle && (<small> - {this.props.subTitle}</small>)}
+					<div class="btn-group pull-right">
 						{backButtonLabel && ! this.props.loading &&
-							<a href="javascript:;" class="btn-back" onClick={hashHistory.goBack}>
+							<a href="javascript:;" class="btn btn-sm btn-default" onClick={hashHistory.goBack}>
 								&laquo; {backButtonLabel}
 							</a>
 						}
+						{this.props.children}
 					</div>
-				</div>
+					<div class="clearfix" />
+				</h3>
 				<hr />
 			</div>
 		)
@@ -33,4 +31,5 @@ Title.propTypes = {
 	subTitle: React.PropTypes.string,
 	backButtonLabel: React.PropTypes.string,
 	loading: React.PropTypes.bool,
+	children: React.PropTypes.element,
 }

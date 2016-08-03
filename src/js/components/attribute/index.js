@@ -92,7 +92,9 @@ class Index extends React.Component {
 		return (
 			<div class="row">
 				<div class="col-sm-offset-2 col-sm-8">
-					<Title title="Attributes" />
+					<Title title="Attributes">
+						<Link to={{ pathname: '/attributes/create', query: { template_id: this.props.templateId, order: itemCount } }} class="btn btn-sm btn-success">Add attribute</Link>
+					</Title>
 					<table class="table table-striped">
 						<thead>
 							<tr>
@@ -138,7 +140,6 @@ class Index extends React.Component {
 							}
 						</tbody>
 					</table>
-					<Link to={{ pathname: '/attributes/create', query: { template_id: this.props.templateId, order: itemCount } }} class="btn btn-primary pull-right">Add attribute</Link>
 					<ConfirmModal
 						isOpen={ !! this.state.destroy.id}
 						title="Delete attribute?"

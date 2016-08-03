@@ -10,14 +10,6 @@ body {
 	background-color: rgba(255,255,255,0.1);
 }
 
-.btn-back-container {
-	height: 60.1px;
-	text-align: right;
-}
-.btn-back {
-	line-height: 60.1px; /* same as h3 */
-}
-
 ul.list-hover {
 	margin-bottom: 0;
 	padding: 2px 4px;
@@ -27,32 +19,3 @@ ul.list-hover:focus,
 ul.list-hover:hover {
 	background-color: rgba(255,255,255,0.1);
 }
-
-/*
-input.form-control, select.form-control {
-	color: #fff;
-	background: #222;
-	background: rgba(255,255,255,0.1);
-	border-bottom: 1px solid #00BC8C;
-	border-radius: 0;
-}
-
-input.form-control:focus,
-select.form-control:focus,
-input.form-control:active,
-select.form-control:active,
-input.form-control:hover,
-select.form-control:hover {
-	border-bottom: 1px solid #FFF;
-}
-
-select.form-control option:hover,
-select.form-control option {
-	background: #00BC8C;
-	color: #FFF;
-}
-select.form-control option:not(:checked) {
-	background: #222;
-    color:#FFF;
-}
-*/

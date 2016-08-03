@@ -51,7 +51,9 @@ class Index extends React.Component {
 		return (
 			<div class="row">
 				<div class="col-sm-offset-2 col-sm-8">
-					<Title title="Devices" />
+					<Title title="Devices">
+						<Link to="/devices/create" class="btn btn-sm btn-success">Add device</Link>
+					</Title>
 					<table class="table table-striped">
 						<thead>
 							<tr>
@@ -81,7 +83,6 @@ class Index extends React.Component {
 							}
 						</tbody>
 					</table>
-					<Link to="/devices/create" class="btn btn-primary pull-right">Add device</Link>
 					<ConfirmModal
 						isOpen={ !! this.state.destroy.id}
 						title="Delete device?"
