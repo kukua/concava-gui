@@ -28,8 +28,9 @@ class Update extends React.Component {
 	}
 
 	onSubmit (data) {
-		this.props.onUpdate(data).then(() => {
+		this.props.onUpdate(data).then((item) => {
 			notify.updated('attribute')
+			this.context.router.replace('/templates/' + item.template_id + '/edit')
 		})
 	}
 
@@ -56,6 +57,9 @@ Update.propTypes = {
 	onUpdate: React.PropTypes.func.isRequired,
 	isUpdating: React.PropTypes.bool,
 	item: React.PropTypes.object,
+}
+Update.contextTypes = {
+	router: React.PropTypes.object.isRequired,
 }
 
 export default connect(

@@ -20,9 +20,9 @@ const mapDispatchToProps = (dispatch) => {
 
 class Create extends React.Component {
 	onSubmit (data) {
-		this.props.onCreate(data).then((item) => {
+		this.props.onCreate(data).then(() => {
 			notify.created('device')
-			this.context.router.replace('/devices/' + item.id + '/edit')
+			this.context.router.replace('/devices')
 		})
 	}
 
@@ -44,7 +44,7 @@ Create.propTypes = {
 	item: React.PropTypes.object,
 }
 Create.contextTypes = {
-	router: React.PropTypes.object.isRequired
+	router: React.PropTypes.object.isRequired,
 }
 
 export default connect(

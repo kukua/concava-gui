@@ -22,7 +22,7 @@ class Create extends React.Component {
 	onSubmit (data) {
 		this.props.onCreate(data).then((item) => {
 			notify.created('attribute')
-			this.context.router.replace('/attributes/' + item.id + '/edit')
+			this.context.router.replace('/templates/' + item.template_id + '/edit')
 		})
 	}
 
@@ -53,7 +53,7 @@ Create.propTypes = {
 	}).isRequired,
 }
 Create.contextTypes = {
-	router: React.PropTypes.object.isRequired
+	router: React.PropTypes.object.isRequired,
 }
 
 export default connect(

@@ -30,6 +30,7 @@ class Update extends React.Component {
 	onSubmit (data) {
 		this.props.onUpdate(data).then(() => {
 			notify.updated('device')
+			this.context.router.replace('/devices')
 		})
 	}
 
@@ -58,6 +59,9 @@ Update.propTypes = {
 	onUpdate: React.PropTypes.func.isRequired,
 	isUpdating: React.PropTypes.bool,
 	item: React.PropTypes.object,
+}
+Update.contextTypes = {
+	router: React.PropTypes.object.isRequired,
 }
 
 export default connect(
