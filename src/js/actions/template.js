@@ -106,6 +106,32 @@ export default {
 		}
 	},
 
+	duplicate (id) {
+		return (dispatch) => {
+			dispatch({ type: 'TEMPLATE_DUPLICATE' })
+
+			return fetch(config.apiUrl + '/templates/' + id + '/duplicate', {
+				method: 'POST',
+				headers: {
+					'Authorization': 'Token ' + user.token,
+					'Accept': 'application/json',
+				},
+			})
+				.then(checkStatus)
+				.then(parseJSON)
+				.then((item) => {
+					dispatch({ type: 'TEMPLATE_DUPLICATE_SUCCESS', item })
+					dispatch({ type: 'TEMPLATE_FETCH_SUCCESS', item })
+					return item
+				})
+				.catch((err) => {
+					dispatch({ type: 'ERROR_ADD', err })
+					dispatch({ type: 'TEMPLATE_DUPLICATE_FAIL', err })
+					return Promise.reject(err)
+				})
+		}
+	},
+
 	destroy (id) {
 		return (dispatch) => {
 			dispatch({ type: 'TEMPLATE_DESTROY' })

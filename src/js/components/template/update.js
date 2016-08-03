@@ -9,7 +9,8 @@ import AttributeIndex from '../attribute/index'
 const mapStateToProps = (state) => {
 	let { loading: isUpdating } = state.template.update
 	let { loading: isFetching, item } = state.template.fetch
-	return { isFetching, isUpdating, item }
+	let { loading: isDuplicating } = state.template.duplicate
+	return { isFetching, isUpdating, isDuplicating, item }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -19,6 +20,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		onUpdate (data) {
 			return dispatch(actions.update(data))
+		},
+		onDuplicate (id) {
+			return dispatch(actions.duplicate(id))
 		},
 	}
 }
@@ -34,14 +38,23 @@ class Update extends React.Component {
 		})
 	}
 
+	duplicate () {
+		this.props.onDuplicate(this.props.item.id).then((item) => {
+			notify.action('template', 'duplicated')
+			this.context.router.replace('/templates/' + item.id + '/edit')
+		})
+	}
+
 	render () {
-		let isLoading = (this.props.isFetching || this.props.isUpdating)
+		let isLoading = (this.props.isFetching || this.props.isUpdating || this.props.isDuplicating)
 
 		return (
 			<div>
 				<div class="row">
 					<div class="col-sm-offset-2 col-sm-8">
-						<Title title="Edit template" loading={isLoading} />
+						<Title title="Edit template" loading={isLoading}>
+							<a href="javascript:;" class="btn btn-sm btn-warning" onClick={() => this.duplicate()}>Duplicate</a>
+						</Title>
 						<Form item={this.props.item} submitLabel="Update template" onSubmit={this.onSubmit.bind(this)} loading={isLoading} />
 					</div>
 				</div>
@@ -61,7 +74,12 @@ Update.propTypes = {
 	isFetching: React.PropTypes.bool,
 	onUpdate: React.PropTypes.func.isRequired,
 	isUpdating: React.PropTypes.bool,
+	onDuplicate: React.PropTypes.func.isRequired,
+	isDuplicating: React.PropTypes.bool,
 	item: React.PropTypes.object,
+}
+Update.contextTypes = {
+	router: React.PropTypes.object.isRequired,
 }
 
 export default connect(

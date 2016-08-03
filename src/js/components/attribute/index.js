@@ -42,6 +42,11 @@ class Index extends React.Component {
 	componentWillMount () {
 		this.loadData()
 	}
+	componentWillReceiveProps (next) {
+		if (next.templateId !== this.props.templateId) {
+			setTimeout(this.loadData.bind(this), 1)
+		}
+	}
 
 	formatCalibrator (val) {
 		let line = ('' + val).trim().split('\n')[0].trim() // First non-empty line
