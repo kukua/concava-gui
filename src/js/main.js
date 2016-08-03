@@ -16,8 +16,8 @@ require('whatwg-fetch')
 _.mixin(s.exports())
 assign.polyfill()
 
-user.set(cookie.get('user') || {})
-user.onChange((data) => cookie.set('user', data, { expires: 7, secure: true }))
+user.set(JSON.parse(cookie.get('user') || '{}'))
+user.onChange((data) => cookie.set('user', data, { expires: 7 }))
 
 const store = createStore(reducers, applyMiddleware(thunk))
 
