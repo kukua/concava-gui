@@ -8,15 +8,15 @@ export default class Title extends React.Component {
 		return (
 			<div>
 				<div class="row">
-					<div class="col-sm-10">
+					<div class="col-xs-9">
 						<h3>
 							{this.props.title}
 							{this.props.subTitle && (<small> - {this.props.subTitle}</small>)}
 						</h3>
 					</div>
-					<div class="col-sm-2 text-right">
+					<div class="col-xs-3 btn-back-container">
 						{backButtonLabel && ! this.props.loading &&
-							<a href="javascript:;" class="btn-link-title" onClick={hashHistory.goBack}>
+							<a href="javascript:;" class="btn-back" onClick={hashHistory.goBack}>
 								&laquo; {backButtonLabel}
 							</a>
 						}
