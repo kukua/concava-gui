@@ -12,13 +12,13 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		onCreate (data) {
-			dispatch(actions.create(data))
+			return dispatch(actions.create(data))
 		},
-		onLogin (data) {
-			dispatch({ type: 'USER_LOGIN_SUCCESS', item: data })
+		onLogin (email, password) {
+			return dispatch(actions.login(email, password))
 		},
 		onError (err) {
-			dispatch({ type: 'ERROR_ADD', err })
+			return dispatch({ type: 'ERROR_ADD', err })
 		},
 	}
 }
@@ -40,18 +40,15 @@ class Register extends React.Component {
 			name: form.name.value,
 			email: form.email.value,
 			password,
+		}).then((item) => {
+			user.set(item)
+			this.context.router.replace('/')
 		})
 	}
 
-	componentWillReceiveProps (next) {
-		if ( ! next.isCreating && next.item) {
-			user.set(next.item)
-			this.context.router.replace('/')
-			this.props.onLogin(next.item)
-		}
-	}
-
 	render() {
+		let isLoading = this.props.isCreating
+
 		return (
 			<div class="row">
 				<div class="col-sm-offset-2 col-sm-8">
@@ -60,31 +57,31 @@ class Register extends React.Component {
 						<div class="form-group">
 							<label class="col-sm-offset-1 col-sm-3 control-label" for="name">Name</label>
 							<div class="col-sm-6">
-								<input type="name" id="name" name="name" class="form-control" />
+								<input type="name" id="name" name="name" class="form-control" disabled={isLoading} />
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-offset-1 col-sm-3 control-label" for="email">E-mail address</label>
 							<div class="col-sm-6">
-								<input type="email" id="email" name="email" class="form-control" />
+								<input type="email" id="email" name="email" class="form-control" disabled={isLoading} />
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-offset-1 col-sm-3 control-label" for="password">Password</label>
 							<div class="col-sm-6">
-								<input type="password" id="password" name="password" class="form-control" />
+								<input ref="password" type="password" id="password" name="password" class="form-control" disabled={isLoading} />
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-offset-1 col-sm-3 control-label" for="password_confirmation">Password (confirm)</label>
 							<div class="col-sm-6">
-								<input type="password" id="password_confirmation" name="password_confirmation" class="form-control" />
+								<input type="password" id="password_confirmation" name="password_confirmation" class="form-control" disabled={isLoading} />
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-offset-1 col-sm-3 control-label"></label>
 							<div class="col-sm-6">
-								<button type="submit" class="btn btn-success pull-left">Register</button>
+								<button type="submit" class="btn btn-success pull-left" disabled={isLoading}>Register</button>
 							</div>
 						</div>
 					</form>

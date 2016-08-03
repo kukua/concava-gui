@@ -1,129 +1,133 @@
-import request from 'request'
 import config from '../config.js'
 import { instance as user } from '../lib/user'
-import notify from '../lib/notify'
+import { checkStatus, parseJSON } from '../lib/fetch'
 
 export default {
 	fetchAll () {
 		return (dispatch) => {
 			dispatch({ type: 'DEVICE_FETCH_ALL' })
 
-			const include = 'template'
-
-			request({
-				url: config.apiUrl + '/devices',
-				qs: {
-					include,
-				},
+			return fetch(config.apiUrl + '/devices?include=template', {
 				headers: {
 					'Authorization': 'Token ' + user.token,
+					'Accept': 'application/json',
 				},
-				json: true
-			}, (err, httpResponse, data) => {
-				if (err || httpResponse.statusCode != 200) {
-					dispatch({ type: 'ERROR_ADD', err, data })
-					dispatch({ type: 'DEVICE_FETCH_ALL_FAIL', err, data })
-					return
-				}
-
-				dispatch({ type: 'DEVICE_FETCH_ALL_SUCCESS', items: data })
 			})
+				.then(checkStatus)
+				.then(parseJSON)
+				.then((items) => {
+					dispatch({ type: 'DEVICE_FETCH_ALL_SUCCESS', items })
+					return items
+				})
+				.catch((err) => {
+					dispatch({ type: 'ERROR_ADD', err })
+					dispatch({ type: 'DEVICE_FETCH_ALL_FAIL', err })
+					return Promise.reject(err)
+				})
 		}
 	},
 
 	fetch (id) {
 		return (dispatch) => {
-			dispatch({ type: 'DEVICE_FETCH', id })
+			dispatch({ type: 'DEVICE_FETCH' })
 
-			request({
-				url: config.apiUrl + '/devices/' + id,
+			return fetch(config.apiUrl + '/devices/' + id, {
 				headers: {
 					'Authorization': 'Token ' + user.token,
+					'Accept': 'application/json',
 				},
-				json: true
-			}, (err, httpResponse, data) => {
-				if (err || httpResponse.statusCode != 200) {
-					dispatch({ type: 'ERROR_ADD', err, data })
-					dispatch({ type: 'DEVICE_FETCH_FAIL', err, data })
-					return
-				}
-
-				dispatch({ type: 'DEVICE_FETCH_SUCCESS', item: data })
 			})
+				.then(checkStatus)
+				.then(parseJSON)
+				.then((item) => {
+					dispatch({ type: 'DEVICE_FETCH_SUCCESS', item })
+					return item
+				})
+				.catch((err) => {
+					dispatch({ type: 'ERROR_ADD', err })
+					dispatch({ type: 'DEVICE_FETCH_FAIL', err })
+					return Promise.reject(err)
+				})
 		}
 	},
 
 	create (data) {
 		return (dispatch) => {
-			dispatch({ type: 'DEVICE_CREATE', data })
+			dispatch({ type: 'DEVICE_CREATE' })
 
-			request.post({
-				url: config.apiUrl + '/devices',
+			return fetch(config.apiUrl + '/devices', {
+				method: 'POST',
 				headers: {
 					'Authorization': 'Token ' + user.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json',
 				},
-				body: data,
-				json: true
-			}, (err, httpResponse, data) => {
-				if (err || httpResponse.statusCode != 200) {
-					dispatch({ type: 'ERROR_ADD', err, data })
-					dispatch({ type: 'DEVICE_CREATE_FAIL', err, data })
-					return
-				}
-
-				notify.created('device')
-				dispatch({ type: 'DEVICE_CREATE_SUCCESS', item: data })
+				body: JSON.stringify(data),
 			})
+				.then(checkStatus)
+				.then(parseJSON)
+				.then((item) => {
+					dispatch({ type: 'DEVICE_CREATE_SUCCESS', item })
+					return item
+				})
+				.catch((err) => {
+					dispatch({ type: 'ERROR_ADD', err })
+					dispatch({ type: 'DEVICE_CREATE_FAIL', err })
+					return Promise.reject(err)
+				})
 		}
 	},
 
 	update (data) {
 		return (dispatch) => {
-			dispatch({ type: 'DEVICE_UPDATE', data })
+			dispatch({ type: 'DEVICE_UPDATE' })
 
-			request.put({
-				url: config.apiUrl + '/devices/' + data.id,
+			return fetch(config.apiUrl + '/devices/' + data.id, {
+				method: 'PUT',
 				headers: {
 					'Authorization': 'Token ' + user.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json',
 				},
-				body: data,
-				json: true
-			}, (err, httpResponse, data) => {
-				if (err || httpResponse.statusCode != 200) {
-					dispatch({ type: 'ERROR_ADD', err, data })
-					dispatch({ type: 'DEVICE_UPDATE_FAIL', err, data })
-					return
-				}
-
-				notify.updated('device')
-				dispatch({ type: 'DEVICE_UPDATE_SUCCESS', item: data })
-				dispatch({ type: 'DEVICE_FETCH_SUCCESS', item: data })
+				body: JSON.stringify(data),
 			})
+				.then(checkStatus)
+				.then(parseJSON)
+				.then((item) => {
+					dispatch({ type: 'DEVICE_UPDATE_SUCCESS', item })
+					dispatch({ type: 'DEVICE_FETCH_SUCCESS', item })
+					return item
+				})
+				.catch((err) => {
+					dispatch({ type: 'ERROR_ADD', err })
+					dispatch({ type: 'DEVICE_UPDATE_FAIL', err })
+					return Promise.reject(err)
+				})
 		}
 	},
 
-	destroy (id, cb) {
+	destroy (id) {
 		return (dispatch) => {
-			dispatch({ type: 'DEVICE_DESTROY', id })
+			dispatch({ type: 'DEVICE_DESTROY' })
 
-			request.delete({
-				url: config.apiUrl + '/devices/' + id,
+			return fetch(config.apiUrl + '/devices/' + id, {
+				method: 'DELETE',
 				headers: {
 					'Authorization': 'Token ' + user.token,
+					'Accept': 'application/json',
 				},
-				json: true
-			}, (err, httpResponse, data) => {
-				if (err || httpResponse.statusCode != 200) {
-					dispatch({ type: 'ERROR_ADD', err, data })
-					dispatch({ type: 'DEVICE_DESTROY_FAIL', err, data })
-					if (cb) cb(err || data)
-					return
-				}
-
-				notify.destroyed('device')
-				dispatch({ type: 'DEVICE_DESTROY_SUCCESS', item: data })
-				if (cb) cb()
 			})
+				.then(checkStatus)
+				.then(parseJSON)
+				.then((item) => {
+					dispatch({ type: 'DEVICE_DESTROY_SUCCESS', item })
+					return item
+				})
+				.catch((err) => {
+					dispatch({ type: 'ERROR_ADD', err })
+					dispatch({ type: 'DEVICE_DESTROY_FAIL', err })
+					return Promise.reject(err)
+				})
 		}
 	},
 }

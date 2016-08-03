@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Title from '../title'
 import Form from './form'
+import notify from '../../lib/notify'
 import actions from '../../actions/device'
 
 const mapStateToProps = (state) => {
@@ -12,20 +13,17 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		onCreate (data) {
-			dispatch(actions.create(data))
+			return dispatch(actions.create(data))
 		}
 	}
 }
 
 class Create extends React.Component {
 	onSubmit (data) {
-		this.props.onCreate(data)
-	}
-
-	componentWillReceiveProps (next) {
-		if ( ! next.isCreating && next.item) {
-			this.context.router.replace('/devices/' + next.item.id + '/edit')
-		}
+		this.props.onCreate(data).then((item) => {
+			notify.created('device')
+			this.context.router.replace('/devices/' + item.id + '/edit')
+		})
 	}
 
 	render () {

@@ -38,9 +38,9 @@
     "react-router": "^2.2.4",
     "redux": "^3.4.0",
     "redux-thunk": "^2.1.0",
-    "request": "^2.72.0",
     "underscore": "^1.8.3",
-    "underscore.string": "^3.3.4"
+    "underscore.string": "^3.3.4",
+    "whatwg-fetch": "^1.0.0"
   },
   "devDependencies": {
     "babel-plugin-react-html-attrs": "^2.0.0",

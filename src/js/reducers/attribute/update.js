@@ -1,7 +1,5 @@
 const initial = {
 	loading: false,
-	err: null,
-	data: null,
 }
 
 export default (state = initial, action) => {
@@ -14,8 +12,6 @@ export default (state = initial, action) => {
 		return Object.assign({}, initial, {
 			loading: false,
 			err: action.err,
-			data: action.data,
-			item: state.item,
 		})
 	case 'ATTRIBUTE_UPDATE_SUCCESS':
 		return Object.assign({}, initial, {

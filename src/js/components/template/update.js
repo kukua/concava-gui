@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Title from '../title'
 import Form from './form'
+import notify from '../../lib/notify'
 import actions from '../../actions/template'
 import AttributeIndex from '../attribute/index'
 
@@ -14,10 +15,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		onFetch (id) {
-			dispatch(actions.fetch(id))
+			return dispatch(actions.fetch(id))
 		},
 		onUpdate (data) {
-			dispatch(actions.update(data))
+			return dispatch(actions.update(data))
 		},
 	}
 }
@@ -28,7 +29,9 @@ class Update extends React.Component {
 	}
 
 	onSubmit (data) {
-		this.props.onUpdate(data)
+		this.props.onUpdate(data).then(() => {
+			notify.updated('template')
+		})
 	}
 
 	render () {

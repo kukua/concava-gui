@@ -1,169 +1,174 @@
-import request from 'request'
 import config from '../config.js'
 import { instance as user } from '../lib/user'
-import notify from '../lib/notify'
+import { checkStatus, parseJSON } from '../lib/fetch'
 
 export default {
 	fetchByTemplateId (id) {
 		return (dispatch) => {
-			dispatch({ type: 'ATTRIBUTE_FETCH_ALL', id })
+			dispatch({ type: 'ATTRIBUTE_FETCH_ALL' })
 
-			const include = 'attributes.converters,attributes.calibrators,attributes.validators'
+			const include = [
+				'attributes.converters',
+				'attributes.calibrators',
+				'attributes.validators',
+			].join(',')
 
-			request({
-				url: config.apiUrl + '/templates',
-				qs: {
-					filter: 'id:' + id,
-					include,
-				},
+			return fetch(config.apiUrl + '/templates?filter=id:' + id + '&include=' + include, {
 				headers: {
 					'Authorization': 'Token ' + user.token,
+					'Accept': 'application/json',
 				},
-				json: true
-			}, (err, httpResponse, data) => {
-				if (err || httpResponse.statusCode != 200) {
-					dispatch({ type: 'ERROR_ADD', err, data })
-					dispatch({ type: 'ATTRIBUTE_FETCH_ALL_FAIL', err, data })
-					return
-				}
-
-				dispatch({ type: 'ATTRIBUTE_FETCH_ALL_SUCCESS', items: data[0].attributes })
 			})
+				.then(checkStatus)
+				.then(parseJSON)
+				.then((data) => {
+					let items = (data[0] ? data[0].attributes : [])
+					dispatch({ type: 'ATTRIBUTE_FETCH_ALL_SUCCESS', items })
+					return items
+				})
+				.catch((err) => {
+					dispatch({ type: 'ERROR_ADD', err })
+					dispatch({ type: 'ATTRIBUTE_FETCH_ALL_FAIL', err })
+					return Promise.reject(err)
+				})
 		}
 	},
 
 	fetch (id) {
 		return (dispatch) => {
-			dispatch({ type: 'ATTRIBUTE_FETCH', id })
+			dispatch({ type: 'ATTRIBUTE_FETCH' })
 
 			const include = 'converters,calibrators,validators'
 
-			request({
-				url: config.apiUrl + '/attributes/' + id,
-				qs: {
-					include,
-				},
+			return fetch(config.apiUrl + '/attributes/' + id + '?include=' + include, {
 				headers: {
 					'Authorization': 'Token ' + user.token,
+					'Accept': 'application/json',
 				},
-				json: true
-			}, (err, httpResponse, data) => {
-				if (err || httpResponse.statusCode != 200) {
-					dispatch({ type: 'ERROR_ADD', err, data })
-					dispatch({ type: 'ATTRIBUTE_FETCH_FAIL', err, data })
-					return
-				}
-
-				dispatch({ type: 'ATTRIBUTE_FETCH_SUCCESS', item: data })
 			})
+				.then(checkStatus)
+				.then(parseJSON)
+				.then((item) => {
+					dispatch({ type: 'ATTRIBUTE_FETCH_SUCCESS', item })
+					return item
+				})
+				.catch((err) => {
+					dispatch({ type: 'ERROR_ADD', err })
+					dispatch({ type: 'ATTRIBUTE_FETCH_FAIL', err })
+					return Promise.reject(err)
+				})
 		}
 	},
 
 	create (data) {
 		return (dispatch) => {
-			dispatch({ type: 'ATTRIBUTE_CREATE', data })
+			dispatch({ type: 'ATTRIBUTE_CREATE' })
 
-			request.post({
-				url: config.apiUrl + '/attributes',
+			return fetch(config.apiUrl + '/attributes', {
+				method: 'POST',
 				headers: {
 					'Authorization': 'Token ' + user.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json',
 				},
-				body: data,
-				json: true
-			}, (err, httpResponse, data) => {
-				if (err || httpResponse.statusCode != 200) {
-					dispatch({ type: 'ERROR_ADD', err, data })
-					dispatch({ type: 'ATTRIBUTE_CREATE_FAIL', err, data })
-					return
-				}
-
-				notify.created('attribute')
-				dispatch({ type: 'ATTRIBUTE_CREATE_SUCCESS', item: data })
+				body: JSON.stringify(data),
 			})
+				.then(checkStatus)
+				.then(parseJSON)
+				.then((item) => {
+					dispatch({ type: 'ATTRIBUTE_CREATE_SUCCESS', item })
+					return item
+				})
+				.catch((err) => {
+					dispatch({ type: 'ERROR_ADD', err })
+					dispatch({ type: 'ATTRIBUTE_CREATE_FAIL', err })
+					return Promise.reject(err)
+				})
 		}
 	},
 
 	update (data) {
 		return (dispatch) => {
-			dispatch({ type: 'ATTRIBUTE_UPDATE', data })
+			dispatch({ type: 'ATTRIBUTE_UPDATE' })
 
 			const include = 'converters,calibrators,validators'
 
-			request.put({
-				url: config.apiUrl + '/attributes/' + data.id,
-				qs: {
-					include,
-				},
+			return fetch(config.apiUrl + '/attributes/' + data.id + '?include=' + include, {
+				method: 'PUT',
 				headers: {
 					'Authorization': 'Token ' + user.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json',
 				},
-				body: data,
-				json: true
-			}, (err, httpResponse, data) => {
-				if (err || httpResponse.statusCode != 200) {
-					dispatch({ type: 'ERROR_ADD', err, data })
-					dispatch({ type: 'ATTRIBUTE_UPDATE_FAIL', err, data })
-					return
-				}
-
-				notify.updated('attribute')
-				dispatch({ type: 'ATTRIBUTE_UPDATE_SUCCESS', item: data })
-				dispatch({ type: 'ATTRIBUTE_FETCH_SUCCESS', item: data })
+				body: JSON.stringify(data),
 			})
+				.then(checkStatus)
+				.then(parseJSON)
+				.then((item) => {
+					dispatch({ type: 'ATTRIBUTE_UPDATE_SUCCESS', item })
+					dispatch({ type: 'ATTRIBUTE_FETCH_SUCCESS', item })
+					return item
+				})
+				.catch((err) => {
+					dispatch({ type: 'ERROR_ADD', err })
+					dispatch({ type: 'ATTRIBUTE_UPDATE_FAIL', err })
+					return Promise.reject(err)
+				})
 		}
 	},
 
-	destroy (id, cb) {
+	destroy (id) {
 		return (dispatch) => {
-			dispatch({ type: 'ATTRIBUTE_DESTROY', id })
+			dispatch({ type: 'ATTRIBUTE_DESTROY' })
 
-			request.delete({
-				url: config.apiUrl + '/attributes/' + id,
+			return fetch(config.apiUrl + '/attributes/' + id, {
+				method: 'DELETE',
 				headers: {
 					'Authorization': 'Token ' + user.token,
+					'Accept': 'application/json',
 				},
-				json: true
-			}, (err, httpResponse, data) => {
-				if (err || httpResponse.statusCode != 200) {
-					dispatch({ type: 'ERROR_ADD', err, data })
-					dispatch({ type: 'ATTRIBUTE_DESTROY_FAIL', err, data })
-					if (cb) cb(err || data)
-					return
-				}
-
-				notify.destroyed('attribute')
-				dispatch({ type: 'ATTRIBUTE_DESTROY_SUCCESS', item: data })
-				if (cb) cb()
 			})
+				.then(checkStatus)
+				.then(parseJSON)
+				.then((item) => {
+					dispatch({ type: 'ATTRIBUTE_DESTROY_SUCCESS', item })
+					return item
+				})
+				.catch((err) => {
+					dispatch({ type: 'ERROR_ADD', err })
+					dispatch({ type: 'ATTRIBUTE_DESTROY_FAIL', err })
+					return Promise.reject(err)
+				})
 		}
 	},
 
-	reorder (templateId, order, cb) {
+	reorder (templateId, order) {
 		return (dispatch) => {
-			dispatch({ type: 'ATTRIBUTE_REORDER', templateId, order })
+			dispatch({ type: 'ATTRIBUTE_REORDER' })
 
-			request.put({
-				url: config.apiUrl + '/attributes/reorder',
+			return fetch(config.apiUrl + '/attributes/reorder', {
+				method: 'PUT',
 				headers: {
 					'Authorization': 'Token ' + user.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json',
 				},
-				body: {
+				body: JSON.stringify({
 					template_id: templateId,
 					order,
-				},
-				json: true
-			}, (err, httpResponse, data) => {
-				if (err || httpResponse.statusCode != 200) {
-					dispatch({ type: 'ERROR_ADD', err, data })
-					dispatch({ type: 'ATTRIBUTE_REORDER_FAIL', err, data })
-					if (cb) cb(err || data)
-					return
-				}
-
-				notify.action('attributes', 'reordered')
-				dispatch({ type: 'ATTRIBUTE_REORDER_SUCCESS' })
-				if (cb) cb()
+				}),
 			})
+				.then(checkStatus)
+				.then(parseJSON)
+				.then((item) => {
+					dispatch({ type: 'ATTRIBUTE_REORDER_SUCCESS', item })
+					return item
+				})
+				.catch((err) => {
+					dispatch({ type: 'ERROR_ADD', err })
+					dispatch({ type: 'ATTRIBUTE_REORDER_FAIL', err })
+					return Promise.reject(err)
+				})
 		}
 	},
 }

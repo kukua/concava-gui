@@ -3,6 +3,7 @@ import _ from 'underscore'
 import { Link } from 'react-router'
 import Title from '../title'
 import { connect } from 'react-redux'
+import notify from '../../lib/notify'
 import actions from '../../actions/device'
 import ConfirmModal from '../modals/confirm'
 
@@ -14,10 +15,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		onFetch () {
-			dispatch(actions.fetchAll())
+			return dispatch(actions.fetchAll())
 		},
-		onDestroy (id, cb) {
-			dispatch(actions.destroy(id, cb))
+		onDestroy (id) {
+			return dispatch(actions.destroy(id))
 		},
 	}
 }
@@ -30,15 +31,19 @@ class Index extends React.Component {
 		}
 	}
 
-	componentWillMount () {
+	loadData () {
 		this.props.onFetch()
+	}
+	componentWillMount () {
+		this.loadData()
 	}
 
 	onDestroy () {
 		let id = this.state.destroy.id
 		this.setState({ destroy: {} })
-		this.props.onDestroy(id, () => {
-			this.props.onFetch()
+		this.props.onDestroy(id).then(() => {
+			notify.destroyed('device')
+			this.loadData()
 		})
 	}
 

@@ -2,6 +2,7 @@ import React from 'react'
 import _ from 'underscore'
 import { connect } from 'react-redux'
 import { NotificationContainer, NotificationManager } from 'react-notifications'
+import { FetchError } from '../../lib/fetch'
 
 const mapStateToProps = (state) => {
 	return { errors: state.error }
@@ -41,14 +42,12 @@ class Notifications extends React.Component {
 		this.setState({ handled })
 	}
 	formatMessage (item) {
-		let message = item.err
-		if ( ! message && _.isObject(item.data)) {
-			message = item.data.message
-			if (_.isObject(item.data.messages)) {
-				message = _.map(item.data.messages, (message) => message[0]).join('\n')
-			}
-		}
+		let message = item.err.toString()
+
+		if (item.err instanceof FetchError) message = item.err.message
+
 		if ( ! message) message = 'An unknown error occured.'
+
 		return message
 	}
 

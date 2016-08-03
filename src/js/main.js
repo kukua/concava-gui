@@ -11,6 +11,8 @@ import _ from 'underscore'
 import s from 'underscore.string'
 import assign from 'es6-object-assign'
 
+require('whatwg-fetch')
+
 _.mixin(s.exports())
 assign.polyfill()
 

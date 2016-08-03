@@ -13,7 +13,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		onLogin (email, password) {
-			dispatch(actions.login(email, password))
+			return dispatch(actions.login(email, password))
 		}
 	}
 }
@@ -23,14 +23,10 @@ class Login extends React.Component {
 		ev.preventDefault()
 
 		let form = ev.target
-		this.props.onLogin(form.email.value, form.password.value)
-	}
-
-	componentWillReceiveProps (next) {
-		if ( ! next.isFetching && next.item) {
-			user.set(next.item)
+		this.props.onLogin(form.email.value, form.password.value).then((item) => {
+			user.set(item)
 			this.context.router.replace('/')
-		}
+		})
 	}
 
 	render () {

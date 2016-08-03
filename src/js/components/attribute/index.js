@@ -3,8 +3,9 @@ import _ from 'underscore'
 import { Link } from 'react-router'
 import Title from '../title'
 import { connect } from 'react-redux'
-import actions from '../../actions/attribute'
+import notify from '../../lib/notify'
 import concava from '../../lib/concava'
+import actions from '../../actions/attribute'
 import ConfirmModal from '../modals/confirm'
 
 const mapStateToProps = (state) => {
@@ -16,13 +17,13 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		onFetch (templateId) {
-			dispatch(actions.fetchByTemplateId(templateId))
+			return dispatch(actions.fetchByTemplateId(templateId))
 		},
-		onDestroy (id, cb) {
-			dispatch(actions.destroy(id, cb))
+		onDestroy (id) {
+			return dispatch(actions.destroy(id))
 		},
-		onReorder (templateId, order, cb) {
-			dispatch(actions.reorder(templateId, order, cb))
+		onReorder (templateId, order) {
+			return dispatch(actions.reorder(templateId, order))
 		},
 	}
 }
@@ -35,8 +36,11 @@ class Index extends React.Component {
 		}
 	}
 
-	componentWillMount () {
+	loadData () {
 		this.props.onFetch(this.props.templateId)
+	}
+	componentWillMount () {
+		this.loadData()
 	}
 
 	getItems () {
@@ -49,8 +53,9 @@ class Index extends React.Component {
 		if (from >= 0 && from < items.length && to >= 0 && to < items.length) {
 			items.splice(to, 0, items.splice(from, 1)[0])
 		}
-		this.props.onReorder(this.props.templateId, _.pluck(items, 'id'), () => {
-			this.props.onFetch(this.props.templateId)
+		this.props.onReorder(this.props.templateId, _.pluck(items, 'id')).then(() => {
+			notify.action('attributes', 'reordered')
+			this.loadData()
 		})
 	}
 	moveUp (item) {
@@ -63,8 +68,9 @@ class Index extends React.Component {
 	onDestroy () {
 		let id = this.state.destroy.id
 		this.setState({ destroy: {} })
-		this.props.onDestroy(id, () => {
-			this.props.onFetch(this.props.templateId)
+		this.props.onDestroy(id).then(() => {
+			notify.destroyed('attribute')
+			this.loadData()
 		})
 	}
 

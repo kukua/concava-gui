@@ -1,6 +1,7 @@
 import React from 'react'
 import { Router, Route, IndexRedirect, hashHistory } from 'react-router'
 import { instance as user } from '../lib/user'
+import notify from '../lib/notify'
 
 import Layout from './layout/master'
 import NoMatch from './noMatch'
@@ -21,10 +22,14 @@ import AttributeUpdate from '../components/attribute/update'
 
 function requireAuthentication (nextState, replace) {
 	if ( ! user.isLoggedIn) replace('/users/login')
+	if ( ! user.isActive) {
+		notify.error('Account not activated.')
+		replace('/users/login')
+	}
 }
 
 function isAuthenticated (nextState, replace) {
-	if (user.isLoggedIn) replace('/')
+	if (user.isLoggedIn && user.isActive) replace('/')
 }
 
 export default (

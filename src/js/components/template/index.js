@@ -4,6 +4,7 @@ import { Link } from 'react-router'
 import Title from '../title'
 import { connect } from 'react-redux'
 import { instance as user } from '../../lib/user'
+import notify from '../../lib/notify'
 import actions from '../../actions/template'
 import ConfirmModal from '../modals/confirm'
 
@@ -15,10 +16,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		onFetch (userId) {
-			dispatch(actions.fetchByUserId(userId))
+			return dispatch(actions.fetchByUserId(userId))
 		},
-		onDestroy (id, cb) {
-			dispatch(actions.destroy(id, cb))
+		onDestroy (id) {
+			return dispatch(actions.destroy(id))
 		},
 	}
 }
@@ -31,15 +32,19 @@ class Index extends React.Component {
 		}
 	}
 
-	componentWillMount () {
+	loadData () {
 		this.props.onFetch(user.id)
+	}
+	componentWillMount () {
+		this.loadData()
 	}
 
 	onDestroy () {
 		let id = this.state.destroy.id
 		this.setState({ destroy: {} })
-		this.props.onDestroy(id, () => {
-			this.props.onFetch(user.id)
+		this.props.onDestroy(id).then(() => {
+			notify.destroyed('template')
+			this.loadData()
 		})
 	}
 

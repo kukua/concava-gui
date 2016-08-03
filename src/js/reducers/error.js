@@ -4,7 +4,6 @@ export default (state = [], action) => {
 		return state.concat([
 			{
 				err: action.err,
-				data: action.data,
 				date: new Date(),
 			}
 		])

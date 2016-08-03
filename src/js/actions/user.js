@@ -1,31 +1,33 @@
-import request from 'request'
 import config from '../config'
 import { instance as user } from '../lib/user'
+import { checkStatus, parseJSON } from '../lib/fetch'
 
 export default {
 	login (email, password) {
 		return (dispatch) => {
-			dispatch({ type: 'USER_LOGIN', email, password })
+			dispatch({ type: 'USER_LOGIN' })
 
 			var auth = new Buffer(email + ':' + password)
 				.toString('base64')
 
-			request({
-				url: config.apiUrl + '/users/login',
+			return fetch(config.apiUrl + '/users/login', {
 				headers: {
-					'Authorization': 'Basic ' + auth
+					'Authorization': 'Basic ' + auth,
+					'Accept': 'application/json',
 				},
-				json: true
-			}, (err, httpResponse, data) => {
-				if (err || httpResponse.statusCode != 200) {
-					user.clear()
-					dispatch({ type: 'ERROR_ADD', err, data })
-					dispatch({ type: 'USER_LOGIN_FAIL', err, data })
-					return
-				}
-
-				dispatch({ type: 'USER_LOGIN_SUCCESS', item: data })
 			})
+				.then(checkStatus)
+				.then(parseJSON)
+				.then((item) => {
+					dispatch({ type: 'USER_LOGIN_SUCCESS', item })
+					return item
+				})
+				.catch((err) => {
+					user.clear()
+					dispatch({ type: 'ERROR_ADD', err })
+					dispatch({ type: 'USER_LOGIN_FAIL', err })
+					return Promise.reject(err)
+				})
 		}
 	},
 
@@ -38,20 +40,26 @@ export default {
 		return (dispatch) => {
 			dispatch({ type: 'USER_CREATE' })
 
-			request.post({
-				url: config.apiUrl + '/users',
-				body: data,
-				json: true
-			}, (err, httpResponse, data) => {
-				if (err || httpResponse.statusCode != 200) {
-					user.clear()
-					dispatch({ type: 'ERROR_ADD', err, data })
-					dispatch({ type: 'USER_CREATE_FAIL', err, data })
-					return
-				}
-
-				dispatch({ type: 'USER_CREATE_SUCCESS', item: data })
+			return fetch(config.apiUrl + '/users', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept': 'application/json',
+				},
+				body: JSON.stringify(data),
 			})
+				.then(checkStatus)
+				.then(parseJSON)
+				.then((item) => {
+					dispatch({ type: 'USER_CREATE_SUCCESS', item })
+					return item
+				})
+				.catch((err) => {
+					user.clear()
+					dispatch({ type: 'ERROR_ADD', err })
+					dispatch({ type: 'USER_CREATE_FAIL', err })
+					return Promise.reject(err)
+				})
 		}
 	},
 }

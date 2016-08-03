@@ -1,127 +1,133 @@
-import request from 'request'
 import config from '../config.js'
 import { instance as user } from '../lib/user'
-import notify from '../lib/notify'
+import { checkStatus, parseJSON } from '../lib/fetch'
 
 export default {
 	fetchByUserId (id) {
 		return (dispatch) => {
-			dispatch({ type: 'TEMPLATE_FETCH_ALL', id })
+			dispatch({ type: 'TEMPLATE_FETCH_ALL' })
 
-			request({
-				url: config.apiUrl + '/templates',
-				qs: {
-					filter: 'user_id:' + id,
-				},
+			return fetch(config.apiUrl + '/templates?filter=user_id:' + id, {
 				headers: {
 					'Authorization': 'Token ' + user.token,
+					'Accept': 'application/json',
 				},
-				json: true
-			}, (err, httpResponse, data) => {
-				if (err || httpResponse.statusCode != 200) {
-					dispatch({ type: 'ERROR_ADD', err, data })
-					dispatch({ type: 'TEMPLATE_FETCH_ALL_FAIL', err, data })
-					return
-				}
-
-				dispatch({ type: 'TEMPLATE_FETCH_ALL_SUCCESS', items: data })
 			})
+				.then(checkStatus)
+				.then(parseJSON)
+				.then((items) => {
+					dispatch({ type: 'TEMPLATE_FETCH_ALL_SUCCESS', items })
+					return items
+				})
+				.catch((err) => {
+					dispatch({ type: 'ERROR_ADD', err })
+					dispatch({ type: 'TEMPLATE_FETCH_ALL_FAIL', err })
+					return Promise.reject(err)
+				})
 		}
 	},
 
 	fetch (id) {
 		return (dispatch) => {
-			dispatch({ type: 'TEMPLATE_FETCH', id })
+			dispatch({ type: 'TEMPLATE_FETCH' })
 
-			request({
-				url: config.apiUrl + '/templates/' + id,
+			return fetch(config.apiUrl + '/templates/' + id, {
 				headers: {
 					'Authorization': 'Token ' + user.token,
+					'Accept': 'application/json',
 				},
-				json: true
-			}, (err, httpResponse, data) => {
-				if (err || httpResponse.statusCode != 200) {
-					dispatch({ type: 'ERROR_ADD', err, data })
-					dispatch({ type: 'TEMPLATE_FETCH_FAIL', err, data })
-					return
-				}
-
-				dispatch({ type: 'TEMPLATE_FETCH_SUCCESS', item: data })
 			})
+				.then(checkStatus)
+				.then(parseJSON)
+				.then((item) => {
+					dispatch({ type: 'TEMPLATE_FETCH_SUCCESS', item })
+					return item
+				})
+				.catch((err) => {
+					dispatch({ type: 'ERROR_ADD', err })
+					dispatch({ type: 'TEMPLATE_FETCH_FAIL', err })
+					return Promise.reject(err)
+				})
 		}
 	},
 
 	create (data) {
 		return (dispatch) => {
-			dispatch({ type: 'TEMPLATE_CREATE', data })
+			dispatch({ type: 'TEMPLATE_CREATE' })
 
-			request.post({
-				url: config.apiUrl + '/templates',
+			return fetch(config.apiUrl + '/templates', {
+				method: 'POST',
 				headers: {
 					'Authorization': 'Token ' + user.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json',
 				},
-				body: data,
-				json: true
-			}, (err, httpResponse, data) => {
-				if (err || httpResponse.statusCode != 200) {
-					dispatch({ type: 'ERROR_ADD', err, data })
-					dispatch({ type: 'TEMPLATE_CREATE_FAIL', err, data })
-					return
-				}
-
-				notify.created('template')
-				dispatch({ type: 'TEMPLATE_CREATE_SUCCESS', item: data })
+				body: JSON.stringify(data),
 			})
+				.then(checkStatus)
+				.then(parseJSON)
+				.then((item) => {
+					dispatch({ type: 'TEMPLATE_CREATE_SUCCESS', item })
+					return item
+				})
+				.catch((err) => {
+					dispatch({ type: 'ERROR_ADD', err })
+					dispatch({ type: 'TEMPLATE_CREATE_FAIL', err })
+					return Promise.reject(err)
+				})
 		}
 	},
 
 	update (data) {
 		return (dispatch) => {
-			dispatch({ type: 'TEMPLATE_UPDATE', data })
+			dispatch({ type: 'TEMPLATE_UPDATE' })
 
-			request.put({
-				url: config.apiUrl + '/templates/' + data.id,
+			return fetch(config.apiUrl + '/templates/' + data.id, {
+				method: 'PUT',
 				headers: {
 					'Authorization': 'Token ' + user.token,
+					'Content-Type': 'application/json',
+					'Accept': 'application/json',
 				},
-				body: data,
-				json: true
-			}, (err, httpResponse, data) => {
-				if (err || httpResponse.statusCode != 200) {
-					dispatch({ type: 'ERROR_ADD', err, data })
-					dispatch({ type: 'TEMPLATE_UPDATE_FAIL', err, data })
-					return
-				}
-
-				notify.updated('template')
-				dispatch({ type: 'TEMPLATE_UPDATE_SUCCESS', item: data })
-				dispatch({ type: 'TEMPLATE_FETCH_SUCCESS', item: data })
+				body: JSON.stringify(data),
 			})
+				.then(checkStatus)
+				.then(parseJSON)
+				.then((item) => {
+					dispatch({ type: 'TEMPLATE_UPDATE_SUCCESS', item })
+					dispatch({ type: 'TEMPLATE_FETCH_SUCCESS', item })
+					return item
+				})
+				.catch((err) => {
+					dispatch({ type: 'ERROR_ADD', err })
+					dispatch({ type: 'TEMPLATE_UPDATE_FAIL', err })
+					return Promise.reject(err)
+				})
 		}
 	},
 
-	destroy (id, cb) {
+	destroy (id) {
 		return (dispatch) => {
-			dispatch({ type: 'TEMPLATE_DESTROY', id })
+			dispatch({ type: 'TEMPLATE_DESTROY' })
 
-			request.delete({
-				url: config.apiUrl + '/templates/' + id,
+			return fetch(config.apiUrl + '/templates/' + id, {
+				method: 'DELETE',
 				headers: {
 					'Authorization': 'Token ' + user.token,
+					'Accept': 'application/json',
 				},
-				json: true
-			}, (err, httpResponse, data) => {
-				if (err || httpResponse.statusCode != 200) {
-					dispatch({ type: 'ERROR_ADD', err, data })
-					dispatch({ type: 'TEMPLATE_DESTROY_FAIL', err, data })
-					if (cb) cb(err || data)
-					return
-				}
-
-				notify.destroyed('template')
-				dispatch({ type: 'TEMPLATE_DESTROY_SUCCESS', item: data })
-				if (cb) cb()
 			})
+				.then(checkStatus)
+				.then(parseJSON)
+				.then((item) => {
+					dispatch({ type: 'TEMPLATE_DESTROY_SUCCESS', item })
+					return item
+				})
+				.catch((err) => {
+					dispatch({ type: 'ERROR_ADD', err })
+					dispatch({ type: 'TEMPLATE_DESTROY_FAIL', err })
+					return Promise.reject(err)
+				})
 		}
 	},
 }
