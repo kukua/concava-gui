@@ -9,16 +9,15 @@ import { instance as user } from './lib/user'
 import _ from 'underscore'
 import s from 'underscore.string'
 import assign from 'es6-object-assign'
+import cookie from 'js-cookie'
 
 require('whatwg-fetch')
 
 _.mixin(s.exports())
 assign.polyfill()
 
-user.set(JSON.parse(localStorage.user || '{}'))
-user.onChange((data) => {
-	localStorage.user = JSON.stringify(data)
-})
+user.set(cookie.get('user') || {})
+user.onChange((data) => cookie.set('user', data, { expires: 7, secure: true }))
 
 const store = createStore(reducers, applyMiddleware(thunk))
 
