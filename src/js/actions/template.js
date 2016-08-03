@@ -7,7 +7,7 @@ export default {
 		return (dispatch) => {
 			dispatch({ type: 'TEMPLATE_FETCH_ALL' })
 
-			return fetch(config.apiUrl + '/templates?filter=user_id:' + id, {
+			return fetch(config.apiUrl + '/templates?filter=user_id:' + id + '&sort=name', {
 				headers: {
 					'Authorization': 'Token ' + user.token,
 					'Accept': 'application/json',

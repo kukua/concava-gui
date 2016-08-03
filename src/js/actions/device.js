@@ -7,7 +7,7 @@ export default {
 		return (dispatch) => {
 			dispatch({ type: 'DEVICE_FETCH_ALL' })
 
-			return fetch(config.apiUrl + '/devices?include=template', {
+			return fetch(config.apiUrl + '/devices?include=template&sort=name', {
 				headers: {
 					'Authorization': 'Token ' + user.token,
 					'Accept': 'application/json',
