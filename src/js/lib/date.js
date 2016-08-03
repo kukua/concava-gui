@@ -9,6 +9,6 @@ const timezone = config.datetimes.timezone
 
 export default {
 	format (datetime) {
-		return moment.tz(timezone).utc(datetime).format(defaultFormat)
+		return moment.utc(datetime).tz(timezone).format(defaultFormat)
 	}
 }
