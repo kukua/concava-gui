@@ -41,6 +41,12 @@ class Register extends React.Component {
 			email: form.email.value,
 			password,
 		}).then((item) => {
+			// Empty form
+			form.name.value = ''
+			form.email.value = ''
+			form.password.value = ''
+			form.password_confirmation.value = ''
+
 			user.set(item)
 			this.context.router.replace('/')
 		})
