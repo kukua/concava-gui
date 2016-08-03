@@ -96,64 +96,62 @@ class Index extends React.Component {
 		let itemCount = _.size(items)
 
 		return (
-			<div class="row">
-				<div class="col-sm-offset-2 col-sm-8">
-					<Title title="Attributes">
-						<Link to={{ pathname: '/attributes/create', query: { template_id: this.props.templateId, order: itemCount } }} class="btn btn-sm btn-success">Add attribute</Link>
-					</Title>
-					<table class="table table-striped">
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th>Converter</th>
-								<th>Calibrator</th>
-								<th>Validator(s)</th>
-								<th width="200px" class="text-right">Actions</th>
-							</tr>
-						</thead>
-						<tbody>
-							{ this.props.isFetching ?
-								<tr><td colSpan="5">Loading…</td></tr>
-								: itemCount > 0 ?
-								_.map(items, (item, i) => {
-									let { converter, calibrator, validators } = concava(item)
+			<div>
+				<Title title="Attributes">
+					<Link to={{ pathname: '/attributes/create', query: { template_id: this.props.templateId, order: itemCount } }} class="btn btn-sm btn-success">Add attribute</Link>
+				</Title>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Converter</th>
+							<th>Calibrator</th>
+							<th>Validator(s)</th>
+							<th width="200px" class="text-right">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{ this.props.isFetching ?
+							<tr><td colSpan="5">Loading…</td></tr>
+							: itemCount > 0 ?
+							_.map(items, (item, i) => {
+								let { converter, calibrator, validators } = concava(item)
 
-									return (
-										<tr key={item.id}>
-											<td>{item.name}</td>
-											<td>{converter}</td>
-											<td>{this.formatCalibrator(calibrator)}</td>
-											<td>{validators}</td>
-											<td width="200px" class="text-right">
-												{i > 0 ?
-													<a href="javascript:;" onClick={() => this.moveUp(item)}>Up</a>
-													: 'Up'
-												}
-												{' | '}
-												{i + 1 < itemCount ?
-													<a href="javascript:;" onClick={() => this.moveDown(item)}>Down</a>
-													: 'Down'
-												}
-												{' | '}
-												<Link to={'/attributes/' + item.id + '/edit'}>Edit</Link>
-												{' | '}
-												<a href="javascript:;" onClick={() => this.setState({ destroy: item })}>Delete</a>
-											</td>
-										</tr>
-									)
-								})
-								: <tr><td colSpan="5">No items…</td></tr>
-							}
-						</tbody>
-					</table>
-					<ConfirmModal
-						isOpen={ !! this.state.destroy.id}
-						title="Delete attribute?"
-						onClose={() => this.setState({ destroy: {} })}
-						onSubmit={() => this.onDestroy()}>
-						<p>Are you sure you want to delete attribute <code>{this.state.destroy.name}</code>?</p>
-					</ConfirmModal>
-				</div>
+								return (
+									<tr key={item.id}>
+										<td>{item.name}</td>
+										<td>{converter}</td>
+										<td>{this.formatCalibrator(calibrator)}</td>
+										<td>{validators}</td>
+										<td width="200px" class="text-right">
+											{i > 0 ?
+												<a href="javascript:;" onClick={() => this.moveUp(item)}>Up</a>
+												: 'Up'
+											}
+											{' | '}
+											{i + 1 < itemCount ?
+												<a href="javascript:;" onClick={() => this.moveDown(item)}>Down</a>
+												: 'Down'
+											}
+											{' | '}
+											<Link to={'/attributes/' + item.id + '/edit'}>Edit</Link>
+											{' | '}
+											<a href="javascript:;" onClick={() => this.setState({ destroy: item })}>Delete</a>
+										</td>
+									</tr>
+								)
+							})
+							: <tr><td colSpan="5">No items…</td></tr>
+						}
+					</tbody>
+				</table>
+				<ConfirmModal
+					isOpen={ !! this.state.destroy.id}
+					title="Delete attribute?"
+					onClose={() => this.setState({ destroy: {} })}
+					onSubmit={() => this.onDestroy()}>
+					<p>Are you sure you want to delete attribute <code>{this.state.destroy.name}</code>?</p>
+				</ConfirmModal>
 			</div>
 		)
 	}

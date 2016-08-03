@@ -50,44 +50,42 @@ class Index extends React.Component {
 
 	render () {
 		return (
-			<div class="row">
-				<div class="col-sm-offset-2 col-sm-8">
-					<Title title="Templates">
-						<Link to="/templates/create" class="btn btn-sm btn-success">Add template</Link>
-					</Title>
-					<table class="table table-striped">
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th width="140px" class="text-right">Actions</th>
-							</tr>
-						</thead>
-						<tbody>
-							{ this.props.isFetching ?
-								<tr><td colSpan="2">Loading…</td></tr>
-								: _.size(this.props.items) > 0 ?
-								_.map(this.props.items, (item) => (
-									<tr key={item.id}>
-										<td>{item.name}</td>
-										<td width="140px" class="text-right">
-											<Link to={'/templates/' + item.id + '/edit'}>Edit</Link>
-											{' | '}
-											<a href="javascript:;" onClick={() => this.setState({ destroy: item })}>Delete</a>
-										</td>
-									</tr>
-								))
-								: <tr><td colSpan="2">No items…</td></tr>
-							}
-						</tbody>
-					</table>
-					<ConfirmModal
-						isOpen={ !! this.state.destroy.id}
-						title="Delete template?"
-						onClose={() => this.setState({ destroy: {} })}
-						onSubmit={() => this.onDestroy()}>
-						<p>Are you sure you want to delete template <code>{this.state.destroy.name}</code>?</p>
-					</ConfirmModal>
-				</div>
+			<div>
+				<Title title="Templates">
+					<Link to="/templates/create" class="btn btn-sm btn-success">Add template</Link>
+				</Title>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th width="140px" class="text-right">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{ this.props.isFetching ?
+							<tr><td colSpan="2">Loading…</td></tr>
+							: _.size(this.props.items) > 0 ?
+							_.map(this.props.items, (item) => (
+								<tr key={item.id}>
+									<td>{item.name}</td>
+									<td width="140px" class="text-right">
+										<Link to={'/templates/' + item.id + '/edit'}>Edit</Link>
+										{' | '}
+										<a href="javascript:;" onClick={() => this.setState({ destroy: item })}>Delete</a>
+									</td>
+								</tr>
+							))
+							: <tr><td colSpan="2">No items…</td></tr>
+						}
+					</tbody>
+				</table>
+				<ConfirmModal
+					isOpen={ !! this.state.destroy.id}
+					title="Delete template?"
+					onClose={() => this.setState({ destroy: {} })}
+					onSubmit={() => this.onDestroy()}>
+					<p>Are you sure you want to delete template <code>{this.state.destroy.name}</code>?</p>
+				</ConfirmModal>
 			</div>
 		)
 	}

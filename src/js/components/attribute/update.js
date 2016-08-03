@@ -38,11 +38,9 @@ class Update extends React.Component {
 		let isLoading = (this.props.isFetching || this.props.isUpdating)
 
 		return (
-			<div class="row">
-				<div class="col-sm-offset-2 col-sm-8">
-					<Title title="Edit attribute" loading={isLoading} />
-					<Form item={this.props.item} submitLabel="Update attribute" onSubmit={this.onSubmit.bind(this)} loading={isLoading} />
-				</div>
+			<div>
+				<Title title="Edit attribute" loading={isLoading} />
+				<Form item={this.props.item} submitLabel="Update attribute" onSubmit={this.onSubmit.bind(this)} loading={isLoading} />
 			</div>
 		)
 	}

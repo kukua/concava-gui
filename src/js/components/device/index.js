@@ -49,48 +49,46 @@ class Index extends React.Component {
 
 	render () {
 		return (
-			<div class="row">
-				<div class="col-sm-offset-2 col-sm-8">
-					<Title title="Devices">
-						<Link to="/devices/create" class="btn btn-sm btn-success">Add device</Link>
-					</Title>
-					<table class="table table-striped">
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th width="160px">Device ID</th>
-								<th>Template</th>
-								<th width="140px" class="text-right">Actions</th>
-							</tr>
-						</thead>
-						<tbody>
-							{ this.props.isFetching ?
-								<tr><td colSpan="4">Loading…</td></tr>
-								: _.size(this.props.items) > 0 ?
-								_.map(this.props.items, (item) => (
-									<tr key={item.id}>
-										<td>{item.name}</td>
-										<td width="160px">{item.udid}</td>
-										<td>{item.template && item.template.name}</td>
-										<td width="140px" class="text-right">
-											<Link to={'/devices/' + item.id + '/edit'}>Edit</Link>
-											{' | '}
-											<a href="javascript:;" onClick={() => this.setState({ destroy: item })}>Delete</a>
-										</td>
-									</tr>
-								))
-								: <tr><td colSpan="4">No items…</td></tr>
-							}
-						</tbody>
-					</table>
-					<ConfirmModal
-						isOpen={ !! this.state.destroy.id}
-						title="Delete device?"
-						onClose={() => this.setState({ destroy: {} })}
-						onSubmit={() => this.onDestroy()}>
-						<p>Are you sure you want to delete device <code>{this.state.destroy.udid}</code>?</p>
-					</ConfirmModal>
-				</div>
+			<div>
+				<Title title="Devices">
+					<Link to="/devices/create" class="btn btn-sm btn-success">Add device</Link>
+				</Title>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th width="160px">Device ID</th>
+							<th>Template</th>
+							<th width="140px" class="text-right">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{ this.props.isFetching ?
+							<tr><td colSpan="4">Loading…</td></tr>
+							: _.size(this.props.items) > 0 ?
+							_.map(this.props.items, (item) => (
+								<tr key={item.id}>
+									<td>{item.name}</td>
+									<td width="160px">{item.udid}</td>
+									<td>{item.template && item.template.name}</td>
+									<td width="140px" class="text-right">
+										<Link to={'/devices/' + item.id + '/edit'}>Edit</Link>
+										{' | '}
+										<a href="javascript:;" onClick={() => this.setState({ destroy: item })}>Delete</a>
+									</td>
+								</tr>
+							))
+							: <tr><td colSpan="4">No items…</td></tr>
+						}
+					</tbody>
+				</table>
+				<ConfirmModal
+					isOpen={ !! this.state.destroy.id}
+					title="Delete device?"
+					onClose={() => this.setState({ destroy: {} })}
+					onSubmit={() => this.onDestroy()}>
+					<p>Are you sure you want to delete device <code>{this.state.destroy.udid}</code>?</p>
+				</ConfirmModal>
 			</div>
 		)
 	}

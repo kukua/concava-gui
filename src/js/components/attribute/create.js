@@ -34,11 +34,9 @@ class Create extends React.Component {
 		}
 
 		return (
-			<div class="row">
-				<div class="col-sm-offset-2 col-sm-8">
-					<Title title="Add attribute" loading={this.props.isCreating} />
-					<Form item={item} submitLabel="Create attribute" onSubmit={this.onSubmit.bind(this)} loading={this.props.isCreating} />
-				</div>
+			<div>
+				<Title title="Add attribute" loading={this.props.isCreating} />
+				<Form item={item} submitLabel="Create attribute" onSubmit={this.onSubmit.bind(this)} loading={this.props.isCreating} />
 			</div>
 		)
 	}

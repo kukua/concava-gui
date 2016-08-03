@@ -28,11 +28,9 @@ class Create extends React.Component {
 
 	render () {
 		return (
-			<div class="row">
-				<div class="col-sm-offset-2 col-sm-8">
-					<Title title="Add device" loading={this.props.isCreating} />
-					<Form submitLabel="Create device" onSubmit={this.onSubmit.bind(this)} loading={this.props.isCreating} />
-				</div>
+			<div>
+				<Title title="Add device" loading={this.props.isCreating} />
+				<Form submitLabel="Create device" onSubmit={this.onSubmit.bind(this)} loading={this.props.isCreating} />
 			</div>
 		)
 	}
