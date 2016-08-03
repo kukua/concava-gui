@@ -5,6 +5,7 @@ import Title from '../title'
 import { connect } from 'react-redux'
 import notify from '../../lib/notify'
 import concava from '../../lib/concava'
+import date from '../../lib/date'
 import actions from '../../actions/attribute'
 import ConfirmModal from '../modals/confirm'
 
@@ -107,12 +108,13 @@ class Index extends React.Component {
 							<th>Converter</th>
 							<th>Calibrator</th>
 							<th>Validator(s)</th>
+							<th>Last updated</th>
 							<th width="200px" class="text-right">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
 						{ this.props.isFetching ?
-							<tr><td colSpan="5">Loading…</td></tr>
+							<tr><td colSpan="6">Loading…</td></tr>
 							: itemCount > 0 ?
 							_.map(items, (item, i) => {
 								let { converter, calibrator, validators } = concava(item)
@@ -123,6 +125,7 @@ class Index extends React.Component {
 										<td>{converter}</td>
 										<td>{this.formatCalibrator(calibrator)}</td>
 										<td>{validators}</td>
+										<td>{date.format(item.updated_at)}</td>
 										<td width="200px" class="text-right">
 											{i > 0 ?
 												<a href="javascript:;" onClick={() => this.moveUp(item)}>Up</a>
@@ -141,7 +144,7 @@ class Index extends React.Component {
 									</tr>
 								)
 							})
-							: <tr><td colSpan="5">No items…</td></tr>
+							: <tr><td colSpan="6">No items…</td></tr>
 						}
 					</tbody>
 				</table>

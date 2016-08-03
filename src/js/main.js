@@ -6,7 +6,6 @@ import thunk from 'redux-thunk'
 import reducers from './reducers/'
 import Router from './components/router'
 import { instance as user } from './lib/user'
-
 import _ from 'underscore'
 import s from 'underscore.string'
 import assign from 'es6-object-assign'

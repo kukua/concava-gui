@@ -1,5 +1,9 @@
 export default {
 	apiUrl: 'http://localhost:8080',
+	datetimes: {
+		defaultFormat: 'YYYY-MM-DD HH:mm:ss',
+		timezone: 'Europe/Amsterdam',
+	},
 	converters: [
 		'int8', 'uint8',
 		'int16le', 'int16be', 'uint16le', 'uint16be',
@@ -7,5 +11,5 @@ export default {
 		'int32le', 'int32be', 'uint32le', 'uint32be',
 		'int64le', 'int64be', 'uint64le', 'uint64be',
 		'floatle', 'floatbe', 'doublele', 'doublebe'
-	]
+	],
 }

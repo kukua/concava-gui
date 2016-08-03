@@ -5,6 +5,7 @@ import Title from '../title'
 import { connect } from 'react-redux'
 import { instance as user } from '../../lib/user'
 import notify from '../../lib/notify'
+import date from '../../lib/date'
 import actions from '../../actions/template'
 import ConfirmModal from '../modals/confirm'
 
@@ -58,16 +59,18 @@ class Index extends React.Component {
 					<thead>
 						<tr>
 							<th>Name</th>
+							<th>Last updated</th>
 							<th width="140px" class="text-right">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
 						{ this.props.isFetching ?
-							<tr><td colSpan="2">Loading…</td></tr>
+							<tr><td colSpan="3">Loading…</td></tr>
 							: _.size(this.props.items) > 0 ?
 							_.map(this.props.items, (item) => (
 								<tr key={item.id}>
 									<td>{item.name}</td>
+									<td>{date.format(item.updated_at)}</td>
 									<td width="140px" class="text-right">
 										<Link to={'/templates/' + item.id + '/edit'}>Edit</Link>
 										{' | '}
@@ -75,7 +78,7 @@ class Index extends React.Component {
 									</td>
 								</tr>
 							))
-							: <tr><td colSpan="2">No items…</td></tr>
+							: <tr><td colSpan="3">No items…</td></tr>
 						}
 					</tbody>
 				</table>

@@ -4,6 +4,7 @@ import { Link } from 'react-router'
 import Title from '../title'
 import { connect } from 'react-redux'
 import notify from '../../lib/notify'
+import date from '../../lib/date'
 import actions from '../../actions/device'
 import ConfirmModal from '../modals/confirm'
 
@@ -59,18 +60,20 @@ class Index extends React.Component {
 							<th>Name</th>
 							<th width="160px">Device ID</th>
 							<th>Template</th>
+							<th>Last updated</th>
 							<th width="140px" class="text-right">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
 						{ this.props.isFetching ?
-							<tr><td colSpan="4">Loading…</td></tr>
+							<tr><td colSpan="5">Loading…</td></tr>
 							: _.size(this.props.items) > 0 ?
 							_.map(this.props.items, (item) => (
 								<tr key={item.id}>
 									<td>{item.name}</td>
 									<td width="160px">{item.udid}</td>
 									<td>{item.template && item.template.name}</td>
+									<td>{date.format(item.updated_at)}</td>
 									<td width="140px" class="text-right">
 										<Link to={'/devices/' + item.id + '/edit'}>Edit</Link>
 										{' | '}
@@ -78,7 +81,7 @@ class Index extends React.Component {
 									</td>
 								</tr>
 							))
-							: <tr><td colSpan="4">No items…</td></tr>
+							: <tr><td colSpan="5">No items…</td></tr>
 						}
 					</tbody>
 				</table>
