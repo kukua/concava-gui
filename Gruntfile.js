@@ -42,7 +42,7 @@ module.exports = function (grunt) {
 			assets: {
 				files: [
 					{ expand: false, filter: 'isFile', src: ['./src/www/index.html'], dest: './build/index.html' },
-					{ expand: false, filter: 'isFile', src: ['./src/css/main.css'], dest: './build/css/main.css' },
+					{ expand: true, filter: 'isFile', cwd: './src/css/', src: '**', dest: './build/css/' },
 					{ expand: false, filter: 'isFile', src: ['./node_modules/react-notifications/lib/notifications.css'], dest: './build/css/notifications.css' },
 				],
 			},

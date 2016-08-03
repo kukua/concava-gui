@@ -52,7 +52,7 @@ class Index extends React.Component {
 		return (
 			<div>
 				<Title title="Devices">
-					<Link to="/devices/create" class="btn btn-sm btn-success">Add device</Link>
+					<Link to="/devices/create" class="btn btn-sm btn-success icon-plus">Add device</Link>
 				</Title>
 				<table class="table table-striped">
 					<thead>

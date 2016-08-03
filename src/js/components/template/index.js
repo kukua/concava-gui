@@ -53,7 +53,7 @@ class Index extends React.Component {
 		return (
 			<div>
 				<Title title="Templates">
-					<Link to="/templates/create" class="btn btn-sm btn-success">Add template</Link>
+					<Link to="/templates/create" class="btn btn-sm btn-success icon-plus">Add template</Link>
 				</Title>
 				<table class="table table-striped">
 					<thead>

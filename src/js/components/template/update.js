@@ -51,11 +51,14 @@ class Update extends React.Component {
 		return (
 			<div>
 				<Title title="Edit template" loading={isLoading}>
-					<a href="javascript:;" class="btn btn-sm btn-warning" onClick={() => this.duplicate()}>Duplicate</a>
+					<a href="javascript:;" class="btn btn-sm btn-warning icon-docs" onClick={() => this.duplicate()}>Duplicate</a>
 				</Title>
 				<Form item={this.props.item} submitLabel="Update template" onSubmit={this.onSubmit.bind(this)} loading={isLoading} />
 				{this.props.item &&
-					<AttributeIndex templateId={this.props.item.id} />
+					<div>
+						<div class="spacer" />
+						<AttributeIndex templateId={this.props.item.id} />
+					</div>
 				}
 			</div>
 		)

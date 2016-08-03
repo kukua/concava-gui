@@ -13,8 +13,8 @@ export default class Title extends React.Component {
 					{this.props.subTitle && (<small> - {this.props.subTitle}</small>)}
 					<div class="btn-group pull-right">
 						{backButton && backButtonLabel && ! this.props.loading &&
-							<a href="javascript:;" class="btn btn-sm btn-default" onClick={hashHistory.goBack}>
-								&laquo; {backButtonLabel}
+							<a href="javascript:;" class="btn btn-sm btn-default icon-left-open-mini" onClick={hashHistory.goBack}>
+								{backButtonLabel}
 							</a>
 						}
 						{this.props.children}
