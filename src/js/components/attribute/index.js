@@ -43,6 +43,17 @@ class Index extends React.Component {
 		this.loadData()
 	}
 
+	formatCalibrator (val) {
+		let line = ('' + val).split('\n')[0].trim()
+		let comment = /^(\/[\/\*]{1}\s*)|(\s*\*\/)$/g
+
+		if (line.match(comment) !== null) {
+			line = '[' + line.replace(comment, '') + ']'
+		}
+
+		return line
+	}
+
 	getItems () {
 		return _.sortBy(this.props.items, 'order') // TODO(mauvm): Remove when sorted by API
 	}
@@ -103,7 +114,7 @@ class Index extends React.Component {
 										<tr key={item.id}>
 											<td>{item.name}</td>
 											<td>{converter}</td>
-											<td>{calibrator}</td>
+											<td>{this.formatCalibrator(calibrator)}</td>
 											<td>{validators}</td>
 											<td width="200px" class="text-right">
 												{i > 0 ?
