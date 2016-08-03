@@ -21,15 +21,15 @@ import AttributeCreate from '../components/attribute/create'
 import AttributeUpdate from '../components/attribute/update'
 
 function requireAuthentication (nextState, replace) {
-	if ( ! user.isLoggedIn) replace('/users/login')
+	if ( ! user.isLoggedIn) return replace('/users/login')
 	if ( ! user.isActive) {
 		notify.error('Account not activated.')
-		replace('/users/login')
+		return replace('/users/login')
 	}
 }
 
 function isAuthenticated (nextState, replace) {
-	if (user.isLoggedIn && user.isActive) replace('/')
+	if (user.isLoggedIn && user.isActive) return replace('/')
 }
 
 export default (
