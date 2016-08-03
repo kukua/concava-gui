@@ -58,7 +58,7 @@ class Register extends React.Component {
 		return (
 			<div class="row">
 				<div class="col-sm-offset-2 col-sm-8">
-					<Title title="Register" button="Go back"/>
+					<Title title="Register" />
 					<form class="form form-horizontal" method="POST" onSubmit={this.onSubmit.bind(this)}>
 						<div class="form-group">
 							<label class="col-sm-offset-1 col-sm-3 control-label" for="name">Name</label>

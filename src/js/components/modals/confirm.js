@@ -50,7 +50,7 @@ export default class Confirm extends React.Component {
 					</div>
 					<div class="modal-footer">
 						<button class="btn btn-default pull-left" onClick={this.props.onClose}>{closeLabel}</button>
-						<button class="btn btn-primary pull-right" onClick={this.props.onSubmit}>{confirmLabel}</button>
+						<button class="btn btn-success pull-right" onClick={this.props.onSubmit}>{confirmLabel}</button>
 					</div>
 				</div>
 			</Modal>

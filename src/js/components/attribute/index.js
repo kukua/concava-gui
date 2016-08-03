@@ -98,7 +98,7 @@ class Index extends React.Component {
 
 		return (
 			<div>
-				<Title title="Attributes">
+				<Title title="Attributes" backButton={false}>
 					<Link to={{ pathname: '/attributes/create', query: { template_id: this.props.templateId, order: itemCount } }} class="btn btn-sm btn-success">Add attribute</Link>
 				</Title>
 				<table class="table table-striped">

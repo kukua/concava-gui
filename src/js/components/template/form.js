@@ -38,7 +38,7 @@ export default class Form extends React.Component {
 					</div>
 					<div class="form-group">
 						<div class="col-sm-12">
-							<button type="submit" class="btn btn-primary pull-right" disabled={this.props.loading}>{this.props.submitLabel || 'Save'}</button>
+							<button type="submit" class="btn btn-success pull-right" disabled={this.props.loading}>{this.props.submitLabel || 'Save'}</button>
 						</div>
 					</div>
 				</form>

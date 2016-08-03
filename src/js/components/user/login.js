@@ -33,7 +33,7 @@ class Login extends React.Component {
 		return (
 			<div class="row">
 				<div class="col-sm-offset-2 col-sm-8">
-					<Title title="Login" />
+					<Title title="Login" backButton={false} />
 					<form class="form form-horizontal" method="POST" onSubmit={this.onSubmit.bind(this)}>
 						<div class="form-group">
 							<label class="col-sm-offset-1 col-sm-3 control-label" for="email">E-mail address</label>
