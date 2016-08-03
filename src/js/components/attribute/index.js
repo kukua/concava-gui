@@ -44,11 +44,12 @@ class Index extends React.Component {
 	}
 
 	formatCalibrator (val) {
-		let line = ('' + val).split('\n')[0].trim()
-		let comment = /^(\/[\/\*]{1}\s*)|(\s*\*\/)$/g
+		let line = ('' + val).trim().split('\n')[0].trim() // First non-empty line
+		let comment = /^(\/[\/\*]{1}\s*)|(\s*\*\/)$/g // Match "// " and "/* ... */"
 
 		if (line.match(comment) !== null) {
-			line = '[' + line.replace(comment, '') + ']'
+			line = line.replace(comment, '')
+			return (<i>[ {line} ]</i>)
 		}
 
 		return line
