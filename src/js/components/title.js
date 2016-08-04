@@ -33,5 +33,8 @@ Title.propTypes = {
 	backButton: React.PropTypes.bool,
 	backButtonLabel: React.PropTypes.string,
 	loading: React.PropTypes.bool,
-	children: React.PropTypes.element,
+	children: React.PropTypes.oneOfType([
+		React.PropTypes.arrayOf(React.PropTypes.node),
+		React.PropTypes.node
+	]),
 }
