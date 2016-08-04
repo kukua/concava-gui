@@ -1,10 +1,9 @@
 import React from 'react'
-import _ from 'underscore'
 import { Link } from 'react-router'
 import Title from '../title'
 import { connect } from 'react-redux'
 import { instance as user } from '../../lib/user'
-import date from '../../lib/date'
+import { Table } from '../../lib/table'
 import actions from '../../actions/template'
 
 const mapStateToProps = (state) => {
@@ -29,33 +28,27 @@ class Index extends React.Component {
 	}
 
 	render () {
+		let isLoading = (this.props.isFetching)
+
 		return (
 			<div>
 				<Title title="Templates">
 					<Link to="/templates/create" class="btn btn-sm btn-success icon-plus">Add template</Link>
 				</Title>
-				<table class="table table-striped table-hover">
-					<thead>
-						<tr>
-							<th>Name</th>
-							<th>Last updated</th>
-						</tr>
-					</thead>
-					<tbody>
-						{ this.props.isFetching ?
-							<tr><td colSpan="2">Loading…</td></tr>
-							: _.size(this.props.items) > 0 ?
-							_.map(this.props.items, (item) => (
-								<tr key={item.id} class="click-to-edit" title="Edit"
-									onClick={() => this.context.router.replace('/templates/' + item.id + '/edit')}>
-									<td>{item.name}</td>
-									<td>{date.format(item.updated_at)}</td>
-								</tr>
-							))
-							: <tr><td colSpan="2">No items…</td></tr>
-						}
-					</tbody>
-				</table>
+				<Table loading={isLoading}
+					columns={{
+						name: {
+							label: 'Name',
+							key: 'name',
+						},
+						updatedAt: {
+							label: 'Last updated',
+							key: 'updated_at',
+							isDate: true,
+						},
+					}}
+					rows={this.props.items || []}
+					onRowClick={(item) => this.context.router.replace('/templates/' + item.id + '/edit')} />
 			</div>
 		)
 	}

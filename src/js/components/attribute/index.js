@@ -5,7 +5,7 @@ import Title from '../title'
 import { connect } from 'react-redux'
 import notify from '../../lib/notify'
 import concava from '../../lib/concava'
-import date from '../../lib/date'
+import { Table } from '../../lib/table'
 import actions from '../../actions/attribute'
 
 const mapStateToProps = (state) => {
@@ -55,26 +55,29 @@ class Index extends React.Component {
 	getItems () {
 		return _.sortBy(this.props.items, 'order') // TODO(mauvm): Remove when sorted by API
 	}
-	move (item, offset) {
+	move (id, offset) {
 		let items = this.getItems()
-		let from  = _.indexOf(items, item)
+		let from  = _.indexOf(items, _.find(items, (item) => item.id === id))
 		let to = from + offset
+
 		if (from >= 0 && from < items.length && to >= 0 && to < items.length) {
 			items.splice(to, 0, items.splice(from, 1)[0])
 		}
+
 		this.props.onReorder(this.props.templateId, _.pluck(items, 'id')).then(() => {
 			notify.action('attributes', 'reordered')
 			this.loadData()
 		})
 	}
-	moveUp (item) {
-		this.move(item, -1)
+	moveUp (id) {
+		this.move(id, -1)
 	}
-	moveDown (item) {
-		this.move(item, 1)
+	moveDown (id) {
+		this.move(id, 1)
 	}
 
 	render () {
+		let isLoading = (this.props.isFetching)
 		let items = this.getItems()
 		let itemCount = _.size(items)
 
@@ -83,45 +86,47 @@ class Index extends React.Component {
 				<Title title="Attributes" backButton={false}>
 					<Link to={{ pathname: '/attributes/create', query: { template_id: this.props.templateId, order: itemCount } }} class="btn btn-sm btn-success icon-plus">Add attribute</Link>
 				</Title>
-				<table class="table table-striped table-hover">
-					<thead>
-						<tr>
-							<th>Name</th>
-							<th>Converter</th>
-							<th>Calibrator</th>
-							<th>Validator(s)</th>
-							<th>Last updated</th>
-							<th width="100px" class="text-right">Actions</th>
-						</tr>
-					</thead>
-					<tbody>
-						{ this.props.isFetching ?
-							<tr><td colSpan="6">Loading…</td></tr>
-							: itemCount > 0 ?
-							_.map(items, (item, i) => {
-								let { converter, calibrator, validators } = concava(item)
-
-								return (
-									<tr key={item.id} class="click-to-edit" title="Edit"
-										onClick={() => this.context.router.replace('/attributes/' + item.id + '/edit')}>
-										<td>{item.name}</td>
-										<td>{converter}</td>
-										<td>{this.formatCalibrator(calibrator)}</td>
-										<td>{validators}</td>
-										<td>{date.format(item.updated_at)}</td>
-										<td width="100px" class="text-right" style={{ padding: '1px 3px' }}>
-											<div class="btn-group" onClick={(ev) => ev.stopPropagation()}>
-												<button class="btn btn-sm btn-success icon-up-open-big icon-only" onClick={() => this.moveUp(item)} disabled={i <= 0} title="Move up" />
-												<button class="btn btn-sm btn-success icon-down-open-big icon-only" onClick={() => this.moveDown(item)} disabled={i + 1 >= itemCount} title="Move down" />
-											</div>
-										</td>
-									</tr>
-								)
-							})
-							: <tr><td colSpan="6">No items…</td></tr>
-						}
-					</tbody>
-				</table>
+				<Table loading={isLoading}
+					columns={{
+						name: {
+							label: 'Name',
+							key: 'name',
+						},
+						converter: {
+							label: 'Converter',
+							value: (val, { rowData: item }) => concava(item).converter,
+						},
+						calibrator: {
+							label: 'Calibrator',
+							value: (val, { rowData: item }) => this.formatCalibrator(concava(item).calibrator),
+						},
+						validators: {
+							label: 'Validators',
+							value: (val, { rowData: item }) => concava(item).validators,
+						},
+						updatedAt: {
+							label: 'Last updated',
+							key: 'updated_at',
+							isDate: true,
+						},
+						actions: {
+							label: 'Actions',
+							value: (val, { rowData: item, rowIndex: i }) => (
+								<div class="btn-group" onClick={(ev) => ev.stopPropagation()}>
+									<button class="btn btn-sm btn-success icon-up-open-big icon-only"
+										onClick={() => this.moveUp(item.id)} disabled={i <= 0} title="Move up" />
+									<button class="btn btn-sm btn-success icon-down-open-big icon-only"
+										onClick={() => this.moveDown(item.id)} disabled={i + 1 >= itemCount} title="Move down" />
+								</div>
+							),
+							cellProps: {
+								className: 'text-right',
+								style: { minWidth: '100px', padding: '1px 3px' },
+							},
+						},
+					}}
+					rows={items}
+					onRowClick={(item) => this.context.router.replace('/attributes/' + item.id + '/edit')} />
 			</div>
 		)
 	}
