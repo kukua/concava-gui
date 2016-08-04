@@ -7,7 +7,6 @@ import notify from '../../lib/notify'
 import concava from '../../lib/concava'
 import date from '../../lib/date'
 import actions from '../../actions/attribute'
-import ConfirmModal from '../modals/confirm'
 
 const mapStateToProps = (state) => {
 	let { loading: isFetching, items } = state.attribute.fetchAll
@@ -20,9 +19,6 @@ const mapDispatchToProps = (dispatch) => {
 		onFetch (templateId) {
 			return dispatch(actions.fetchByTemplateId(templateId))
 		},
-		onDestroy (id) {
-			return dispatch(actions.destroy(id))
-		},
 		onReorder (templateId, order) {
 			return dispatch(actions.reorder(templateId, order))
 		},
@@ -30,13 +26,6 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class Index extends React.Component {
-	constructor (props) {
-		super(props)
-		this.state = {
-			destroy: {},
-		}
-	}
-
 	loadData () {
 		this.props.onFetch(this.props.templateId)
 	}
@@ -83,15 +72,6 @@ class Index extends React.Component {
 		this.move(item, 1)
 	}
 
-	onDestroy () {
-		let id = this.state.destroy.id
-		this.setState({ destroy: {} })
-		this.props.onDestroy(id).then(() => {
-			notify.destroyed('attribute')
-			this.loadData()
-		})
-	}
-
 	render () {
 		let items = this.getItems()
 		let itemCount = _.size(items)
@@ -101,7 +81,7 @@ class Index extends React.Component {
 				<Title title="Attributes" backButton={false}>
 					<Link to={{ pathname: '/attributes/create', query: { template_id: this.props.templateId, order: itemCount } }} class="btn btn-sm btn-success icon-plus">Add attribute</Link>
 				</Title>
-				<table class="table table-striped">
+				<table class="table table-striped table-hover">
 					<thead>
 						<tr>
 							<th>Name</th>
@@ -109,7 +89,7 @@ class Index extends React.Component {
 							<th>Calibrator</th>
 							<th>Validator(s)</th>
 							<th>Last updated</th>
-							<th width="200px" class="text-right">Actions</th>
+							<th width="100px" class="text-right">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -120,7 +100,8 @@ class Index extends React.Component {
 								let { converter, calibrator, validators } = concava(item)
 
 								return (
-									<tr key={item.id}>
+									<tr key={item.id} class="click-to-edit"
+										onClick={() => this.context.router.replace('/attributes/' + item.id + '/edit')}>
 										<td>{item.name}</td>
 										<td>{converter}</td>
 										<td>{this.formatCalibrator(calibrator)}</td>
@@ -136,10 +117,6 @@ class Index extends React.Component {
 												<a href="javascript:;" onClick={() => this.moveDown(item)}>Down</a>
 												: 'Down'
 											}
-											{' | '}
-											<Link to={'/attributes/' + item.id + '/edit'}>Edit</Link>
-											{' | '}
-											<a href="javascript:;" onClick={() => this.setState({ destroy: item })}>Delete</a>
 										</td>
 									</tr>
 								)
@@ -148,13 +125,6 @@ class Index extends React.Component {
 						}
 					</tbody>
 				</table>
-				<ConfirmModal
-					isOpen={ !! this.state.destroy.id}
-					title="Delete attribute?"
-					onClose={() => this.setState({ destroy: {} })}
-					onSubmit={() => this.onDestroy()}>
-					<p>Are you sure you want to delete attribute <code>{this.state.destroy.name}</code>?</p>
-				</ConfirmModal>
 			</div>
 		)
 	}
@@ -166,8 +136,10 @@ Index.propTypes = {
 	isReordering: React.PropTypes.bool,
 	items: React.PropTypes.array,
 	onFetch: React.PropTypes.func.isRequired,
-	onDestroy: React.PropTypes.func.isRequired,
 	onReorder: React.PropTypes.func.isRequired,
+}
+Index.contextTypes = {
+	router: React.PropTypes.object.isRequired,
 }
 
 export default connect(

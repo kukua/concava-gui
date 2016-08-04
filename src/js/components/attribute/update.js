@@ -8,7 +8,8 @@ import actions from '../../actions/attribute'
 const mapStateToProps = (state) => {
 	let { loading: isUpdating } = state.attribute.update
 	let { loading: isFetching, item } = state.attribute.fetch
-	return { isFetching, isUpdating, item }
+	let { loading: isDestroying } = state.attribute.destroy
+	return { isFetching, isUpdating, isDestroying, item }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -18,6 +19,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		onUpdate (data) {
 			return dispatch(actions.update(data))
+		},
+		onDestroy (id) {
+			return dispatch(actions.destroy(id))
 		},
 	}
 }
@@ -33,13 +37,23 @@ class Update extends React.Component {
 			this.context.router.replace('/templates/' + item.template_id + '/edit')
 		})
 	}
+	onDestroy () {
+		if ( ! confirm('Are you sure? This cannot be undone.')) return
+
+		this.props.onDestroy(this.props.item.id).then((item) => {
+			notify.destroyed('attribute')
+			this.context.router.replace('/templates/' + item.template_id + '/edit')
+		})
+	}
 
 	render () {
-		let isLoading = (this.props.isFetching || this.props.isUpdating)
+		let isLoading = (this.props.isFetching || this.props.isUpdating || this.props.isDestroying)
 
 		return (
 			<div>
-				<Title title="Edit attribute" loading={isLoading} />
+				<Title title="Edit attribute" loading={isLoading}>
+					<a href="javascript:;" class="btn btn-sm btn-danger icon-trash" onClick={() => this.onDestroy()}>Destroy</a>
+				</Title>
 				<Form item={this.props.item} submitLabel="Update attribute" onSubmit={this.onSubmit.bind(this)} loading={isLoading} />
 			</div>
 		)
@@ -54,6 +68,8 @@ Update.propTypes = {
 	isFetching: React.PropTypes.bool,
 	onUpdate: React.PropTypes.func.isRequired,
 	isUpdating: React.PropTypes.bool,
+	onDestroy: React.PropTypes.func.isRequired,
+	isDestroying: React.PropTypes.bool,
 	item: React.PropTypes.object,
 }
 Update.contextTypes = {

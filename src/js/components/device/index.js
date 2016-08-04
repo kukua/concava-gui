@@ -3,10 +3,8 @@ import _ from 'underscore'
 import { Link } from 'react-router'
 import Title from '../title'
 import { connect } from 'react-redux'
-import notify from '../../lib/notify'
 import date from '../../lib/date'
 import actions from '../../actions/device'
-import ConfirmModal from '../modals/confirm'
 
 const mapStateToProps = (state) => {
 	let { loading: isFetching, items } = state.device.fetchAll
@@ -18,34 +16,15 @@ const mapDispatchToProps = (dispatch) => {
 		onFetch () {
 			return dispatch(actions.fetchAll())
 		},
-		onDestroy (id) {
-			return dispatch(actions.destroy(id))
-		},
 	}
 }
 
 class Index extends React.Component {
-	constructor (props) {
-		super(props)
-		this.state = {
-			destroy: {},
-		}
-	}
-
 	loadData () {
 		this.props.onFetch()
 	}
 	componentWillMount () {
 		this.loadData()
-	}
-
-	onDestroy () {
-		let id = this.state.destroy.id
-		this.setState({ destroy: {} })
-		this.props.onDestroy(id).then(() => {
-			notify.destroyed('device')
-			this.loadData()
-		})
 	}
 
 	render () {
@@ -54,44 +33,32 @@ class Index extends React.Component {
 				<Title title="Devices">
 					<Link to="/devices/create" class="btn btn-sm btn-success icon-plus">Add device</Link>
 				</Title>
-				<table class="table table-striped">
+				<table class="table table-striped table-hover">
 					<thead>
 						<tr>
 							<th>Name</th>
-							<th width="160px">Device ID</th>
+							<th style={{ minWidth: '160px' }}>Device ID</th>
 							<th>Template</th>
 							<th>Last updated</th>
-							<th width="140px" class="text-right">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
 						{ this.props.isFetching ?
-							<tr><td colSpan="5">Loading…</td></tr>
+							<tr><td colSpan="4">Loading…</td></tr>
 							: _.size(this.props.items) > 0 ?
 							_.map(this.props.items, (item) => (
-								<tr key={item.id}>
+								<tr key={item.id} class="click-to-edit"
+									onClick={() => this.context.router.replace('/devices/' + item.id + '/edit')}>
 									<td>{item.name}</td>
-									<td width="160px">{item.udid}</td>
+									<td style={{ minWidth: '160px' }}>{item.udid}</td>
 									<td>{item.template && item.template.name}</td>
 									<td>{date.format(item.updated_at)}</td>
-									<td width="140px" class="text-right">
-										<Link to={'/devices/' + item.id + '/edit'}>Edit</Link>
-										{' | '}
-										<a href="javascript:;" onClick={() => this.setState({ destroy: item })}>Delete</a>
-									</td>
 								</tr>
 							))
-							: <tr><td colSpan="5">No items…</td></tr>
+							: <tr><td colSpan="4">No items…</td></tr>
 						}
 					</tbody>
 				</table>
-				<ConfirmModal
-					isOpen={ !! this.state.destroy.id}
-					title="Delete device?"
-					onClose={() => this.setState({ destroy: {} })}
-					onSubmit={() => this.onDestroy()}>
-					<p>Are you sure you want to delete device <code>{this.state.destroy.udid}</code>?</p>
-				</ConfirmModal>
 			</div>
 		)
 	}
@@ -101,7 +68,9 @@ Index.propTypes = {
 	onFetch: React.PropTypes.func.isRequired,
 	isFetching: React.PropTypes.bool,
 	items: React.PropTypes.array,
-	onDestroy: React.PropTypes.func.isRequired,
+}
+Index.contextTypes = {
+	router: React.PropTypes.object.isRequired,
 }
 
 export default connect(

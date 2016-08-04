@@ -10,7 +10,8 @@ const mapStateToProps = (state) => {
 	let { loading: isUpdating } = state.template.update
 	let { loading: isFetching, item } = state.template.fetch
 	let { loading: isDuplicating } = state.template.duplicate
-	return { isFetching, isUpdating, isDuplicating, item }
+	let { loading: isDestroying } = state.template.destroy
+	return { isFetching, isUpdating, isDuplicating, isDestroying, item }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -23,6 +24,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		onDuplicate (id) {
 			return dispatch(actions.duplicate(id))
+		},
+		onDestroy (id) {
+			return dispatch(actions.destroy(id))
 		},
 	}
 }
@@ -37,21 +41,30 @@ class Update extends React.Component {
 			notify.updated('template')
 		})
 	}
-
-	duplicate () {
+	onDuplicate () {
 		this.props.onDuplicate(this.props.item.id).then((item) => {
 			notify.action('template', 'duplicated')
 			this.context.router.replace('/templates/' + item.id + '/edit')
 		})
 	}
+	onDestroy () {
+		if ( ! confirm('Are you sure? This cannot be undone.')) return
+
+		this.props.onDestroy(this.props.item.id).then(() => {
+			notify.destroyed('template')
+			this.context.router.replace('/templates')
+		})
+	}
 
 	render () {
-		let isLoading = (this.props.isFetching || this.props.isUpdating || this.props.isDuplicating)
+		let isLoading = (this.props.isFetching || this.props.isUpdating
+			|| this.props.isDuplicating || this.props.isDestroying)
 
 		return (
 			<div>
 				<Title title="Edit template" loading={isLoading}>
-					<a href="javascript:;" class="btn btn-sm btn-warning icon-docs" onClick={() => this.duplicate()}>Duplicate</a>
+					<a href="javascript:;" class="btn btn-sm btn-warning icon-docs" onClick={() => this.onDuplicate()}>Duplicate</a>
+					<a href="javascript:;" class="btn btn-sm btn-danger icon-trash" onClick={() => this.onDestroy()}>Destroy</a>
 				</Title>
 				<Form item={this.props.item} submitLabel="Update template" onSubmit={this.onSubmit.bind(this)} loading={isLoading} />
 				{this.props.item &&
@@ -75,6 +88,8 @@ Update.propTypes = {
 	isUpdating: React.PropTypes.bool,
 	onDuplicate: React.PropTypes.func.isRequired,
 	isDuplicating: React.PropTypes.bool,
+	onDestroy: React.PropTypes.func.isRequired,
+	isDestroying: React.PropTypes.bool,
 	item: React.PropTypes.object,
 }
 Update.contextTypes = {
