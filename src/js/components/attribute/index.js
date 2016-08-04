@@ -102,23 +102,18 @@ class Index extends React.Component {
 								let { converter, calibrator, validators } = concava(item)
 
 								return (
-									<tr key={item.id} class="click-to-edit"
+									<tr key={item.id} class="click-to-edit" title="Edit"
 										onClick={() => this.context.router.replace('/attributes/' + item.id + '/edit')}>
 										<td>{item.name}</td>
 										<td>{converter}</td>
 										<td>{this.formatCalibrator(calibrator)}</td>
 										<td>{validators}</td>
 										<td>{date.format(item.updated_at)}</td>
-										<td width="200px" class="text-right">
-											{i > 0 ?
-												<a href="javascript:;" onClick={() => this.moveUp(item)}>Up</a>
-												: 'Up'
-											}
-											{' | '}
-											{i + 1 < itemCount ?
-												<a href="javascript:;" onClick={() => this.moveDown(item)}>Down</a>
-												: 'Down'
-											}
+										<td width="100px" class="text-right" style={{ padding: '1px 3px' }}>
+											<div class="btn-group" onClick={(ev) => ev.stopPropagation()}>
+												<button class="btn btn-sm btn-success icon-up-open-big icon-only" onClick={() => this.moveUp(item)} disabled={i <= 0} title="Move up" />
+												<button class="btn btn-sm btn-success icon-down-open-big icon-only" onClick={() => this.moveDown(item)} disabled={i + 1 >= itemCount} title="Move down" />
+											</div>
 										</td>
 									</tr>
 								)

@@ -28,3 +28,10 @@ ul.list-hover:hover {
 .spacer {
 	height: 60px;
 }
+
+[class^="icon-"]:before, [class*=" icon-"]:before {
+	margin-right: 9px;
+}
+[class^="icon-only"]:before, [class*=" icon-only"]:before {
+	margin-right: 0;
+}

@@ -46,7 +46,7 @@ class Index extends React.Component {
 							<tr><td colSpan="2">Loading…</td></tr>
 							: _.size(this.props.items) > 0 ?
 							_.map(this.props.items, (item) => (
-								<tr key={item.id} class="click-to-edit"
+								<tr key={item.id} class="click-to-edit" title="Edit"
 									onClick={() => this.context.router.replace('/templates/' + item.id + '/edit')}>
 									<td>{item.name}</td>
 									<td>{date.format(item.updated_at)}</td>
