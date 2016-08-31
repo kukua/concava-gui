@@ -1,6 +1,14 @@
+import _ from 'underscore'
 import config from '../config.js'
 import { instance as user } from '../lib/user'
 import { checkStatus, parseJSON } from '../lib/fetch'
+
+function formatLabels (labels) {
+	if ( ! labels) return
+	var formatted = {}
+	_.each(labels, ({name, value}) => formatted[name] = value)
+	return formatted
+}
 
 export default {
 	fetchAll () {
@@ -31,7 +39,7 @@ export default {
 		return (dispatch) => {
 			dispatch({ type: 'DEVICE_FETCH' })
 
-			return fetch(config.apiUrl + '/devices/' + id, {
+			return fetch(config.apiUrl + '/devices/' + id + '?include=labels', {
 				headers: {
 					'Authorization': 'Token ' + user.token,
 					'Accept': 'application/json',
@@ -54,6 +62,8 @@ export default {
 	create (data) {
 		return (dispatch) => {
 			dispatch({ type: 'DEVICE_CREATE' })
+
+			data.labels = formatLabels(data.labels)
 
 			return fetch(config.apiUrl + '/devices', {
 				method: 'POST',
@@ -81,6 +91,8 @@ export default {
 	update (data) {
 		return (dispatch) => {
 			dispatch({ type: 'DEVICE_UPDATE' })
+
+			data.labels = formatLabels(data.labels)
 
 			return fetch(config.apiUrl + '/devices/' + data.id, {
 				method: 'PUT',

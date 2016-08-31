@@ -3,6 +3,7 @@ import _ from 'underscore'
 import { connect } from 'react-redux'
 import { instance as user } from '../../lib/user'
 import actions from '../../actions/template'
+import LabelForm from '../label/form'
 
 const mapStateToProps = (state) => {
 	let { loading: isFetching, items: templates } = state.template.fetchAll
@@ -49,8 +50,18 @@ class Form extends React.Component {
 		let val = parseInt(ev.target.value)
 		this.setState({ [key]: val })
 	}
+	onAddLabel (ev) {
+		ev.preventDefault()
+		let labels = this.getItem().labels
+		labels.push({ name: '', key: '', value: '' })
+		this.setState({ labels })
+	}
+	onLabelsChange (labels) {
+		this.setState({ labels })
+	}
 	onSubmit (ev) {
 		ev.preventDefault()
+		console.log(this.getItem())
 		this.props.onSubmit(this.getItem())
 	}
 
@@ -83,9 +94,13 @@ class Form extends React.Component {
 							</select>
 						</div>
 					</div>
+					<LabelForm labels={item.labels || []} onChange={this.onLabelsChange.bind(this)} loading={this.props.loading} />
 					<div class="form-group">
 						<div class="col-sm-12">
-							<button type="submit" class="btn btn-success pull-right" disabled={this.props.loading}>{this.props.submitLabel || 'Save'}</button>
+							<div class="btn-group pull-right">
+								<button class="btn btn-default" onClick={this.onAddLabel.bind(this)} disabled={this.props.loading}>{'Add label'}</button>
+								<button type="submit" class="btn btn-success" disabled={this.props.loading}>{this.props.submitLabel || 'Save'}</button>
+							</div>
 						</div>
 					</div>
 				</form>
@@ -103,6 +118,7 @@ Form.propTypes = {
 		template_id: React.PropTypes.number.isRequired,
 		udid: React.PropTypes.string,
 		name: React.PropTypes.string,
+		labels: React.PropTypes.array,
 	}),
 	onSubmit: React.PropTypes.func.isRequired,
 	submitLabel: React.PropTypes.string,
