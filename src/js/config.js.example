@@ -12,4 +12,5 @@ export default {
 		'int64le', 'int64be', 'uint64le', 'uint64be',
 		'floatle', 'floatbe', 'doublele', 'doublebe'
 	],
+	defaultDeviceLabels: 'Latitude,Longitude',
 }

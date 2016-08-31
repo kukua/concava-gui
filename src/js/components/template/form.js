@@ -13,7 +13,8 @@ export default class Form extends React.Component {
 
 	getItem () {
 		let item = (this.props.item || {})
-		return Object.assign({}, item, this.state)
+		let labels = (this.props.defaultLabels || [])
+		return Object.assign({ labels }, item, this.state)
 	}
 	onChange (ev) {
 		let key = ev.target.name
@@ -67,6 +68,12 @@ Form.propTypes = {
 		name: React.PropTypes.string,
 		labels: React.PropTypes.array,
 	}),
+	defaultLabels: React.PropTypes.arrayOf(React.PropTypes.shape({
+		name: React.PropTypes.string.isRequired,
+		key: React.PropTypes.string,
+		value: React.PropTypes.isRequired,
+		created_at: React.PropTypes.string,
+	})),
 	onSubmit: React.PropTypes.func.isRequired,
 	submitLabel: React.PropTypes.string,
 	loading: React.PropTypes.bool,

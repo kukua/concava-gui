@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Title from '../title'
 import Form from './form'
+import config from '../../config'
 import notify from '../../lib/notify'
 import actions from '../../actions/template'
 
@@ -27,10 +28,15 @@ class Create extends React.Component {
 	}
 
 	render () {
+		let defaultLabels = [
+			{ name: 'Default device labels', value: config.defaultDeviceLabels },
+		]
+
 		return (
 			<div>
 				<Title title="Add template" loading={this.props.isCreating} />
-				<Form submitLabel="Create template" onSubmit={this.onSubmit.bind(this)} loading={this.props.isCreating} />
+				<Form submitLabel="Create template" defaultLabels={defaultLabels}
+					onSubmit={this.onSubmit.bind(this)} loading={this.props.isCreating} />
 			</div>
 		)
 	}
