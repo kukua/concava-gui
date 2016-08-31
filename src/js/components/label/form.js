@@ -54,7 +54,7 @@ export default class Form extends React.Component {
 							<div class="col-sm-8">
 								<input type="text" class="form-control" value={value} placeholder="Value" onChange={(ev) => this.onValueChange(label, ev.target.value)} disabled={this.props.loading} />
 							</div>
-							<div class="col-sm-1">
+							<div class="col-sm-1 text-right">
 								<button class="btn btn-danger icon-cancel icon-only" title="Remove" onClick={(ev) => {
 									ev.preventDefault()
 									this.onRemove(label)
