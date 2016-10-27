@@ -7,10 +7,10 @@ import actions from '../../actions/template'
 import AttributeIndex from '../attribute/index'
 
 const mapStateToProps = (state) => {
-	let { loading: isUpdating } = state.template.update
-	let { loading: isFetching, item } = state.template.fetch
-	let { loading: isDuplicating } = state.template.duplicate
-	let { loading: isDestroying } = state.template.destroy
+	var { loading: isUpdating } = state.template.update
+	var { loading: isFetching, item } = state.template.fetch
+	var { loading: isDuplicating } = state.template.duplicate
+	var { loading: isDestroying } = state.template.destroy
 	return { isFetching, isUpdating, isDuplicating, isDestroying, item }
 }
 
@@ -57,7 +57,7 @@ class Update extends React.Component {
 	}
 
 	render () {
-		let isLoading = (this.props.isFetching || this.props.isUpdating
+		var isLoading = (this.props.isFetching || this.props.isUpdating
 			|| this.props.isDuplicating || this.props.isDestroying)
 
 		return (

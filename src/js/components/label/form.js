@@ -27,8 +27,8 @@ export default class Form extends React.Component {
 		this.onChange()
 	}
 	onRemove (label) {
-		let labels = this.state.labels
-		let index  = labels.indexOf(label)
+		var labels = this.state.labels
+		var index  = labels.indexOf(label)
 		labels.splice(index, 1)
 		this.setState({ labels })
 		this.onChange()
@@ -38,9 +38,9 @@ export default class Form extends React.Component {
 		return (
 			<div>
 				{_.map(this.state.labels, (label, i) => {
-					let name  = (label.name  || '')
-					let key   = (label.key   || '')
-					let value = (label.value || '')
+					var name  = (label.name  || '')
+					var key   = (label.key   || '')
+					var value = (label.value || '')
 
 					if (typeof value !== 'string') {
 						value = JSON.stringify(value)

@@ -9,8 +9,8 @@ import { Table } from '../../lib/table'
 import actions from '../../actions/attribute'
 
 const mapStateToProps = (state) => {
-	let { loading: isFetching, items } = state.attribute.fetchAll
-	let { loading: isReordering } = state.attribute.reorder
+	var { loading: isFetching, items } = state.attribute.fetchAll
+	var { loading: isReordering } = state.attribute.reorder
 	return { isFetching, isReordering, items }
 }
 
@@ -41,8 +41,8 @@ class Index extends React.Component {
 	formatCalibrator (val) {
 		if ( ! val) return ''
 
-		let line = ('' + val).trim().split('\n')[0].trim() // First non-empty line
-		let comment = /^(\/[\/\*]{1}\s*)|(\s*\*\/)$/g // Match "// " and "/* ... */"
+		var line = ('' + val).trim().split('\n')[0].trim() // First non-empty line
+		var comment = /^(\/[\/\*]{1}\s*)|(\s*\*\/)$/g // Match "// " and "/* ... */"
 
 		if (line.match(comment) !== null) {
 			line = line.replace(comment, '')
@@ -56,9 +56,9 @@ class Index extends React.Component {
 		return _.sortBy(this.props.items, 'order') // TODO(mauvm): Remove when sorted by API
 	}
 	move (id, offset) {
-		let items = this.getItems()
-		let from  = _.indexOf(items, _.find(items, (item) => item.id === id))
-		let to = from + offset
+		var items = this.getItems()
+		var from  = _.indexOf(items, _.find(items, (item) => item.id === id))
+		var to = from + offset
 
 		if (from >= 0 && from < items.length && to >= 0 && to < items.length) {
 			items.splice(to, 0, items.splice(from, 1)[0])
@@ -77,9 +77,9 @@ class Index extends React.Component {
 	}
 
 	render () {
-		let isLoading = (this.props.isFetching)
-		let items = this.getItems()
-		let itemCount = _.size(items)
+		var isLoading = (this.props.isFetching)
+		var items = this.getItems()
+		var itemCount = _.size(items)
 
 		return (
 			<div>

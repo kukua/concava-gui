@@ -6,7 +6,7 @@ import { instance as user } from '../../lib/user'
 import actions from '../../actions/user'
 
 const mapStateToProps = (state) => {
-	let user = state.user.login.item
+	var user = state.user.login.item
 	return { user }
 }
 
@@ -28,7 +28,7 @@ class Menu extends React.Component {
 	}
 
 	getMenu () {
-		let isActive = (to) => _.startsWith(this.props.location.pathname, to, 1)
+		var isActive = (to) => _.startsWith(this.props.location.pathname, to, 1)
 
 		if (user.isLoggedIn) {
 			return (

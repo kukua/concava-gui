@@ -14,12 +14,12 @@ export default class Form extends React.Component {
 	}
 
 	getItem () {
-		let item = (this.props.item || {})
+		var item = (this.props.item || {})
 		return Object.assign({}, item, concava(item), this.state)
 	}
 	onChange (ev) {
-		let key = ev.target.name
-		let val = ev.target.value
+		var key = ev.target.name
+		var val = ev.target.value
 		this.setState({ [key]: val })
 	}
 	onSubmit (ev) {
@@ -28,7 +28,7 @@ export default class Form extends React.Component {
 	}
 
 	render () {
-		let item = this.getItem()
+		var item = this.getItem()
 
 		return (
 			<div>

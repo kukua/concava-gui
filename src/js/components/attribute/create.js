@@ -6,7 +6,7 @@ import notify from '../../lib/notify'
 import actions from '../../actions/attribute'
 
 const mapStateToProps = (state) => {
-	let { loading: isCreating, item } = state.attribute.create
+	var { loading: isCreating, item } = state.attribute.create
 	return { isCreating, item }
 }
 
@@ -27,8 +27,8 @@ class Create extends React.Component {
 	}
 
 	render () {
-		let query = this.props.location.query
-		let item = {
+		var query = this.props.location.query
+		var item = {
 			template_id: parseInt(query.template_id),
 			order: parseInt(query.order),
 		}

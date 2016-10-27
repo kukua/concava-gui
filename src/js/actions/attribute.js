@@ -22,7 +22,7 @@ export default {
 				.then(checkStatus)
 				.then(parseJSON)
 				.then((data) => {
-					let items = (data[0] ? data[0].attributes : [])
+					var items = (data[0] ? data[0].attributes : [])
 					dispatch({ type: 'ATTRIBUTE_FETCH_ALL_SUCCESS', items })
 					return items
 				})

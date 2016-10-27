@@ -6,9 +6,9 @@ import notify from '../../lib/notify'
 import actions from '../../actions/device'
 
 const mapStateToProps = (state) => {
-	let { loading: isUpdating } = state.device.update
-	let { loading: isFetching, item } = state.device.fetch
-	let { loading: isDestroying } = state.device.destroy
+	var { loading: isUpdating } = state.device.update
+	var { loading: isFetching, item } = state.device.fetch
+	var { loading: isDestroying } = state.device.destroy
 	return { isFetching, isUpdating, isDestroying, item }
 }
 
@@ -47,7 +47,7 @@ class Update extends React.Component {
 	}
 
 	render () {
-		let isLoading = (this.props.isFetching || this.props.isUpdating || this.props.isDestroying)
+		var isLoading = (this.props.isFetching || this.props.isUpdating || this.props.isDestroying)
 
 		return (
 			<div>

@@ -6,7 +6,7 @@ import { Table } from '../../lib/table'
 import actions from '../../actions/device'
 
 const mapStateToProps = (state) => {
-	let { loading: isFetching, items } = state.device.fetchAll
+	var { loading: isFetching, items } = state.device.fetchAll
 	return { isFetching, items }
 }
 
@@ -27,7 +27,7 @@ class Index extends React.Component {
 	}
 
 	render () {
-		let isLoading = (this.props.isFetching)
+		var isLoading = (this.props.isFetching)
 
 		return (
 			<div>

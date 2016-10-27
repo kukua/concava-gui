@@ -12,18 +12,18 @@ export default class Form extends React.Component {
 	}
 
 	getItem () {
-		let item = (this.props.item || {})
-		let labels = (this.props.defaultLabels || [])
+		var item = (this.props.item || {})
+		var labels = (this.props.defaultLabels || [])
 		return Object.assign({ labels }, item, this.state)
 	}
 	onChange (ev) {
-		let key = ev.target.name
-		let val = ev.target.value
+		var key = ev.target.name
+		var val = ev.target.value
 		this.setState({ [key]: val })
 	}
 	onAddLabel (ev) {
 		ev.preventDefault()
-		let labels = this.getItem().labels
+		var labels = this.getItem().labels
 		labels.push({ name: '', key: '', value: '' })
 		this.setState({ labels })
 	}
@@ -36,7 +36,7 @@ export default class Form extends React.Component {
 	}
 
 	render () {
-		let item = this.getItem()
+		var item = this.getItem()
 
 		return (
 			<div>

@@ -8,8 +8,8 @@ import actions from '../../actions/device'
 import templateActions from '../../actions/template'
 
 const mapStateToProps = (state) => {
-	let { loading: isFetching, item: template } = state.template.fetch
-	let { loading: isCreating, item } = state.device.create
+	var { loading: isFetching, item: template } = state.template.fetch
+	var { loading: isCreating, item } = state.device.create
 	return { isFetching, isCreating, template, item }
 }
 
@@ -37,9 +37,9 @@ class Create extends React.Component {
 	}
 
 	render () {
-		let isLoading = (this.props.isFetching || this.props.isCreating)
-		let defaultLabels = []
-		let template = this.props.template
+		var isLoading = (this.props.isFetching || this.props.isCreating)
+		var defaultLabels = []
+		var template = this.props.template
 
 		if (template && template.labels) {
 			let label = _.find(template.labels, (label) => label.key === 'default_device_labels')

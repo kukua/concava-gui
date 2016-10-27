@@ -7,7 +7,7 @@ import notify from '../../lib/notify'
 import actions from '../../actions/template'
 
 const mapStateToProps = (state) => {
-	let { loading: isCreating, item } = state.template.create
+	var { loading: isCreating, item } = state.template.create
 	return { isCreating, item }
 }
 
@@ -28,7 +28,7 @@ class Create extends React.Component {
 	}
 
 	render () {
-		let defaultLabels = [
+		var defaultLabels = [
 			{ name: 'Default device labels', value: config.defaultDeviceLabels },
 		]
 

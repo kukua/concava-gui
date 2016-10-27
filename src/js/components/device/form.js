@@ -6,7 +6,7 @@ import actions from '../../actions/template'
 import LabelForm from '../label/form'
 
 const mapStateToProps = (state) => {
-	let { loading: isFetching, items: templates } = state.template.fetchAll
+	var { loading: isFetching, items: templates } = state.template.fetchAll
 	return { isFetching, templates }
 }
 
@@ -32,23 +32,23 @@ class Form extends React.Component {
 	}
 
 	getItem () {
-		let item = (this.props.item || {})
-		let labels = (this.props.defaultLabels || [])
+		var item = (this.props.item || {})
+		var labels = (this.props.defaultLabels || [])
 		return Object.assign({ labels }, item, this.state)
 	}
 	onChange (ev) {
-		let key = ev.target.name
-		let val = ev.target.value
+		var key = ev.target.name
+		var val = ev.target.value
 		this.setState({ [key]: val })
 	}
 	onUDIDChange (ev) {
-		let key = ev.target.name
-		let val = ev.target.value.toLowerCase().replace(/[^a-f0-9]/g, '').substr(0, 16)
+		var key = ev.target.name
+		var val = ev.target.value.toLowerCase().replace(/[^a-f0-9]/g, '').substr(0, 16)
 		this.setState({ [key]: val })
 	}
 	onTemplateChange (ev) {
-		let key = ev.target.name
-		let val = parseInt(ev.target.value)
+		var key = ev.target.name
+		var val = parseInt(ev.target.value)
 		this.setState({ [key]: val })
 
 		if (this.props.onTemplateChange) {
@@ -57,7 +57,7 @@ class Form extends React.Component {
 	}
 	onAddLabel (ev) {
 		ev.preventDefault()
-		let labels = this.getItem().labels
+		var labels = this.getItem().labels
 		labels.push({ name: '', key: '', value: '' })
 		this.setState({ labels })
 	}
@@ -70,7 +70,7 @@ class Form extends React.Component {
 	}
 
 	render () {
-		let item = this.getItem()
+		var item = this.getItem()
 
 		return (
 			<div>
