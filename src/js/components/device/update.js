@@ -1,10 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import _ from 'underscore'
 import Title from '../title'
 import Form from './form'
 import notify from '../../lib/notify'
-import { Table } from '../../lib/table'
 import actions from '../../actions/device'
 
 const mapStateToProps = (state) => {
@@ -51,29 +49,17 @@ class Update extends React.Component {
 	render () {
 		var isLoading = (this.props.isFetching || this.props.isUpdating || this.props.isDestroying)
 		var item = this.props.item
-		var columns = {}
-
-		if (item) {
-			_.each(item.template.attributes, (attr) => {
-				columns[attr.name] = {
-					label: attr.name,
-					key: attr.name,
-				}
-			})
-		}
 
 		return (
 			<div>
 				<Title title="Edit device" loading={isLoading}>
 					<a href="javascript:;" class="btn btn-sm btn-danger icon-trash" onClick={() => this.onDestroy()}>Destroy</a>
 				</Title>
-				<Form item={this.props.item} submitLabel="Update device" onSubmit={this.onSubmit.bind(this)} loading={isLoading} />
+				<Form item={item} submitLabel="Update device" onSubmit={this.onSubmit.bind(this)} loading={isLoading} />
 				{item && (
 					<div>
 						<Title title="Last measurement" backButton={false} loading={isLoading} />
-						<Table loading={isLoading}
-							columns={columns}
-							rows={item.measurement ? [item.measurement] : []} />
+						<textarea class="form-control" rows={Math.max(5, 2 + Object.keys(item.measurement).length)} value={JSON.stringify(item.measurement, null, '\t')} />
 					</div>
 				)}
 			</div>
