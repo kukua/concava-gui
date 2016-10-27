@@ -39,7 +39,7 @@ export default {
 		return (dispatch) => {
 			dispatch({ type: 'DEVICE_FETCH' })
 
-			return fetch(config.apiUrl + '/devices/' + id + '?include=labels', {
+			return fetch(config.apiUrl + '/devices/' + id + '?include=labels,measurement,template.attributes', {
 				headers: {
 					'Authorization': 'Token ' + user.token,
 					'Accept': 'application/json',
