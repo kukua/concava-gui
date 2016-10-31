@@ -56,7 +56,7 @@ class Update extends React.Component {
 					<a href="javascript:;" class="btn btn-sm btn-danger icon-trash" onClick={() => this.onDestroy()}>Destroy</a>
 				</Title>
 				<Form item={item} submitLabel="Update device" onSubmit={this.onSubmit.bind(this)} loading={isLoading} />
-				{item && (
+				{item && item.measurement && (
 					<div>
 						<Title title="Last measurement" backButton={false} loading={isLoading} />
 						<textarea class="form-control" rows={Math.max(5, 2 + Object.keys(item.measurement).length)} value={JSON.stringify(item.measurement, null, '\t')} />
