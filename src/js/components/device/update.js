@@ -59,7 +59,8 @@ class Update extends React.Component {
 				{item && item.measurement && (
 					<div>
 						<Title title="Last measurement" backButton={false} loading={isLoading} />
-						<textarea class="form-control" rows={Math.max(5, 2 + Object.keys(item.measurement).length)} value={JSON.stringify(item.measurement, null, '\t')} />
+						<textarea class="form-control" rows={Math.max(5, 2 + Object.keys(item.measurement).length)}
+							value={JSON.stringify(item.measurement, null, '\t')} readOnly={true} />
 					</div>
 				)}
 			</div>
