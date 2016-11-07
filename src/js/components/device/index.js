@@ -56,9 +56,19 @@ class Index extends React.Component {
 							key: 'updated_at',
 							isDate: true,
 						},
+						actions: {
+							label: () => (
+								<div className="text-right">Actions</div>
+							),
+							value: (val, { rowData: { id } }) => (
+								<Link to={`/devices/${id}/edit`} class="btn btn-xs btn-success icon-pencil pull-right">Edit</Link>
+							),
+							cellProps: {
+								className: 'less-padding',
+							},
+						},
 					}}
-					rows={this.props.items || []}
-					onRowClick={(item) => this.context.router.replace('/devices/' + item.id + '/edit')} />
+					rows={this.props.items || []} />
 			</div>
 		)
 	}

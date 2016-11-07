@@ -6,7 +6,12 @@ import date from './date'
 export class Table extends React.Component {
 	getColumnSchema () {
 		return _.map(this.props.columns, (column) => {
+			var label = column.label
 			var cell = {}
+
+			if (_.isFunction(label)) {
+				label = label()
+			}
 
 			if (column.key) {
 				cell.property = column.key
@@ -22,9 +27,7 @@ export class Table extends React.Component {
 			}
 
 			return {
-				header: {
-					label: column.label,
-				},
+				header: { label },
 				cell,
 			}
 		})
@@ -38,7 +41,7 @@ export class Table extends React.Component {
 		return {
 			className: 'click-to-edit',
 			title: 'Edit',
-			onClick: () => this.props.onRowClick && this.props.onRowClick(row, rowIndex),
+			onClick: () => this.props.onRowClick(row, rowIndex),
 		}
 	}
 
@@ -55,7 +58,7 @@ export class Table extends React.Component {
 					<tfoot><tr class="active"><td colSpan={columns.length}>Loading…</td></tr></tfoot>
 				)}
 				{ ! this.props.loading && rows.length > 0 && (
-					<DataTable.Body rows={rows} rowKey="id" onRow={this.onRow.bind(this)} />
+					<DataTable.Body rows={rows} rowKey="id" onRow={this.props.onRowClick ? this.onRow.bind(this) : undefined} />
 				)}
 				{ ! this.props.loading && rows.length === 0 && (
 					<tfoot><tr class="active"><td colSpan={columns.length}>No items…</td></tr></tfoot>
