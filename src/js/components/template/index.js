@@ -37,6 +37,15 @@ class Index extends React.Component {
 				</Title>
 				<Table loading={isLoading}
 					columns={{
+						actions: {
+							label: 'Actions',
+							value: (val, { rowData: { id } }) => (
+								<Link to={`/templates/${id}/edit`} class="btn btn-xs btn-success icon-pencil">Edit</Link>
+							),
+							cellProps: {
+								className: 'less-padding',
+							},
+						},
 						name: {
 							label: 'Name',
 							key: 'name',
@@ -45,17 +54,6 @@ class Index extends React.Component {
 							label: 'Last updated',
 							key: 'updated_at',
 							isDate: true,
-						},
-						actions: {
-							label: () => (
-								<div className="text-right">Actions</div>
-							),
-							value: (val, { rowData: { id } }) => (
-								<Link to={`/templates/${id}/edit`} class="btn btn-xs btn-success icon-pencil pull-right">Edit</Link>
-							),
-							cellProps: {
-								className: 'less-padding',
-							},
 						},
 					}}
 					rows={this.props.items || []} />
